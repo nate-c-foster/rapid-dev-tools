@@ -1,0 +1,232 @@
+{
+  "custom": {},
+  "params": {},
+  "permissions": {
+    "securityLevels": [
+      {
+        "children": [],
+        "name": "Authenticated"
+      }
+    ],
+    "type": "AllOf"
+  },
+  "props": {
+    "defaultSize": {
+      "height": 852,
+      "width": 1225
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "FlexRepeater"
+                    },
+                    "position": {
+                      "basis": "320px",
+                      "grow": 1
+                    },
+                    "propConfig": {
+                      "props.instances": {
+                        "binding": {
+                          "config": {
+                            "path": ".../Settings/FlexRepeater.custom.selectedCategory"
+                          },
+                          "transforms": [
+                            {
+                              "code": "\t\n\tselectedValue \u003d value\n\t\n\tmenu \u003d settings.getValue(\u0027Global\u0027, \u0027menu\u0027)\n\t\n\n\tinstances \u003d [{\u0027name\u0027: \u0027Global\u0027, \u0027selected\u0027: selectedValue \u003d\u003d \u0027Global\u0027, \u0027order\u0027:0}]\n\n\t\n\tfor row in range(menu.getRowCount()):\n\t\tname \u003d menu.getValueAt(row,\u0027name\u0027)\n\t\torder \u003d menu.getValueAt(row, \u0027order\u0027)\n\t\tinstances.append({\u0027name\u0027:name, \u0027selected\u0027: selectedValue \u003d\u003d name, \u0027order\u0027:order})\n\t\t\n\t\t\n\treturn sorted(instances, key\u003dlambda x : x[\u0027order\u0027])",
+                              "type": "script"
+                            }
+                          ],
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "direction": "column",
+                      "elementPosition": {
+                        "basis": "25px",
+                        "grow": 0,
+                        "shrink": 0
+                      },
+                      "elementStyle": {
+                        "margin": "5px 0px"
+                      },
+                      "path": "Settings/Components/Category Item",
+                      "style": {
+                        "padding": "20px 0px"
+                      },
+                      "useDefaultViewHeight": false,
+                      "useDefaultViewWidth": false
+                    },
+                    "type": "ia.display.flex-repeater"
+                  }
+                ],
+                "meta": {
+                  "name": "Category"
+                },
+                "position": {
+                  "basis": "300px"
+                },
+                "props": {
+                  "direction": "column"
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "position": {
+                      "basis": "40px",
+                      "display": false,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "path": "../FlexRepeater.custom.selectedCategory"
+                          },
+                          "transforms": [
+                            {
+                              "code": "\treturn value + \u0027 Settings\u0027",
+                              "type": "script"
+                            }
+                          ],
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "custom": {
+                      "selectedCategory": "Global"
+                    },
+                    "meta": {
+                      "name": "FlexRepeater"
+                    },
+                    "position": {
+                      "basis": "320px",
+                      "grow": 1
+                    },
+                    "propConfig": {
+                      "props.instances": {
+                        "binding": {
+                          "config": {
+                            "path": "this.custom.selectedCategory"
+                          },
+                          "transforms": [
+                            {
+                              "code": "\ttagProvider \u003d self.session.custom.tagProvider\n\tcategory \u003d value\n\t\n\tsettingTags \u003d system.tag.browse(tagProvider + \u0027RapidDev/\u0027 + category + \u0027/Settings\u0027)\n\t\n\tinstances \u003d []\n\tfor settingTag in settingTags:\n\t\n\t\ttagPath \u003d str(settingTag[\u0027fullPath\u0027])\n\t\tname \u003d settingTag[\u0027name\u0027]\n\t\tdataType \u003d settingTag[\u0027dataType\u0027]\n\t\tdescription \u003d system.tag.readBlocking(tagPath + \u0027.documentation\u0027)[0].value\n\t\tinstances.append({\u0027name\u0027:name, \u0027dataType\u0027:dataType, \u0027description\u0027: description, \u0027tagPath\u0027:tagPath})\n\t\t\n\t\t\n\treturn instances",
+                              "type": "script"
+                            }
+                          ],
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "direction": "column",
+                      "elementPosition": {
+                        "basis": "auto",
+                        "grow": 0,
+                        "shrink": 0
+                      },
+                      "elementStyle": {
+                        "marginBottom": "30px"
+                      },
+                      "path": "Settings/Components/Settings Form Item",
+                      "useDefaultViewHeight": false,
+                      "useDefaultViewWidth": false
+                    },
+                    "type": "ia.display.flex-repeater"
+                  }
+                ],
+                "meta": {
+                  "name": "Settings"
+                },
+                "position": {
+                  "basis": "200px",
+                  "grow": 1
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "padding": "20px 30px"
+                  }
+                },
+                "type": "ia.container.flex"
+              }
+            ],
+            "custom": {
+              "selectedCategory": ""
+            },
+            "meta": {
+              "name": "FlexContainer"
+            },
+            "position": {
+              "basis": "200px",
+              "grow": 1
+            },
+            "scripts": {
+              "customMethods": [],
+              "extensionFunctions": null,
+              "messageHandlers": [
+                {
+                  "messageType": "SettingCategoryUpdated",
+                  "pageScope": true,
+                  "script": "\n\tcategory \u003d payload[\u0027category\u0027]\n\t\n#\tinstances \u003d self.getChild(\"Category\").getChild(\"FlexRepeater\").props.instances\n#\t\n#\tfor instance in instances:\n#\t\tif instance[\u0027name\u0027] \u003d\u003d category:\n#\t\t\tinstance[\u0027selected\u0027] \u003d True\n#\t\telse:\n#\t\t\tinstance[\u0027selected\u0027] \u003d False\n#\t\t\t\n\tself.getChild(\"Settings\").getChild(\"FlexRepeater\").custom.selectedCategory \u003d category",
+                  "sessionScope": false,
+                  "viewScope": false
+                }
+              ]
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "Settings"
+        },
+        "props": {
+          "direction": "column"
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "menuType": "modern",
+      "style": {
+        "padding": "20px"
+      },
+      "tabSize": {
+        "width": 250
+      },
+      "tabStyle": {
+        "active": {
+          "color": "",
+          "fontSize": ""
+        },
+        "inactive": {
+          "fontSize": ""
+        }
+      },
+      "tabs": [
+        "Settings"
+      ]
+    },
+    "type": "ia.container.tab"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "custom": {},
+  "params": {
+    "column": "",
+    "columnIndex": "",
+    "row": "",
+    "rowData": "",
+    "rowIndex": "",
+    "value": ""
+  },
+  "propConfig": {
+    "params.column": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.columnIndex": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.row": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.rowData": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.rowIndex": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 40,
+      "width": 303
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\n\t\n\tcurrentConfigJson \u003d tageditor.util.getTagConfigStr(self.view.params.rowData[\u0027tagPath\u0027])\n\tpreviewConfigJson \u003d self.view.params.rowData[\u0027tagConfig\u0027]\n\n\tJSONobjCurrent \u003d system.util.jsonDecode(currentConfigJson)\n\tJSONobjPreview\t\u003d system.util.jsonDecode(previewConfigJson)\n\t\t\n\tcurrentDiff \u003d system.util.jsonEncode( util.json.JSONdiff_V3(JSONobjCurrent, JSONobjPreview, False) )\n\tpreviewDiff \u003d system.util.jsonEncode( util.json.JSONdiff_V3(JSONobjPreview, JSONobjCurrent, False) )\n\n\n\tparams \u003d {\"current\": currentDiff,\n\t\t\t\t\"preview\": previewDiff}\n\n\n\tsystem.perspective.openPopup(\u0027JsonDiffPopup\u0027, \u0027Global Components/JSON/JSON Diff Popup\u0027, params \u003d params, resizable\u003dTrue)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Icon Diff",
+          "tooltip": {
+            "enabled": true,
+            "text": "compare current config with transformed config"
+          }
+        },
+        "position": {
+          "basis": "30px"
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "view.params.rowData"
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\tif value[\u0027tagConfig\u0027]:\n\t\treturn True\n\telse:\n\t\treturn False",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "color": "var(--green-77)",
+          "path": "material/compare",
+          "style": {
+            "cursor": "pointer",
+            "margin": "0px 10px"
+          }
+        },
+        "type": "ia.display.icon"
+      },
+      {
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\t\n\texpandedLambda \u003d \"lambda x : True if isinstance(x,list) or (isinstance(x,dict) and (\u0027tags\u0027 in x.keys() or \u0027parameters\u0027 in x.keys())) else False\"\n\n\tcurrentConfig \u003d tageditor.util.getTagConfigStr(self.view.params.rowData[\u0027tagPath\u0027])\n\n\tparams \u003d { \"jsonStr\": currentConfig, \"expanded\": expandedLambda}\n\t\n\tsystem.perspective.openPopup(\u0027JsonRawPopup\u0027, \u0027Global Components/JSON/JSON Tree Popup\u0027, params \u003d params, resizable\u003dTrue)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Icon Tree",
+          "tooltip": {
+            "enabled": true,
+            "text": "current config tree"
+          }
+        },
+        "position": {
+          "basis": "30px"
+        },
+        "props": {
+          "color": "var(--green-77)",
+          "path": "material/account_tree",
+          "style": {
+            "cursor": "pointer",
+            "margin": "0px 10px"
+          }
+        },
+        "type": "ia.display.icon"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "justify": "center"
+    },
+    "type": "ia.container.flex"
+  }
+}

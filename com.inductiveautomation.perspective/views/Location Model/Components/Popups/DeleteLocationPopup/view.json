@@ -1,0 +1,192 @@
+{
+  "custom": {},
+  "params": {
+    "LocationID": ""
+  },
+  "propConfig": {
+    "params.LocationID": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 214,
+      "width": 454
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "RadioGroup"
+            },
+            "position": {
+              "basis": "35px"
+            },
+            "props": {
+              "radios": [
+                {
+                  "selected": true,
+                  "text": "Inactivate Location",
+                  "value": ""
+                },
+                {
+                  "selected": false,
+                  "text": "Delete Location",
+                  "value": ""
+                }
+              ],
+              "value": ""
+            },
+            "type": "ia.input.radio-group"
+          },
+          {
+            "meta": {
+              "name": "Delete Tag"
+            },
+            "position": {
+              "basis": "36px"
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "path": "../RadioGroup.props.index"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value \u003d\u003d 1:\n\t\treturn True\n\telse:\n\t\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "marginTop": "20px",
+                "paddingLeft": "11px"
+              },
+              "text": "Delete Tag"
+            },
+            "type": "ia.input.checkbox"
+          },
+          {
+            "meta": {
+              "name": "Delete View"
+            },
+            "position": {
+              "basis": "36px"
+            },
+            "props": {
+              "enabled": false,
+              "style": {
+                "paddingLeft": "11px"
+              },
+              "text": "Delete View (must delete manually)"
+            },
+            "type": "ia.input.checkbox"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "200px",
+          "grow": 1
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "padding": "10px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\t\n\tmodelTagPath \u003d self.session.custom.modelTagPath\n\tmodelDS \u003d system.tag.readBlocking(modelTagPath)[0].value\n\tlocationID \u003d self.view.params.LocationID\n\tlocationDetails \u003d location.model.getLocationDetails(locationID, modelDS)\n\tmodelDBType \u003d self.session.custom.modelDBType\n\n\n\t# ---- inactivate location ---------\t\n\tif self.parent.parent.getChild(\"FlexContainer\").getChild(\"RadioGroup\").props.index \u003d\u003d 0:\n\t\tquery \u003d \"Location Model/\" + modelDBType + \"/inactivateLocation\"\n\t\tsystem.db.runNamedQuery(query, {\"LocationID\": locationID})\n\n\n\t# ---- delete location ---------\n\telif self.parent.parent.getChild(\"FlexContainer\").getChild(\"RadioGroup\").props.index \u003d\u003d 1:\n\t\tquery \u003d \"Location Model/\" + modelDBType  + \"/deleteLocation\"\n\t\tsystem.db.runNamedQuery(query, {\"LocationID\": locationID})\n\t\t\n\n\t\t\n\t# --- delete tag ---------\n\tif self.parent.parent.getChild(\"FlexContainer\").getChild(\"Delete Tag\").props.selected:\n\t\ttagPath \u003d locationDetails[\u0027tagPath\u0027]\n\t\tresults \u003d system.tag.deleteTags([tagPath])\n\t\tprint results\n\n\n\tlocation.model.updateModelTag()\n\n\tsystem.perspective.sendMessage(\u0027UpdateLocationDetails\u0027, {})\n\t\n\tsystem.perspective.closePopup(\"DeleteLocationPopup\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Ok"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/ButtonPrimary",
+                "margin": "2px 5px"
+              },
+              "text": "Ok"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.closePopup(\"DeleteLocationPopup\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Cancel"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/ButtonPrimary",
+                "margin": "2px 5px"
+              },
+              "text": "Cancel"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Buttons"
+        },
+        "position": {
+          "basis": "35px",
+          "shrink": 0
+        },
+        "props": {
+          "justify": "flex-end",
+          "style": {
+            "margin-top": "20px",
+            "marginBottom": "5px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

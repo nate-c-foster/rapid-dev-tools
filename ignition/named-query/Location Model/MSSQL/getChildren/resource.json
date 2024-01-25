@@ -1,0 +1,40 @@
+{
+  "scope": "DG",
+  "version": 2,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "query.sql"
+  ],
+  "attributes": {
+    "useMaxReturnSize": false,
+    "autoBatchEnabled": false,
+    "fallbackValue": "",
+    "maxReturnSize": 100,
+    "cacheUnit": "SEC",
+    "type": "Query",
+    "enabled": true,
+    "cacheAmount": 1,
+    "cacheEnabled": false,
+    "database": "",
+    "fallbackEnabled": false,
+    "lastModificationSignature": "fd78903bee22e07806ca53db417e8901da225ad3b26141b6bd65a4d9c189d32f",
+    "permissions": [
+      {
+        "zone": "",
+        "role": ""
+      }
+    ],
+    "lastModification": {
+      "actor": "nfoster",
+      "timestamp": "2024-01-24T12:12:15Z"
+    },
+    "parameters": [
+      {
+        "type": "Parameter",
+        "identifier": "LocationID",
+        "sqlType": 2
+      }
+    ]
+  }
+}

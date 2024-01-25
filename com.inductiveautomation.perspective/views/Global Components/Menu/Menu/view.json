@@ -1,0 +1,200 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 901,
+      "width": 60
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "FlexRepeater_Menu_Buttons"
+        },
+        "position": {
+          "basis": "320px",
+          "grow": 1
+        },
+        "propConfig": {
+          "props.instances": {
+            "binding": {
+              "config": {
+                "expression": "now(0)"
+              },
+              "transforms": [
+                {
+                  "code": "\tmenuDS \u003d settings.getValue(\u0027Global\u0027,\u0027menu\u0027)\n\t\n\tinstances \u003d []\n\tfor row in range(menuDS.getRowCount()):\n\t\tinstances.append({\t\u0027name\u0027: menuDS.getValueAt(row, \u0027name\u0027), \n\t\t\t\t\t\t\t\u0027pageURL\u0027: menuDS.getValueAt(row, \u0027pageURL\u0027),\n\t\t\t\t\t\t\t\u0027icon\u0027: menuDS.getValueAt(row, \u0027icon\u0027),\n\t\t\t\t\t\t\t\u0027order\u0027: menuDS.getValueAt(row, \u0027order\u0027) })\n\t\t\t\t\t\t\t\t\n\treturn sorted(instances, key\u003dlambda x: x[\u0027order\u0027])\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t",
+                  "type": "script"
+                }
+              ],
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "elementPosition": {
+            "basis": "28px",
+            "grow": 0,
+            "shrink": 0
+          },
+          "elementStyle": {
+            "margin": "20px 0px"
+          },
+          "path": "Global Components/Menu/Menu Item",
+          "useDefaultViewHeight": false,
+          "useDefaultViewWidth": false
+        },
+        "type": "ia.display.flex-repeater"
+      },
+      {
+        "children": [
+          {
+            "custom": {
+              "pagePath": "/settings"
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "page": "{/root/FlexContainer/Icon_Settings.custom.pagePath}"
+                  },
+                  "scope": "C",
+                  "type": "nav"
+                }
+              }
+            },
+            "meta": {
+              "name": "Icon_Settings",
+              "tooltip": {
+                "enabled": true,
+                "text": "Configuration"
+              }
+            },
+            "position": {
+              "basis": "50px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.color": {
+                "binding": {
+                  "config": {
+                    "path": "page.props.path"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value \u003d\u003d self.custom.pagePath:\n\t\treturn \u0027var(--neutral-80)\u0027\n\telse:\n\t\treturn \u0027var(--neutral-60)\u0027",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.style.backgroundColor": {
+                "binding": {
+                  "config": {
+                    "path": "page.props.path"
+                  },
+                  "enabled": false,
+                  "transforms": [
+                    {
+                      "code": "\tif value \u003d\u003d self.custom.pagePath:\n\t\treturn \u0027var(--neutral-30)\u0027\n\telse:\n\t\treturn \u0027var(--neutral-20)\u0027",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.style.borderLeftWidth": {
+                "binding": {
+                  "config": {
+                    "path": "page.props.path"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value \u003d\u003d self.custom.pagePath:\n\t\treturn \u00274px\u0027\n\telse:\n\t\treturn \u00270px\u0027",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "path": "material/settings",
+              "style": {
+                "backgroundColor": "var(--neutral-20)",
+                "borderLeftColor": "var(--menu-selected)",
+                "borderLeftStyle": "solid",
+                "cursor": "pointer",
+                "marginBottom": "10px",
+                "marginTop": "5px",
+                "padding": "10px 10px"
+              }
+            },
+            "type": "ia.display.icon"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "forceAuth": true
+                  },
+                  "scope": "C",
+                  "type": "login"
+                }
+              }
+            },
+            "meta": {
+              "name": "Icon_Logo",
+              "tooltip": {
+                "enabled": true,
+                "text": "Login"
+              }
+            },
+            "position": {
+              "basis": "50px",
+              "shrink": 0
+            },
+            "props": {
+              "color": "var(--neutral-60)",
+              "path": "material/login",
+              "style": {
+                "cursor": "pointer",
+                "padding": "10px 10px"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "133px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "justify": "flex-end"
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "justify": "space-between",
+      "style": {
+        "backgroundColor": "var(--neutral-20)",
+        "padding": "20px 0px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

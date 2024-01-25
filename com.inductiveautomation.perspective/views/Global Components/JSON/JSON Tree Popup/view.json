@@ -1,0 +1,144 @@
+{
+  "custom": {},
+  "params": {
+    "expanded": "lambda key: True",
+    "jsonStr": ""
+  },
+  "propConfig": {
+    "params.expanded": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.jsonStr": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {},
+  "root": {
+    "children": [
+      {
+        "events": {
+          "component": {
+            "onItemClicked": {
+              "config": {
+                "script": "\t\n\n\tkeyPath \u003d self.props.selectionData[0].value[1:]\n\t\n\tself.parent.getChild(\"FlexContainer\").getChild(\"TextArea\").props.text \u003d keyPath"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Tree"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "props.items": {
+            "binding": {
+              "config": {
+                "path": "view.params.jsonStr"
+              },
+              "transforms": [
+                {
+                  "code": "\n\n\tjsonStr \u003d value\n\texpanded \u003d self.view.params.expanded\n\tif jsonStr:\n\t\titems \u003d  util.json.jsonToTree(jsonStr, expanded)\n\t\treturn items\n\telse:\n\t\treturn []",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "appearance": {
+            "defaultNodeIcons": {
+              "collapsed": {
+                "path": "material/folder"
+              },
+              "empty": {
+                "path": "material/stop"
+              },
+              "expanded": {
+                "path": "material/folder_open"
+              }
+            },
+            "expandIcons": {
+              "collapsed": {
+                "path": "material/arrow_right"
+              },
+              "expanded": {
+                "path": "material/arrow_drop_down"
+              }
+            }
+          },
+          "style": {
+            "backgroundColor": "var(--neutral-10)",
+            "padding": "10px"
+          }
+        },
+        "type": "ia.display.tree"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "75px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "color": "var(--neutral-70)",
+                "fontSize": "14px",
+                "padding": "5px",
+                "textAlign": "right"
+              },
+              "text": "Key Path:"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "TextArea"
+            },
+            "position": {
+              "basis": "672px",
+              "grow": 1
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/TextField"
+              }
+            },
+            "type": "ia.input.text-area"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "55px",
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "backgroundColor": "var(--neutral-30)",
+            "padding": "10px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

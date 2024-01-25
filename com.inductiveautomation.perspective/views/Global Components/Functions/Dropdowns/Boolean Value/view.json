@@ -1,0 +1,125 @@
+{
+  "custom": {},
+  "params": {
+    "argName": "",
+    "argValue": "",
+    "functionPath": "",
+    "index": ""
+  },
+  "propConfig": {
+    "params.argName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.argValue": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.functionPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 41,
+      "width": 218
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\n\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.selected,\n\t\t\t\t\"index\": self.view.params.index\n\t\t\t\t}\n\t\n\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Checkbox"
+        },
+        "propConfig": {
+          "props.selected": {
+            "binding": {
+              "config": {
+                "path": "view.params.argValue"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "color": "var(--neutral-70)"
+          },
+          "text": "",
+          "uncheckedIcon": {
+            "color": {
+              "enabled": "var(--neutral-50)"
+            }
+          }
+        },
+        "type": "ia.input.checkbox"
+      }
+    ],
+    "custom": {
+      "property": ""
+    },
+    "meta": {
+      "name": "root"
+    },
+    "propConfig": {
+      "custom.options": {
+        "binding": {
+          "config": {
+            "path": "this.custom.property"
+          },
+          "transforms": [
+            {
+              "code": "\n\n\n\n\tif value \u003d\u003d \u0027dataType\u0027:\n\t\toptions \u003d  [ \t{\u0027label\u0027: \u0027Byte\u0027, \u0027value\u0027: \u0027Int1\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Short\u0027, \u0027value\u0027: \u0027Int2\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Integer\u0027, \u0027value\u0027: \u0027Int4\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Long\u0027, \u0027value\u0027: \u0027Int8\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Float\u0027, \u0027value\u0027: \u0027Float4\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Double\u0027, \u0027value\u0027: \u0027Float8\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Boolean\u0027, \u0027value\u0027: \u0027Boolean\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027String\u0027, \u0027value\u0027: \u0027String\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027DateTime\u0027, \u0027value\u0027: \u0027DateTime\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Byte Array\u0027, \u0027value\u0027: \u0027Int1Array\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Short Array\u0027, \u0027value\u0027: \u0027Int2Array\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Integer Array\u0027, \u0027value\u0027: \u0027Int4Array\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Long Array\u0027, \u0027value\u0027: \u0027Int4Array\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Float Array\u0027, \u0027value\u0027: \u0027Float4Array\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Double Array\u0027, \u0027value\u0027: \u0027Float8Array\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Boolean Array\u0027, \u0027value\u0027: \u0027BooleanArray\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027String Array\u0027, \u0027value\u0027: \u0027StringArray\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027DateTime Array\u0027, \u0027value\u0027: \u0027DateTimeArray\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Binary Data\u0027, \u0027value\u0027: \u0027ByteArray\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Dataset\u0027, \u0027value\u0027: \u0027DataSet\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Document (JSON Document)\u0027, \u0027value\u0027: \u0027Document\u0027}\n\t\t\t\t]\n\t\t\t\t\t\n\t\t\n\telse:\n\t\toptions \u003d []\n\t\t\n\treturn options",
+              "type": "script"
+            }
+          ],
+          "type": "property"
+        }
+      },
+      "custom.type": {
+        "binding": {
+          "config": {
+            "path": "this.custom.property"
+          },
+          "transforms": [
+            {
+              "code": "\n\tif value \u003d\u003d \u0027readOnly\u0027:\n\t\treturn \u0027boolean\u0027\n\t\t\n\telif value \u003d\u003d \u0027dataType\u0027:\n\t\treturn \u0027discrete\u0027\n\t\t\n\telif value \u003d\u003d \u0027enabled\u0027:\n\t\treturn \u0027boolean\u0027\t\n\t\t\n\telse:\n\t\treturn \u0027string\u0027",
+              "type": "script"
+            }
+          ],
+          "type": "property"
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "UpdateTagProperty",
+          "pageScope": true,
+          "script": "\t# implement your handler here\n\tproperty \u003d payload[\u0027property\u0027]\n\tself.custom.property \u003d property",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

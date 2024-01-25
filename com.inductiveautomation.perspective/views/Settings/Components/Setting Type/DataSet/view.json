@@ -1,0 +1,220 @@
+{
+  "custom": {},
+  "params": {
+    "tagPath": "[SCADA]RapidDev/Global/Settings/menu"
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 295
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "events": {
+          "component": {
+            "onEditCellCommit": {
+              "config": {
+                "script": "\n\tcolumn \u003d event.column\n\trow \u003d event.row\n\tnewValue \u003d event.value\n\n\tself.props.data \u003d system.dataset.setValue(self.props.data, row, column, newValue)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Table"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.columns": {
+            "binding": {
+              "config": {
+                "path": "this.props.data"
+              },
+              "transforms": [
+                {
+                  "code": "\tcolumnNames \u003d value.getColumnNames()\n\tcolumns \u003d []\n\t\n\tfor name in columnNames:\n\t\tcolumns.append({\u0027field\u0027:name, \u0027editable\u0027:True})\n\t\n\t\n\treturn columns",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.data": {
+            "binding": {
+              "config": {
+                "bidirectional": true,
+                "fallbackDelay": 2.5,
+                "mode": "expression",
+                "tagPath": "{view.params.tagPath}"
+              },
+              "type": "tag"
+            }
+          }
+        },
+        "props": {
+          "cells": {
+            "style": {
+              "backgroundColor": "var(--neutral-10)",
+              "classes": "RapidDev/Table/Cell"
+            }
+          },
+          "headerStyle": {
+            "color": "var(--blue-85)"
+          },
+          "pager": {
+            "bottom": false
+          },
+          "rows": {
+            "striped": {
+              "enabled": false
+            }
+          },
+          "style": {
+            "borderColor": "var(--neutral-30)",
+            "borderStyle": "solid",
+            "borderWidth": "1px"
+          },
+          "virtualized": false
+        },
+        "type": "ia.display.table"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\ttagPath \u003d self.view.params.tagPath\n\tdataset \u003d system.tag.readBlocking(tagPath)[0].value\n\t\n\tcolumnCount \u003d dataset.getColumnCount()\n\tnewRow \u003d [\u0027\u0027 for x in range(columnCount)]\n\tnewDataSet \u003d system.dataset.addRow(dataset,newRow)\n\t\n\tsystem.tag.writeBlocking([tagPath], [newDataSet])\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Add",
+              "tooltip": {
+                "enabled": true,
+                "text": "Add row"
+              }
+            },
+            "position": {
+              "basis": "25px",
+              "shrink": 0
+            },
+            "props": {
+              "color": "var(--green-77)",
+              "path": "material/add",
+              "style": {
+                "cursor": "pointer"
+              }
+            },
+            "type": "ia.display.icon"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\t\n\ttagPath \u003d self.view.params.tagPath\n\tdataset \u003d system.tag.readBlocking(tagPath)[0].value\n\t\n\tselectedRow \u003d self.parent.parent.getChild(\"Table\").props.selection.selectedRow\n\n\tnewDataSet \u003d system.dataset.deleteRow(dataset,selectedRow)\n\t\n\tsystem.tag.writeBlocking([tagPath], [newDataSet])"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Icon_Delete",
+              "tooltip": {
+                "enabled": true,
+                "text": "Delete row"
+              }
+            },
+            "position": {
+              "basis": "25px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "custom.enabled": {
+                "binding": {
+                  "config": {
+                    "path": ".../Table.props.selection.selectedRow"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value or value \u003d\u003d 0:\n\t\treturn True\n\telse:\n\t\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.color": {
+                "binding": {
+                  "config": {
+                    "path": "this.custom.enabled"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.style.cursor": {
+                "binding": {
+                  "config": {
+                    "path": "this.custom.enabled"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "path": "material/delete_outline"
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "22px"
+        },
+        "props": {
+          "style": {
+            "marginTop": "3px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

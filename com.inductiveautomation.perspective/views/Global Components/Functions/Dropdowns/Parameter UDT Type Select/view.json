@@ -1,0 +1,105 @@
+{
+  "custom": {},
+  "params": {
+    "argName": "",
+    "argValue": "",
+    "functionPath": "",
+    "index": ""
+  },
+  "propConfig": {
+    "params.argName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.argValue": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.functionPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 41,
+      "width": 218
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\n\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.value,\n\t\t\t\t\"index\": self.view.params.index\n\t\t\t\t}\n\t\n\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)\n\t\n\t\n\t\n\ttypeId \u003d self.props.value\n\tpayload \u003d {\t\"typeId\":typeId,\n\t\t\t\t\"index\": self.view.params.index\n\t}\n\tsystem.perspective.sendMessage(\"UpdateParameterNames\",payload)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          },
+          "system": {
+            "onStartup": {
+              "config": {
+                "script": "\t\n#\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n#\t\t\t\t\"argName\": self.view.params.argName,\n#\t\t\t\t\"argValue\": self.props.value,\n#\t\t\t\t\"index\": self.view.params.index\n#\t\t\t\t}\n#\t\n#\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)\n\t\n\t\n\t\n\ttypeId \u003d self.props.value\n\tpayload \u003d {\t\"typeId\":typeId,\n\t\t\t\t\"index\": self.view.params.index\n\t}\n\tsystem.perspective.sendMessage(\"UpdateParameterNames\",payload)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Dropdown"
+        },
+        "position": {
+          "basis": "36px"
+        },
+        "propConfig": {
+          "props.options": {
+            "binding": {
+              "config": {
+                "path": "view.params.argName"
+              },
+              "transforms": [
+                {
+                  "code": "\n\n\tudtTypeFilters \u003d settings.getValue(\u0027Tag Editor\u0027,\u0027udtTypeFilters\u0027)\n\t\n\toptions \u003d []\n\tfor udtType in udtTypeFilters:\n\t\toptions.append({\u0027value\u0027: udtType, \u0027label\u0027: udtType})\n\t\n\treturn options\n\n",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.value": {
+            "binding": {
+              "config": {
+                "path": "view.params.argValue"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "dropdownOptionStyle": {
+            "classes": "RapidDev/Dropdown/Options"
+          },
+          "style": {
+            "classes": "RapidDev/Dropdown/Root"
+          }
+        },
+        "type": "ia.input.dropdown"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

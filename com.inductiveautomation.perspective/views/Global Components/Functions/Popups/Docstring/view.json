@@ -1,0 +1,92 @@
+{
+  "custom": {},
+  "params": {
+    "functionPath": "tageditor.generate.getUdtTags"
+  },
+  "propConfig": {
+    "params.functionPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 559,
+      "width": 695
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Markdown"
+        },
+        "position": {
+          "basis": "200px",
+          "display": false,
+          "grow": 1
+        },
+        "propConfig": {
+          "props.source": {
+            "binding": {
+              "config": {
+                "expression": "{view.params.functionPath}"
+              },
+              "transforms": [
+                {
+                  "code": "#\ttry:\n\tdocstring \u003d eval(value).__doc__\n\treturn \"\u003chtml\u003e\" + tageditor.docstring.parse(docstring).toHTML() + \"\u003c/html\u003e\"\n#\texcept:\n#\t\treturn \u0027fuck this\u0027 ",
+                  "type": "script"
+                }
+              ],
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "markdown": {
+            "escapeHtml": false
+          }
+        },
+        "type": "ia.display.markdown"
+      },
+      {
+        "meta": {
+          "name": "TextArea"
+        },
+        "position": {
+          "basis": "160px",
+          "grow": 1
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "{view.params.functionPath}"
+              },
+              "transforms": [
+                {
+                  "code": "\ttry:\n\t\treturn eval(value).__doc__\n\texcept:\n\t\treturn \u0027\u0027",
+                  "type": "script"
+                }
+              ],
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "color": "var(--neutral-70)"
+          }
+        },
+        "type": "ia.input.text-area"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

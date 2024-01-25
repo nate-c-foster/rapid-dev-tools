@@ -1,0 +1,83 @@
+{
+  "pages": {
+    "/": {
+      "title": "",
+      "viewPath": "Location Model/Location Model"
+    },
+    "/backup-restore": {
+      "title": "",
+      "viewPath": "Backup Restore/Backup Restore"
+    },
+    "/database-editor": {
+      "title": "",
+      "viewPath": "Database Editor/Database Editor"
+    },
+    "/location-model": {
+      "title": "",
+      "viewPath": "Location Model/Location Model"
+    },
+    "/settings": {
+      "title": "",
+      "viewPath": "Settings/Settings"
+    },
+    "/tag-editor": {
+      "title": "",
+      "viewPath": "Tag Editor/Tag Editor"
+    },
+    "/view-editor": {
+      "title": "",
+      "viewPath": "View Editor/View Editor"
+    }
+  },
+  "sharedDocks": {
+    "bottom": [
+      {
+        "anchor": "fixed",
+        "autoBreakpoint": 480,
+        "content": "cover",
+        "handle": "autoHide",
+        "iconUrl": "",
+        "id": "",
+        "modal": false,
+        "resizable": true,
+        "show": "onDemand",
+        "size": 300,
+        "viewParams": {},
+        "viewPath": "Global Components/Log/Log Console"
+      }
+    ],
+    "cornerPriority": "left-right",
+    "left": [
+      {
+        "anchor": "fixed",
+        "autoBreakpoint": 480,
+        "content": "push",
+        "handle": "hide",
+        "iconUrl": "",
+        "id": "",
+        "modal": false,
+        "resizable": false,
+        "show": "visible",
+        "size": 60,
+        "viewParams": {},
+        "viewPath": "Global Components/Menu/Menu"
+      }
+    ],
+    "right": [
+      {
+        "anchor": "fixed",
+        "autoBreakpoint": 480,
+        "content": "cover",
+        "handle": "hide",
+        "iconUrl": "",
+        "id": "FunctionDock",
+        "modal": false,
+        "resizable": true,
+        "show": "onDemand",
+        "size": 400,
+        "viewParams": {},
+        "viewPath": "Global Components/Functions/Docks/Function Dock Container"
+      }
+    ]
+  }
+}

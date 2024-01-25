@@ -1,0 +1,40 @@
+{
+  "scope": "DG",
+  "version": 2,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "query.sql"
+  ],
+  "attributes": {
+    "useMaxReturnSize": false,
+    "autoBatchEnabled": false,
+    "fallbackValue": "",
+    "maxReturnSize": 100,
+    "cacheUnit": "SEC",
+    "type": "UpdateQuery",
+    "enabled": true,
+    "cacheAmount": 1,
+    "cacheEnabled": false,
+    "database": "SCADA",
+    "fallbackEnabled": false,
+    "lastModificationSignature": "33d8f1c8b9bfb3e7b41c46ba77ab2c8c8945c561d807016d2a8c17b757d497d1",
+    "permissions": [
+      {
+        "zone": "",
+        "role": ""
+      }
+    ],
+    "lastModification": {
+      "actor": "nfoster",
+      "timestamp": "2024-01-24T12:12:14Z"
+    },
+    "parameters": [
+      {
+        "type": "Parameter",
+        "identifier": "LocationID",
+        "sqlType": 2
+      }
+    ]
+  }
+}

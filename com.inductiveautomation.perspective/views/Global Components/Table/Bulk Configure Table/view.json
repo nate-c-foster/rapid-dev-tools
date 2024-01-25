@@ -1,0 +1,858 @@
+{
+  "custom": {},
+  "params": {
+    "columns": [
+      {
+        "align": "center",
+        "boolean": "checkbox",
+        "dateFormat": "MM/DD/YYYY",
+        "editable": true,
+        "field": "ParentTagPath",
+        "footer": {
+          "align": "center",
+          "justify": "left",
+          "style": {
+            "classes": ""
+          },
+          "title": ""
+        },
+        "header": {
+          "align": "center",
+          "justify": "left",
+          "style": {
+            "classes": ""
+          },
+          "title": "ParentTagPath"
+        },
+        "justify": "left",
+        "number": "value",
+        "numberFormat": "0,0.##",
+        "progressBar": {
+          "bar": {
+            "color": "",
+            "style": {
+              "classes": ""
+            }
+          },
+          "max": 100,
+          "min": 0,
+          "track": {
+            "color": "",
+            "style": {
+              "classes": ""
+            }
+          },
+          "value": {
+            "enabled": true,
+            "format": "0,0.##",
+            "justify": "center",
+            "style": {
+              "classes": ""
+            }
+          }
+        },
+        "render": "string",
+        "resizable": true,
+        "sort": "none",
+        "sortable": false,
+        "strictWidth": false,
+        "style": {
+          "classes": "",
+          "paddingLeft": "5px"
+        },
+        "toggleSwitch": {
+          "color": {
+            "selected": "",
+            "unselected": ""
+          }
+        },
+        "viewParams": {},
+        "viewPath": "",
+        "visible": true,
+        "width": 2
+      },
+      {
+        "align": "center",
+        "boolean": "checkbox",
+        "dateFormat": "MM/DD/YYYY",
+        "editable": true,
+        "field": "Name",
+        "footer": {
+          "align": "center",
+          "justify": "left",
+          "style": {
+            "classes": ""
+          },
+          "title": ""
+        },
+        "header": {
+          "align": "center",
+          "justify": "left",
+          "style": {
+            "classes": ""
+          },
+          "title": "Name"
+        },
+        "justify": "left",
+        "number": "value",
+        "numberFormat": "0,0.##",
+        "progressBar": {
+          "bar": {
+            "color": "",
+            "style": {
+              "classes": ""
+            }
+          },
+          "max": 100,
+          "min": 0,
+          "track": {
+            "color": "",
+            "style": {
+              "classes": ""
+            }
+          },
+          "value": {
+            "enabled": true,
+            "format": "0,0.##",
+            "justify": "center",
+            "style": {
+              "classes": ""
+            }
+          }
+        },
+        "render": "string",
+        "resizable": true,
+        "sort": "none",
+        "sortable": false,
+        "strictWidth": false,
+        "style": {
+          "classes": "",
+          "paddingLeft": "5px"
+        },
+        "toggleSwitch": {
+          "color": {
+            "selected": "",
+            "unselected": ""
+          }
+        },
+        "viewParams": {},
+        "viewPath": "",
+        "visible": true,
+        "width": 1
+      },
+      {
+        "align": "center",
+        "boolean": "checkbox",
+        "dateFormat": "MM/DD/YYYY",
+        "editable": true,
+        "field": "Type",
+        "footer": {
+          "align": "center",
+          "justify": "left",
+          "style": {
+            "classes": ""
+          },
+          "title": ""
+        },
+        "header": {
+          "align": "center",
+          "justify": "left",
+          "style": {
+            "classes": ""
+          },
+          "title": "Type"
+        },
+        "justify": "left",
+        "number": "value",
+        "numberFormat": "0,0.##",
+        "progressBar": {
+          "bar": {
+            "color": "",
+            "style": {
+              "classes": ""
+            }
+          },
+          "max": 100,
+          "min": 0,
+          "track": {
+            "color": "",
+            "style": {
+              "classes": ""
+            }
+          },
+          "value": {
+            "enabled": true,
+            "format": "0,0.##",
+            "justify": "center",
+            "style": {
+              "classes": ""
+            }
+          }
+        },
+        "render": "string",
+        "resizable": true,
+        "sort": "none",
+        "sortable": false,
+        "strictWidth": false,
+        "style": {
+          "classes": "",
+          "paddingLeft": "5px"
+        },
+        "toggleSwitch": {
+          "color": {
+            "selected": "",
+            "unselected": ""
+          }
+        },
+        "viewParams": {},
+        "viewPath": "",
+        "visible": true,
+        "width": 2
+      },
+      {
+        "align": "center",
+        "boolean": "checkbox",
+        "dateFormat": "MM/DD/YYYY",
+        "editable": false,
+        "field": "Parameters",
+        "footer": {
+          "align": "center",
+          "justify": "left",
+          "style": {
+            "classes": ""
+          },
+          "title": ""
+        },
+        "header": {
+          "align": "center",
+          "justify": "left",
+          "style": {
+            "classes": ""
+          },
+          "title": "Parameters"
+        },
+        "justify": "left",
+        "number": "value",
+        "numberFormat": "0,0.##",
+        "progressBar": {
+          "bar": {
+            "color": "",
+            "style": {
+              "classes": ""
+            }
+          },
+          "max": 100,
+          "min": 0,
+          "track": {
+            "color": "",
+            "style": {
+              "classes": ""
+            }
+          },
+          "value": {
+            "enabled": true,
+            "format": "0,0.##",
+            "justify": "center",
+            "style": {
+              "classes": ""
+            }
+          }
+        },
+        "render": "view",
+        "resizable": true,
+        "sort": "none",
+        "sortable": false,
+        "strictWidth": false,
+        "style": {
+          "classes": "",
+          "paddingLeft": "5px"
+        },
+        "toggleSwitch": {
+          "color": {
+            "selected": "",
+            "unselected": ""
+          }
+        },
+        "viewParams": {},
+        "viewPath": "Global Components/Table/Parameter List",
+        "visible": true,
+        "width": 1
+      }
+    ],
+    "default": [
+      {
+        "Name": "Tank 1",
+        "Parameters": {
+          "locationName": "High Service",
+          "opcPrefix": "[PLC]test/path"
+        },
+        "ParentTagPath": "[SCADA]JBLM/Water System/Distribution/High Service",
+        "Type": "[SCADA]_types_/Components/Analog Input"
+      },
+      {
+        "Name": "Flow",
+        "Parameters": {
+          "locationName": "High Service",
+          "opcPrefix": "[PLC]test/path"
+        },
+        "ParentTagPath": "[SCADA]JBLM/Water System/Distribution/High Service",
+        "Type": "[SCADA]_types_/Components/Analog Input"
+      }
+    ],
+    "title": "Title",
+    "type": "Create Tags",
+    "updateFunction": ""
+  },
+  "propConfig": {
+    "params.columns": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.default": {
+      "onChange": {
+        "enabled": null,
+        "script": "\tself.getChild(\"root\").getChild(\"Table\").props.data \u003d currentValue"
+      },
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.title": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.type": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.updateFunction": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 1039,
+      "width": 1213
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "total"
+            },
+            "position": {
+              "basis": "250px",
+              "grow": 1,
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": ".../Table.props.data"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\ttry:\n\t\tcount \u003d value.getRowCount()\n\texcept:\n\t\tcount \u003d 0\n\t\n\treturn \"Number of Rows: \" + str(count)",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "color": "var(--neutral-70)",
+                "fontSize": "14px",
+                "padding": "5px",
+                "textAlign": "left"
+              }
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "title"
+            },
+            "position": {
+              "basis": "300px",
+              "grow": 1
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.title"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "color": "var(--neutral-70)",
+                "fontSize": "18px"
+              }
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "children": [
+              {
+                "custom": {
+                  "enabled": true
+                },
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "config": {
+                        "script": "\t\n\tself.parent.parent.parent.getChild(\"Table\").props.data \u003d []\n"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Icon_Add",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Add row"
+                  }
+                },
+                "position": {
+                  "basis": "25px",
+                  "display": false
+                },
+                "propConfig": {
+                  "props.color": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.enabled"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  },
+                  "props.style.cursor": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.enabled"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "path": "material/add",
+                  "style": {
+                    "marginRight": "5px"
+                  }
+                },
+                "type": "ia.display.icon"
+              },
+              {
+                "custom": {
+                  "enabled": true
+                },
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "config": {
+                        "script": "\t\n\ttags \u003d self.parent.parent.parent.getChild(\"Table\").props.data\n\t\n\tfor tag in tags:\n\t\ttagPath \u003d tag[\u0027tagPath\u0027]\n\t\tparentPath \u003d \u0027/\u0027.join(tagPath.split(\u0027/\u0027)[:-1])\n\t\ttagType \u003d tag[\u0027tagType\u0027]\n\t\ttagConfig \u003d tag[\u0027tagConfig\u0027]\n\t\t\n\t\tresult \u003d system.tag.configure(parentPath, tagConfig, \"o\")\n\t\tprint result\n\t\t\n#\t\ttagConfig \u003d util.json.toPythonObject(tag[\u0027tagConfig\u0027])\n#\t\tif tagConfig:\n#\t\t\n#\t\t\ttagConfig \u003d util.json.tagConfigToSerializable(tagConfig)\n#\t\t\ttagJson \u003d system.util.jsonEncode(tagConfig)\n#\t\n#\t\t\tresult \u003d system.tag.configure(parentPath, tagJson, \"o\")\n#\t\t\tprint result"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Icon_Delete",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Delete row"
+                  }
+                },
+                "position": {
+                  "basis": "25px",
+                  "display": false
+                },
+                "propConfig": {
+                  "props.color": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.enabled"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  },
+                  "props.style.cursor": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.enabled"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "path": "material/delete_outline",
+                  "style": {
+                    "marginRight": "5px"
+                  }
+                },
+                "type": "ia.display.icon"
+              },
+              {
+                "custom": {
+                  "enabled": true
+                },
+                "events": {
+                  "component": {
+                    "onFileReceived": {
+                      "config": {
+                        "script": "\t\n\tdata_string \u003d event.file.getString()\n\tdata \u003d system.dataset.fromCSV(data_string)\n\tcolumnNames \u003d data.getColumnNames()\n\tparameterHeaders \u003d filter(lambda x : x.startswith(\u0027Parameters\u0027), columnNames)\n\tnonParameterHeaders \u003d filter(lambda x : not x.startswith(\u0027Parameters\u0027), columnNames)\n\t\n\tdataList \u003d []\n\t\n\tfor row in range(data.getRowCount()):\n\t\trowData \u003d {}\n\t\t\n\t\tfor name in nonParameterHeaders:\n\t\t\trowData[name] \u003d data.getValueAt(row,name)\n\t\t\t\n\t\t# combine all parameters into a single dictionary\n\t\tparameters \u003d {}\n\t\tfor parameter in parameterHeaders:\n\t\t\tparameterName \u003d parameter.split(\u0027.\u0027)[-1]\n\t\t\tparameters[parameterName] \u003d data.getValueAt(row,parameter)\n\t\trowData[\"Parameters\"] \u003d parameters\n\n\t\tdataList.append(rowData)\n\t\t\n\tself.parent.parent.parent.getChild(\"Table\").props.data \u003d dataList"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Import",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Import csv file"
+                  }
+                },
+                "position": {
+                  "basis": "30px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.fileUploadIcon.color": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.enabled"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  },
+                  "props.fileUploadIcon.style.cursor": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.enabled"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "fileUploadIcon": {
+                    "path": "material/south_west",
+                    "style": {
+                      "backgroundColor": "var(--neutral-30)"
+                    }
+                  },
+                  "style": {
+                    "backgroundColor": "var(--neutral-30)",
+                    "classes": "",
+                    "padding": "2px"
+                  }
+                },
+                "type": "ia.input.fileupload"
+              },
+              {
+                "custom": {
+                  "enabled": true
+                },
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "config": {
+                        "script": "\n\tdata \u003d self.parent.parent.parent.getChild(\"Table\").props.data\n\tcolumns \u003d self.parent.parent.parent.getChild(\"Table\").props.columns\n\tfields \u003d [c[\u0027field\u0027] for c in columns]\n\t\n\t# ------  rows to be converted into dataset  -----------------\n\tparameterKeys \u003d []\n\trows \u003d []\n\tfor item in data:\n\t\trow \u003d []\n\t\tfor field in fields:\n\t\t\t# unpack the parameters\n\t\t\tif field \u003d\u003d \u0027Parameters\u0027:\n\t\t\t\tkeys \u003d item[\u0027Parameters\u0027].keys()\n\t\t\t\tparameterKeys \u003d keys\n\t\t\t\tfor key in keys:\n\t\t\t\t\trow.append(item[\u0027Parameters\u0027][key])\n\t\t\telse:\n\t\t\t\trow.append(item[field])\n\t\trows.append(row)\n\t\n\t# ------  headers for new dataset ----------------------\n\theaders \u003d []\n\tfor field in fields:\n\t\t# unpack the parameters\n\t\tif field \u003d\u003d \u0027Parameters\u0027:\n\t\t\tfor key in data[0][\u0027Parameters\u0027].keys():\n\t\t\t\theaders.append(\u0027Parameters.\u0027 + key)\n\t\telse:\n\t\t\theaders.append(field)\n\t\n\n\t# ------- table data -\u003e dataset -\u003e csv -\u003e download ------------------\n\tdataset \u003d system.dataset.toDataSet(headers, rows)\n\tcsvData \u003d system.dataset.toCSV(dataset \u003d dataset, showHeaders \u003d True, forExport \u003d True)\n\tdateTime \u003d system.date.format(system.date.now(),\"yyyy-MM-dd-HHmmss\")\n\tsystem.perspective.download( self.view.params.type + \"_\" + dateTime + \".csv\", csvData)"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Export",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Export csv file"
+                  }
+                },
+                "position": {
+                  "basis": "25px"
+                },
+                "propConfig": {
+                  "props.color": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.enabled"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  },
+                  "props.style.cursor": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.enabled"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "path": "material/north_east",
+                  "style": {
+                    "marginRight": "5px"
+                  }
+                },
+                "type": "ia.display.icon"
+              },
+              {
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "config": {
+                        "script": "\t\n\t\n\tfunctionPath \u003d self.view.params.updateFunction\n\ttableData \u003d self.parent.parent.parent.getChild(\"Table\").props.data\n\t\n\teval(functionPath)(tableData)\n\t"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Icon_Update",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Apply"
+                  }
+                },
+                "position": {
+                  "basis": "25px"
+                },
+                "propConfig": {
+                  "custom.enabled": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.enabled"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  },
+                  "props.color": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.enabled"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "path": "material/system_update_alt",
+                  "style": {
+                    "cursor": "pointer",
+                    "marginRight": "5px"
+                  }
+                },
+                "type": "ia.display.icon"
+              }
+            ],
+            "meta": {
+              "name": "FlexContainer"
+            },
+            "position": {
+              "basis": "250px",
+              "grow": 1,
+              "shrink": 0
+            },
+            "props": {
+              "justify": "flex-end"
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "30px",
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "RapidDev/Table/Title"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "events": {
+          "component": {
+            "onEditCellCommit": {
+              "config": {
+                "script": "\tcolumn \u003d event.column\n\trow \u003d event.row\n\tnewValue \u003d event.value\n\t\n\tself.props.data[row][column] \u003d newValue"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Table"
+        },
+        "position": {
+          "basis": "400px",
+          "grow": 1
+        },
+        "propConfig": {
+          "props.columns": {
+            "binding": {
+              "config": {
+                "path": "view.params.columns"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "cells": {
+            "allowEditOn": "single-click",
+            "style": {
+              "classes": "RapidDev/Table/Cell"
+            }
+          },
+          "data": [
+            {
+              "Name": "Tank 1",
+              "Parameters": {
+                "locationName": "High Service",
+                "opcPrefix": "[PLC]test/path"
+              },
+              "ParentTagPath": "[SCADA]JBLM/Water System/Distribution/High Service",
+              "Type": "[SCADA]_types_/Components/Analog Input"
+            },
+            {
+              "Name": "Flow",
+              "Parameters": {
+                "locationName": "High Service",
+                "opcPrefix": "[PLC]test/path"
+              },
+              "ParentTagPath": "[SCADA]JBLM/Water System/Distribution/High Service",
+              "Type": "[SCADA]_types_/Components/Analog Input"
+            }
+          ],
+          "headerStyle": {
+            "color": "var(--blue-85)"
+          },
+          "pager": {
+            "bottom": false,
+            "initialOption": 100,
+            "options": [
+              100,
+              500,
+              1000,
+              50,
+              100
+            ]
+          },
+          "rows": {
+            "striped": {
+              "color": {
+                "even": "var(--neutral-20)",
+                "odd": "var(--neutral-10)"
+              },
+              "enabled": false
+            }
+          },
+          "style": {
+            "borderBottomColor": "var(--neutral-30)",
+            "borderBottomStyle": "solid",
+            "borderBottomWidth": "1px",
+            "borderLeftStyle": "none",
+            "borderRightStyle": "none",
+            "borderTopStyle": "none",
+            "padding": "0px"
+          },
+          "virtualized": false
+        },
+        "type": "ia.display.table"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

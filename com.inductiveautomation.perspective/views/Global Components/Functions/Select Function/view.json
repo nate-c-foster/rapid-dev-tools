@@ -1,0 +1,358 @@
+{
+  "custom": {},
+  "params": {
+    "registeredFunctions": [
+      {
+        "description": null,
+        "dockPaths": {},
+        "dropdownPaths": {},
+        "functionPath": "RapidDev.View.Filter.regexFilter",
+        "kwargs": {
+          "pathFilter": "",
+          "viewJSONFilter": ""
+        },
+        "name": "View Path (Python RegEx)"
+      },
+      {
+        "description": null,
+        "dockPaths": {},
+        "dropdownPaths": {
+          "LocationTypeDefinitionName": "Components/Function Dropdowns/LocationTypeDefinition",
+          "LocationTypeName": "Components/Function Dropdowns/LocationType"
+        },
+        "functionPath": "RapidDev.View.Filter.locationTypeName",
+        "kwargs": {
+          "LocationTypeDefinitionName": "",
+          "LocationTypeName": ""
+        },
+        "name": "Location Type (Exact Match)"
+      }
+    ],
+    "selectedFunctions": [],
+    "tagPath": "",
+    "type": "Filter"
+  },
+  "propConfig": {
+    "params.registeredFunctions": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.selectedFunctions": {
+      "paramDirection": "inout",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.type": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {},
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "FlexRepeater"
+            },
+            "position": {
+              "grow": 1
+            },
+            "propConfig": {
+              "props.instances": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.selectedFunctions"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tinstances \u003d []\n\t\n\tfor i, function in enumerate(value):\n\t\tinstances.append({\u0027selectedFunction\u0027:function, \u0027index\u0027: i})\n\t\t\n\treturn instances",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "elementPosition": {
+                "basis": "auto",
+                "grow": 0,
+                "shrink": 0
+              },
+              "elementStyle": {
+                "marginTop": "10px"
+              },
+              "path": "Global Components/Functions/Selected Function",
+              "style": {
+                "overflow": "visible"
+              },
+              "useDefaultViewHeight": false,
+              "useDefaultViewWidth": false
+            },
+            "type": "ia.display.flex-repeater"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer_Selected"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "overflow": "visible"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "200px",
+                  "grow": 1
+                },
+                "props": {
+                  "text": "Select Function"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "children": [
+                  {
+                    "events": {
+                      "dom": {
+                        "onClick": {
+                          "config": {
+                            "script": "\t\n\t\n\tparams \u003d {\u0027type\u0027: self.view.params.type, \u0027tagPath\u0027: self.view.params.tagPath}\n\t\n\ttitle \u003d \"Add New \" + self.view.params.type + \" Function\"\n\t\n\tsystem.perspective.openPopup(\u0027AddFunctionPopup\u0027, \u0027Global Components/Functions/Add Function Popup\u0027, params \u003d params, title\u003d title)"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "Icon_Add"
+                    },
+                    "position": {
+                      "basis": "25px"
+                    },
+                    "props": {
+                      "color": "var(--enabled-Icon)",
+                      "path": "material/add",
+                      "style": {
+                        "cursor": "pointer",
+                        "marginRight": "5px"
+                      }
+                    },
+                    "type": "ia.display.icon"
+                  },
+                  {
+                    "events": {
+                      "dom": {
+                        "onClick": {
+                          "config": {
+                            "script": "\t\n\tparams \u003d {\u0027type\u0027: self.view.params.type, \u0027tagPath\u0027: self.view.params.tagPath}\n\t\n\ttitle \u003d \"Edit \" + self.view.params.type + \" Function\"\n\t\n\tsystem.perspective.openPopup(\u0027EditFunctionPopup\u0027, \u0027Global Components/Functions/Edit Function Popup\u0027, params \u003d params, title\u003d title)"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "Icon_Edit"
+                    },
+                    "position": {
+                      "basis": "25px"
+                    },
+                    "props": {
+                      "color": "var(--enabled-Icon)",
+                      "path": "material/edit",
+                      "style": {
+                        "cursor": "pointer",
+                        "marginRight": "5px"
+                      }
+                    },
+                    "type": "ia.display.icon"
+                  }
+                ],
+                "meta": {
+                  "name": "FlexContainer"
+                },
+                "position": {
+                  "basis": "200px"
+                },
+                "props": {
+                  "justify": "flex-end"
+                },
+                "type": "ia.container.flex"
+              }
+            ],
+            "meta": {
+              "name": "FlexContainer"
+            },
+            "position": {
+              "basis": "200px",
+              "grow": 1
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer_Label"
+        },
+        "position": {
+          "basis": "40px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "path": "parent.custom.mode"
+              },
+              "transforms": [
+                {
+                  "code": "\treturn value \u003d\u003d \u0027add\u0027",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "marginTop": "10px",
+            "overflow": "visible"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "FlexRepeater"
+            },
+            "position": {
+              "basis": "320px",
+              "grow": 1
+            },
+            "propConfig": {
+              "props.instances": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.registeredFunctions"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tinstances \u003d []\n\t\n\tfor function in value:\n\t\tinstances.append({\u0027name\u0027: function[\u0027name\u0027], \u0027description\u0027: function[\u0027description\u0027]})\n\t\t\n\treturn instances",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "elementStyle": {
+                "margin": "5px 0px"
+              },
+              "path": "Global Components/Functions/Function Option",
+              "style": {
+                "overflow": "visible"
+              },
+              "useDefaultViewWidth": false
+            },
+            "type": "ia.display.flex-repeater"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer_Select"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "parent.custom.mode"
+              },
+              "enabled": false,
+              "transforms": [
+                {
+                  "code": "\treturn value \u003d\u003d \u0027select\u0027",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "overflow": "visible"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "custom": {
+      "mode": "add"
+    },
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "paddingBottom": "10px",
+        "paddingLeft": "10px",
+        "paddingRight": "10px"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "FunctionSelected",
+          "pageScope": true,
+          "script": "\t# implement your handler here\n\tname \u003d payload[\u0027name\u0027]\n\t\n\tregisteredFunctions \u003d self.view.params.registeredFunctions\n\tselectedFunctions \u003d self.view.params.selectedFunctions\n\t\n\tfor function in registeredFunctions:\n\t\tif function[\u0027name\u0027] \u003d\u003d name:\n\t\t\tselectedFunctions.append(function)\n\t\t\t\n\tself.view.params.selectedFunctions \u003d selectedFunctions\n\t\t\t",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "RemoveSelectedFunction",
+          "pageScope": true,
+          "script": "\t# implement your handler here\n\n\tfrom time import sleep\n\n\tindex \u003d payload[\u0027index\u0027]\n\t\n\tselectedFunctions \u003d self.view.params.selectedFunctions\n\tdel selectedFunctions[index]\n\t\t\t\n\tself.view.params.selectedFunctions \u003d selectedFunctions\n\t\t\n\t\t\n\tself.getChild(\"FlexContainer_Selected\").getChild(\"FlexRepeater\").refreshBinding(\u0027props.instances\u0027)\n\t\n\t\n\tsleep(0.5)\n\tsystem.perspective.sendMessage(\"UpdateFunctionTable\",{})",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "UpdateFunctionArgument",
+          "pageScope": true,
+          "script": "\t# implement your handler here\n\t\n\tfrom time import sleep\t\n\n\t# implement your handler here\n\tfunctionPath \u003d payload[\u0027functionPath\u0027]\n\tindex \u003d payload[\u0027index\u0027]\n\targName \u003d payload[\u0027argName\u0027]\n\targValue \u003d payload[\u0027argValue\u0027]\n\tupdateTable \u003d True\n\t\n\n\tif \"updateTable\" in payload.keys():\n\t\tupdateTable \u003d payload[\u0027updateTable\u0027]\n\n\tselectedFunctions \u003d self.view.params.selectedFunctions\n\t\n\tfor i, function in enumerate(selectedFunctions):\n\t\tif function[\u0027functionPath\u0027] \u003d\u003d functionPath and i \u003d\u003d index:\n\n\t\t\tif argName in function[\u0027kwargs\u0027].keys():\n\n\t\t\t\tself.view.params.selectedFunctions[i][\u0027kwargs\u0027][argName] \u003d argValue\n\t\t\t\tself.getChild(\"FlexContainer_Selected\").getChild(\"FlexRepeater\").refreshBinding(\u0027props.instances\u0027)\n\n\t\t\t\t\n\tif updateTable:\n\t\tsleep(0.2) # because of some weird race condition\n\t\tsystem.perspective.sendMessage(\"UpdateFunctionTable\",{})\t\n",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

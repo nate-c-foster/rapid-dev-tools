@@ -1,0 +1,273 @@
+{
+  "custom": {},
+  "params": {
+    "argName": "",
+    "argValue": "",
+    "dockPath": "",
+    "dropdownPath": "",
+    "functionPath": "",
+    "index": ""
+  },
+  "propConfig": {
+    "params.argName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.argValue": {
+      "paramDirection": "inout",
+      "persistent": true
+    },
+    "params.dockPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.dropdownPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.functionPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 35,
+      "width": 1025
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Label"
+        },
+        "position": {
+          "basis": "200px"
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.argName"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "backgroundColor": "var(--neutral-30)",
+            "borderBottomLeftRadius": "2px",
+            "borderBottomRightRadius": "2px",
+            "borderTopLeftRadius": "2px",
+            "borderTopRightRadius": "2px",
+            "color": "var(--neutral-80)",
+            "fontSize": "12px",
+            "fontWeight": "bold",
+            "marginRight": "10px",
+            "padding": "5px 10px"
+          },
+          "textStyle": {
+            "color": "var(--neutral-70)"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "custom": {
+          "lastUpdate": {
+            "$": [
+              "ts",
+              192,
+              1684628791126
+            ],
+            "$ts": 1684628791126
+          }
+        },
+        "events": {
+          "dom": {
+            "onKeyDown": {
+              "config": {
+                "script": "\n\tcurrentTime \u003d system.date.now()\n\tself.custom.lastUpdate \u003d currentTime\n\t\n\n\t# this is used to \"debounce\" the keystrokes with a delay of 0.5 seconds\n\t# if another keystroke hasn\u0027t happened in 0.5 seconds then and only then update\n\tdef waitUpdate():\n\t\tfrom time import sleep\n\t\tsleep(0.5)\n\t\tlastUpdate \u003d self.custom.lastUpdate\n\t\tif lastUpdate \u003d\u003d currentTime:\n\t\t\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.text,\n\t\t\t\t\"index\": self.view.params.index,\n\t\t\t\t\"updateTable\": False\n\t\t\t\t}\n\t\t\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload, sessionId \u003d self.session.props.id, pageId \u003d self.page.props.pageId)\n\n\t\n\tif event.key \u003d\u003d \u0027Enter\u0027:\n\t\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.text,\n\t\t\t\t\"index\": self.view.params.index,\n\t\t\t\t\"updateTable\": True\n\t\t\t\t}\n\t\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)\n\n\telse:\n\t\tsystem.util.invokeAsynchronous(waitUpdate)\n\n\t\n\n\t\n\t\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "TextField"
+        },
+        "position": {
+          "basis": "500px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "view.params.dropdownPath"
+              },
+              "transforms": [
+                {
+                  "code": "\tif value:\n\t\treturn False\n\telse:\n\t\treturn True",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.argValue"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "deferUpdates": false,
+          "style": {
+            "classes": "RapidDev/TextField",
+            "color": "var(--neutral-70)"
+          }
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "meta": {
+          "name": "EmbeddedView"
+        },
+        "position": {
+          "basis": "500px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "view.params.dropdownPath"
+              },
+              "transforms": [
+                {
+                  "code": "\tif value:\n\t\treturn True\n\telse:\n\t\treturn False",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.params.argName": {
+            "binding": {
+              "config": {
+                "path": "view.params.argName"
+              },
+              "type": "property"
+            }
+          },
+          "props.params.argValue": {
+            "binding": {
+              "config": {
+                "path": "view.params.argValue"
+              },
+              "type": "property"
+            }
+          },
+          "props.params.functionPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.functionPath"
+              },
+              "type": "property"
+            }
+          },
+          "props.params.index": {
+            "binding": {
+              "config": {
+                "path": "view.params.index"
+              },
+              "type": "property"
+            }
+          },
+          "props.path": {
+            "binding": {
+              "config": {
+                "path": "view.params.dropdownPath"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "overflow": "visible"
+          }
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\tprint(\"open dock\")\n\t\n\tdockPath \u003d self.view.params.dockPath\n\tfunctionPath \u003d self.view.params.functionPath\n\targName \u003d self.view.params.argName\n\tindex \u003d self.view.params.index\n\t\n\tsystem.perspective.openDock(\"FunctionDock\", params \u003d {\"dockPath\":dockPath, \"functionPath\": functionPath, \"argName\": argName, \"index\": index})"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Icon 1",
+          "tooltip": {
+            "enabled": true,
+            "text": "Open dock"
+          }
+        },
+        "position": {
+          "basis": "30px"
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "view.params.dockPath"
+              },
+              "transforms": [
+                {
+                  "code": "\tif value:\n\t\treturn True\n\telse:\n\t\treturn False",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "color": "var(--neutral-70)",
+          "path": "material/input",
+          "style": {
+            "cursor": "pointer",
+            "marginLeft": "10px"
+          }
+        },
+        "type": "ia.display.icon"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "style": {
+        "overflow": "visible"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

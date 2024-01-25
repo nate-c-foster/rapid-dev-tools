@@ -1,0 +1,248 @@
+{
+  "custom": {},
+  "params": {
+    "index": 0,
+    "selectedFunction": {
+      "dockPaths": {},
+      "dropdownPaths": {
+        "LocationTypeName": "Components/Function Dropdowns/LocationType"
+      },
+      "functionPath": "RapidDev.View.Filter.locationTypeName",
+      "kwargs": {
+        "LocationTypeDefinitionName": "",
+        "LocationTypeName": ""
+      },
+      "name": "Location Type (Exact Match)"
+    }
+  },
+  "propConfig": {
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.selectedFunction": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 847
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Accordion"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "props.items[0].body.height": {
+            "binding": {
+              "config": {
+                "path": "view.params.selectedFunction.kwargs"
+              },
+              "transforms": [
+                {
+                  "code": "\treturn len(value.keys()) * 50 + 25",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.items[0].body.viewParams.index": {
+            "binding": {
+              "config": {
+                "path": "view.params.index"
+              },
+              "type": "property"
+            }
+          },
+          "props.items[0].body.viewParams.selectedFunction": {
+            "binding": {
+              "config": {
+                "path": "view.params.selectedFunction"
+              },
+              "type": "property"
+            }
+          },
+          "props.items[0].header.content.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.selectedFunction.name"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "items": [
+            {
+              "body": {
+                "style": {
+                  "classes": "",
+                  "margin": "16px"
+                },
+                "useDefaultViewHeight": false,
+                "useDefaultViewWidth": false,
+                "viewParams": {},
+                "viewPath": "Global Components/Functions/Function Arguments"
+              },
+              "expanded": true,
+              "header": {
+                "content": {
+                  "style": {
+                    "classes": "",
+                    "color": "var(--blue-85)"
+                  },
+                  "type": "text",
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false,
+                  "viewParams": {},
+                  "viewPath": ""
+                },
+                "height": "30px",
+                "reverse": false,
+                "style": {
+                  "backgroundColor": "var(--neutral-30)",
+                  "classes": ""
+                },
+                "toggle": {
+                  "collapsedIcon": {
+                    "color": "",
+                    "path": "material/expand_more",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "enabled": true,
+                  "expandedIcon": {
+                    "color": "",
+                    "path": "material/expand_less",
+                    "style": {
+                      "classes": ""
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "style": {
+            "borderStyle": "none"
+          }
+        },
+        "type": "ia.display.accordion"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "config": {
+                        "script": "\tparams \u003d {\"functionPath\": self.view.params.selectedFunction.functionPath}\n\tsystem.perspective.openPopup(\u0027DocstringPopup\u0027, \u0027Global Components/Functions/Popups/Docstring\u0027, params\u003dparams, title\u003d\"Docstring\")"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Help",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Docstring"
+                  }
+                },
+                "position": {
+                  "basis": "30px"
+                },
+                "props": {
+                  "color": "var(--neutral-70)",
+                  "path": "material/help_outline",
+                  "style": {
+                    "backgroundColor": "var(--neutral-30)",
+                    "cursor": "pointer",
+                    "padding": "5px"
+                  }
+                },
+                "type": "ia.display.icon"
+              },
+              {
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "config": {
+                        "script": "\tsystem.perspective.sendMessage(\u0027RemoveSelectedFunction\u0027, {\u0027name\u0027:self.view.params.selectedFunction.name, \u0027index\u0027:self.view.params.index})"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Remove",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Remove"
+                  }
+                },
+                "position": {
+                  "basis": "30px"
+                },
+                "props": {
+                  "color": "var(--neutral-70)",
+                  "path": "material/close",
+                  "style": {
+                    "backgroundColor": "var(--neutral-30)",
+                    "cursor": "pointer",
+                    "padding": "5px"
+                  }
+                },
+                "type": "ia.display.icon"
+              }
+            ],
+            "meta": {
+              "name": "FlexContainer"
+            },
+            "position": {
+              "basis": 30
+            },
+            "props": {
+              "justify": "space-around",
+              "style": {
+                "backgroundColor": "var(--neutral-30)"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "75px"
+        },
+        "props": {
+          "direction": "column"
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "style": {
+        "overflow": "visible"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

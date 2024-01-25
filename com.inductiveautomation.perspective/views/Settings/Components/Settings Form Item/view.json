@@ -1,0 +1,129 @@
+{
+  "custom": {},
+  "params": {
+    "dataType": "DataSet",
+    "description": "Description",
+    "name": "Name",
+    "tagPath": "[SCADA]RapidDev/Global/Settings/menu"
+  },
+  "propConfig": {
+    "params.dataType": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.description": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.name": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 369,
+      "width": 501
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Name"
+        },
+        "position": {
+          "basis": "20px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.name"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "RapidDev/Form/Name"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Description"
+        },
+        "position": {
+          "basis": "20px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.description"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "RapidDev/Form/Description",
+            "marginBottom": "5px"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "EmbeddedView"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
+          },
+          "props.path": {
+            "binding": {
+              "config": {
+                "path": "view.params.dataType"
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\n\t\n\tif value in [\u0027Int1\u0027, \u0027Int2\u0027, \u0027Int4\u0027, \u0027Int8\u0027, \u0027Float4\u0027, \u0027Float8\u0027]:\n\t\tsuffix \u003d \u0027Number\u0027\n\t\t\n\telse:\n\t\tsuffix \u003d value\n\n\n\treturn \u0027Settings/Components/Setting Type/\u0027 + suffix",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "custom": {},
+  "params": {
+    "tagConfig": [],
+    "tagPath": "[SCADA]JBLM/Water System/Distribution/Davis Hill/Elevated Tank/Alarming/BadSignal/Alarm",
+    "tagType": ""
+  },
+  "propConfig": {
+    "params.tagConfig": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagType": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {},
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Tree"
+        },
+        "position": {
+          "basis": "200px",
+          "grow": 1
+        },
+        "propConfig": {
+          "props.items": {
+            "binding": {
+              "config": {
+                "fallbackDelay": 2.5,
+                "mode": "expression",
+                "tagPath": "{session.custom.tagProvider} + \"RapidDev/Settings/Tag Editor/rootTagPath\""
+              },
+              "transforms": [
+                {
+                  "code": "\n\n\ttagType \u003d self.view.params.tagType\n\t\n\tif tagType \u003d\u003d \u0027AtomicTag\u0027:\n\t\trecursive \u003d True\n\telse:\n\t\trecursive \u003d False\n\t\n\ttagConfig \u003d system.tag.getConfiguration(value, recursive)\n\n\treturn util.json.tagConfigToTree(tagConfig)",
+                  "type": "script"
+                }
+              ],
+              "type": "tag"
+            }
+          }
+        },
+        "props": {
+          "appearance": {
+            "defaultNodeIcons": {
+              "collapsed": {
+                "path": "material/folder"
+              },
+              "empty": {
+                "path": "material/stop"
+              },
+              "expanded": {
+                "path": "material/folder_open"
+              }
+            },
+            "expandIcons": {
+              "collapsed": {
+                "path": "material/arrow_right"
+              },
+              "expanded": {
+                "path": "material/arrow_drop_down"
+              }
+            }
+          },
+          "selection": [
+            "0/0/5"
+          ],
+          "selectionData": [
+            {
+              "itemPath": "0/0/5",
+              "value": ".0.readOnly"
+            }
+          ]
+        },
+        "type": "ia.display.tree"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

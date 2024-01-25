@@ -1,0 +1,1 @@
+UPDATE core.Location SET ParentLocationID = :newParentLocationID WHERE LocationID = :LocationID

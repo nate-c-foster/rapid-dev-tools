@@ -1,0 +1,96 @@
+{
+  "custom": {},
+  "params": {
+    "argName": "",
+    "argValue": "",
+    "functionPath": "",
+    "index": ""
+  },
+  "propConfig": {
+    "params.argName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.argValue": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.functionPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 41,
+      "width": 218
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\n\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.value,\n\t\t\t\t\"index\": self.view.params.index,\n\t\t\t\t\"updateTable\": True\n\t\t\t\t}\n\t\n\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)\n\t"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Dropdown"
+        },
+        "position": {
+          "basis": "36px"
+        },
+        "propConfig": {
+          "props.options": {
+            "binding": {
+              "config": {
+                "path": "view.params.argName"
+              },
+              "transforms": [
+                {
+                  "code": "\n\tdef optionSort(option):\n\t\treturn option[\u0027value\u0027]\n\n\n\toptions \u003d [ \t\n\t\t\t\t\t{\u0027value\u0027: \u0027ia.display.label\u0027, \u0027label\u0027: \u0027Label\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027ia.input.text-field\u0027, \u0027label\u0027: \u0027Text Field\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027ia.input.numeric-entry-field\u0027, \u0027label\u0027: \u0027Numeric Entry Field\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027ia.input.dropdown\u0027, \u0027label\u0027: \u0027Dropdown\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027ia.input.checkbox\u0027, \u0027label\u0027: \u0027Checkbox\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027.ia.input.multi-state-button\u0027, \u0027label\u0027: \u0027Multi State Button\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027.ia.input.button\u0027, \u0027label\u0027: \u0027Button\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027ia.display.view\u0027, \u0027label\u0027: \u0027Embedded View\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027ia.display.flex-repeater\u0027, \u0027label\u0027: \u0027Flex Repeater\u0027},\n\t\t\t\t\t]\n\t\n\toptions.sort(key\u003doptionSort)\n\t\n\treturn options",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.value": {
+            "binding": {
+              "config": {
+                "path": "view.params.argValue"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "dropdownOptionStyle": {
+            "classes": "RapidDev/Dropdown/Options"
+          },
+          "style": {
+            "classes": "RapidDev/Dropdown/Root"
+          }
+        },
+        "type": "ia.input.dropdown"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

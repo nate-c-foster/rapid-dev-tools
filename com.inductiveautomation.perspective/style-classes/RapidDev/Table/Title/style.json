@@ -1,0 +1,10 @@
+{
+  "base": {
+    "style": {
+      "backgroundColor": "var(--tableTitle-background)",
+      "color": "var(--neutral-80)",
+      "fontSize": "14px",
+      "textAlign": "center"
+    }
+  }
+}

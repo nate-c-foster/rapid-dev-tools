@@ -1,0 +1,114 @@
+{
+  "custom": {},
+  "params": {
+    "arrayElement": false,
+    "index": 0,
+    "tagPath": "[SCADA]RapidDev/Tag Editor/Settings/udtTypeFilters[0]"
+  },
+  "propConfig": {
+    "params.arrayElement": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 54,
+      "width": 907
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "TextField"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "bidirectional": true,
+                "fallbackDelay": 2.5,
+                "mode": "expression",
+                "tagPath": "{view.params.tagPath}"
+              },
+              "type": "tag"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "borderColor": "var(--neutral-30)",
+            "borderStyle": "solid",
+            "borderWidth": "1px",
+            "classes": "RapidDev/TextField",
+            "width": "600px"
+          }
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\telementTagPath \u003d self.view.params.tagPath\n\tindex \u003d self.view.params.index\n\t\n\t# strip the [index]\n\tarrayTagPath \u003d elementTagPath[: -len(\u0027[\u0027+ str(index) +\u0027]\u0027) ]\n\ttagArray \u003d system.tag.readBlocking(arrayTagPath)[0].value\n\t\n\tnewArray \u003d [x for x in tagArray]\n\tnewArray.pop(self.view.params.index)\n\t\n\tsystem.tag.writeBlocking([arrayTagPath], [newArray])"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Icon",
+          "visible": false
+        },
+        "position": {
+          "basis": "18px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "path": "view.params.arrayElement"
+              },
+              "type": "property"
+            },
+            "persistent": true
+          }
+        },
+        "props": {
+          "color": "var(--neutral-70)",
+          "path": "material/clear",
+          "style": {
+            "cursor": "pointer",
+            "marginRight": "auto",
+            "opacity": 0.8
+          }
+        },
+        "type": "ia.display.icon"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "style": {
+        "height": "32px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

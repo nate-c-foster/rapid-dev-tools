@@ -1,0 +1,252 @@
+{
+  "custom": {},
+  "params": {
+    "argName": "",
+    "argValue": "",
+    "functionPath": "",
+    "index": ""
+  },
+  "propConfig": {
+    "params.argName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.argValue": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.functionPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 41,
+      "width": 218
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\n\n\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.value,\n\t\t\t\t\"index\": self.view.params.index\n\t\t\t\t}\n\t\n\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)\n\t\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Dropdown"
+        },
+        "position": {
+          "basis": "300px",
+          "grow": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "parent.custom.type"
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\tif value \u003d\u003d \u0027discrete\u0027:\n\t\treturn True\n\telse:\n\t\treturn False",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.options": {
+            "binding": {
+              "config": {
+                "path": "parent.custom.options"
+              },
+              "type": "property"
+            }
+          },
+          "props.value": {
+            "binding": {
+              "config": {
+                "path": "view.params.argValue"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "dropdownOptionStyle": {
+            "classes": "RapidDev/Dropdown/Options"
+          },
+          "style": {
+            "classes": "RapidDev/Dropdown/Root"
+          }
+        },
+        "type": "ia.input.dropdown"
+      },
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\n\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.selected,\n\t\t\t\t\"index\": self.view.params.index\n\t\t\t\t}\n\t\n\tprint \u0027Selected \u0027, self.props.selected\n\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Checkbox"
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "parent.custom.type"
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\tif value \u003d\u003d \u0027boolean\u0027:\n\t\treturn True\n\telse:\n\t\treturn False",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.selected": {
+            "binding": {
+              "config": {
+                "path": "view.params.argValue"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "color": "var(--neutral-70)"
+          },
+          "text": "",
+          "uncheckedIcon": {
+            "color": {
+              "enabled": "var(--neutral-50)"
+            }
+          }
+        },
+        "type": "ia.input.checkbox"
+      },
+      {
+        "events": {
+          "dom": {
+            "onKeyDown": {
+              "config": {
+                "script": "\n\tif event.key \u003d\u003d \u0027Enter\u0027:\n\t\tupdateTable \u003d True\n\telse:\n\t\tupdateTable \u003d False\n\n\t\n\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.text,\n\t\t\t\t\"index\": self.view.params.index,\n\t\t\t\t\"updateTable\": updateTable\n\t\t\t\t}\n\t\n\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)\n\t\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "TextField"
+        },
+        "position": {
+          "basis": "300px",
+          "grow": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "parent.custom.type"
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\tif value \u003d\u003d \u0027string\u0027:\n\t\treturn True\n\telse:\n\t\treturn False",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.argValue"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "deferUpdates": false,
+          "style": {
+            "classes": "RapidDev/TextField",
+            "color": "var(--neutral-70)"
+          }
+        },
+        "type": "ia.input.text-field"
+      }
+    ],
+    "custom": {
+      "property": ""
+    },
+    "meta": {
+      "name": "root"
+    },
+    "propConfig": {
+      "custom.options": {
+        "binding": {
+          "config": {
+            "path": "this.custom.property"
+          },
+          "transforms": [
+            {
+              "code": "\n\n\n\n\tif value \u003d\u003d \u0027.dataType\u0027:\n\t\toptions \u003d  [ \t{\u0027label\u0027: \u0027Byte\u0027, \u0027value\u0027: \u0027Int1\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Short\u0027, \u0027value\u0027: \u0027Int2\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Integer\u0027, \u0027value\u0027: \u0027Int4\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Long\u0027, \u0027value\u0027: \u0027Int8\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Float\u0027, \u0027value\u0027: \u0027Float4\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Double\u0027, \u0027value\u0027: \u0027Float8\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Boolean\u0027, \u0027value\u0027: \u0027Boolean\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027String\u0027, \u0027value\u0027: \u0027String\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027DateTime\u0027, \u0027value\u0027: \u0027DateTime\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Byte Array\u0027, \u0027value\u0027: \u0027Int1Array\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Short Array\u0027, \u0027value\u0027: \u0027Int2Array\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Integer Array\u0027, \u0027value\u0027: \u0027Int4Array\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Long Array\u0027, \u0027value\u0027: \u0027Int4Array\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Float Array\u0027, \u0027value\u0027: \u0027Float4Array\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Double Array\u0027, \u0027value\u0027: \u0027Float8Array\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Boolean Array\u0027, \u0027value\u0027: \u0027BooleanArray\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027String Array\u0027, \u0027value\u0027: \u0027StringArray\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027DateTime Array\u0027, \u0027value\u0027: \u0027DateTimeArray\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Binary Data\u0027, \u0027value\u0027: \u0027ByteArray\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Dataset\u0027, \u0027value\u0027: \u0027DataSet\u0027},\n\t\t\t\t\t\t{\u0027label\u0027: \u0027Document (JSON Document)\u0027, \u0027value\u0027: \u0027Document\u0027}\n\t\t\t\t]\n\t\t\t\t\t\n\t\t\n\telse:\n\t\toptions \u003d []\n\t\t\n\treturn options",
+              "type": "script"
+            }
+          ],
+          "type": "property"
+        }
+      },
+      "custom.type": {
+        "binding": {
+          "config": {
+            "path": "this.custom.property"
+          },
+          "transforms": [
+            {
+              "code": "\n\tif value \u003d\u003d \u0027.readOnly\u0027:\n\t\treturn \u0027boolean\u0027\n\t\t\n\telif value \u003d\u003d \u0027.dataType\u0027:\n\t\treturn \u0027discrete\u0027\n\t\t\n\telif value \u003d\u003d \u0027.enabled\u0027 or value \u003d\u003d \u0027.historyEnabled\u0027:\n\t\treturn \u0027boolean\u0027\t\n\t\t\n\telse:\n\t\treturn \u0027string\u0027",
+              "type": "script"
+            }
+          ],
+          "type": "property"
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "UpdateTagProperty",
+          "pageScope": true,
+          "script": "\t# implement your handler here\n\tproperty \u003d payload[\u0027property\u0027]\n\tindex \u003d payload[\u0027index\u0027]\n\tif self.view.params.index \u003d\u003d index:\n\t\tself.custom.property \u003d property",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "custom": {},
+  "params": {
+    "value": ""
+  },
+  "propConfig": {
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {},
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "TextArea"
+        },
+        "position": {
+          "basis": "160px",
+          "grow": 1
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.value"
+              },
+              "transforms": [
+                {
+                  "code": "\n\n\ttry:\n\t\tvalue \u003d str(value)\n\t\n\t\tif value[0] \u003d\u003d \u0027{\u0027 and value[-1] \u003d\u003d \u0027}\u0027:\n\t\t\treturn system.util.jsonEncode(system.util.jsonDecode(value), 4)\n\t\telif value[0] \u003d\u003d \u0027[\u0027 and value[-1] \u003d\u003d \u0027]\u0027:\n\t\t\tlistString \u003d system.util.jsonEncode(system.util.jsonDecode(\u0027{list:\u0027+ value + \u0027}\u0027), 4)\n\t\t\treturn listString[8:-1]\n\t\telse:\n\t\t\treturn value\n\t\t\t\n\texcept:\n\t\treturn value\n\t\t\t\n\n\n",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "color": "var(--neutral-70)",
+            "fontSize": "12px",
+            "fontWeight": "normal"
+          }
+        },
+        "type": "ia.input.text-area"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

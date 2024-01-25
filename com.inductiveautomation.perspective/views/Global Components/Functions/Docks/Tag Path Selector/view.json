@@ -1,0 +1,149 @@
+{
+  "custom": {},
+  "params": {
+    "argName": "rootViewPath",
+    "functionPath": "RapidDev.View.Generate.getViews",
+    "index": "",
+    "rootViewPath": "SCADA/JBLM"
+  },
+  "propConfig": {
+    "params.argName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.functionPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.rootViewPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 601,
+      "width": 385
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "289px"
+            },
+            "props": {
+              "text": "Select Root Tag Path"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "id": "FunctionDock",
+                    "type": "close"
+                  },
+                  "scope": "C",
+                  "type": "dock"
+                }
+              }
+            },
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "30px"
+            },
+            "props": {
+              "color": "var(--neutral-70)",
+              "path": "material/close",
+              "style": {
+                "cursor": "pointer",
+                "padding": "2px"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "32px"
+        },
+        "props": {
+          "justify": "space-between",
+          "style": {
+            "classes": "RapidDev/Widget/Title"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "events": {
+          "component": {
+            "onNodeClick": {
+              "config": {
+                "script": "\n\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.selection.values[0],\n\t\t\t\t\"index\":self.view.params.index\n\t\t\t\t}\n\t\t\t\t\n\t\n\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)\n\tsystem.perspective.closeDock(\"FunctionDock\")"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "TagBrowseTree"
+        },
+        "position": {
+          "basis": "400px",
+          "grow": 1
+        },
+        "propConfig": {
+          "props.root.path": {
+            "binding": {
+              "config": {
+                "expression": "now(0)"
+              },
+              "transforms": [
+                {
+                  "code": "\treturn settings.getValue(\u0027Tag Editor\u0027,\u0027rootTagPath\u0027)",
+                  "type": "script"
+                }
+              ],
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "root": {},
+          "selection": {
+            "mode": "single"
+          }
+        },
+        "type": "ia.display.tag-browse-tree"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "backgroundColor": "var(--neutral-10)",
+        "opacity": 0.95
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

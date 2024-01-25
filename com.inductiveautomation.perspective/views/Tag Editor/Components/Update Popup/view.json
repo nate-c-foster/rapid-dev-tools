@@ -1,0 +1,169 @@
+{
+  "custom": {},
+  "params": {
+    "tableData": ""
+  },
+  "propConfig": {
+    "params.tableData": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 115,
+      "width": 333
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "32px"
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.tableData"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\treturn \"Update \" + str(len(self.view.params.tableData)) + \" Tags?\"",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "fontSize": "18px",
+                "textAlign": "center"
+              }
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Label_0"
+            },
+            "position": {
+              "basis": "32px"
+            },
+            "props": {
+              "style": {
+                "color": "var(--neutral-70)",
+                "fontSize": "12px",
+                "textAlign": "center"
+              },
+              "text": "It\u0027s recommended to backup tags before updating!"
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer_0"
+        },
+        "position": {
+          "basis": "92px"
+        },
+        "props": {
+          "direction": "column"
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\n\n\ttags \u003d self.view.params.tableData\n\t\n\tfor tag in tags:\n\t\ttagPath \u003d tag[\u0027tagPath\u0027]\n\t\tparentPath \u003d \u0027/\u0027.join(tagPath.split(\u0027/\u0027)[:-1])\n\t\ttagType \u003d tag[\u0027tagType\u0027]\n\t\ttagConfig \u003d tag[\u0027tagConfig\u0027]\n\t\t\n\t\t\n\t\tif tagConfig:\n\t\t\tresult \u003d system.tag.configure(parentPath, tagConfig, \"o\")\n\t\t\tprint \u0027Tag Config Update: \u0027, result\n\t\t\n\t\tif tag[\u0027writePaths\u0027]:\n\t\t\tfor i in range(len(tag[\u0027writePaths\u0027])):\n\t\t\t\tif not tag[\u0027readOnly\u0027][i]:\n\t\t\t\t\tresults \u003d system.tag.writeBlocking(tag[\u0027writePaths\u0027][i], tag[\u0027writeValues\u0027][i])\n\t\t\t\t\tprint \u0027Tag Write Update: \u0027, results\n\t\t\t\n\tsystem.perspective.closePopup(\u0027UpdateTagPopup\u0027)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Ok"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Button/Primary",
+                "margin": "3px"
+              },
+              "text": "Ok"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "draggable": true,
+                    "id": "UpdateTagPopup",
+                    "modal": false,
+                    "overlayDismiss": false,
+                    "resizable": true,
+                    "showCloseIcon": true,
+                    "type": "close",
+                    "viewPath": "Tag Editor/Components/Update Popup",
+                    "viewportBound": false
+                  },
+                  "scope": "C",
+                  "type": "popup"
+                }
+              }
+            },
+            "meta": {
+              "name": "Cancel"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Button/Primary",
+                "margin": "3px"
+              },
+              "text": "Cancel"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "35px",
+          "shrink": 0
+        },
+        "props": {
+          "justify": "flex-end"
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "justify": "space-between"
+    },
+    "type": "ia.container.flex"
+  }
+}

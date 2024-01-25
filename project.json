@@ -1,0 +1,7 @@
+{
+  "title": "Rapid Dev Tools",
+  "description": "Suite of tools to speed up development.",
+  "parent": "",
+  "enabled": true,
+  "inheritable": false
+}

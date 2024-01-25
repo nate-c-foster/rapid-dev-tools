@@ -1,0 +1,9 @@
+{
+  "isIdleTimeoutEnabled": false,
+  "idleMinutes": 60,
+  "gracePeriod": 60,
+  "gracePeriodMessage": "You will be logged out due to inactivity in {seconds} seconds",
+  "timeoutAction": "UserLogout",
+  "logoutUrl": "",
+  "isCustomLogout": false
+}

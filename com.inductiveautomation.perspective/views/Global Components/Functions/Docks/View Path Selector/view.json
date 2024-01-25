@@ -1,0 +1,180 @@
+{
+  "custom": {},
+  "params": {
+    "argName": "rootViewPath",
+    "functionPath": "RapidDev.View.Generate.getViews",
+    "index": "",
+    "rootViewPath": "SCADA/JBLM"
+  },
+  "propConfig": {
+    "params.argName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.functionPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.rootViewPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 601,
+      "width": 385
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "289px"
+            },
+            "props": {
+              "text": "Select Root View Path"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "id": "FunctionDock",
+                    "type": "close"
+                  },
+                  "scope": "C",
+                  "type": "dock"
+                }
+              }
+            },
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "30px"
+            },
+            "props": {
+              "color": "var(--neutral-70)",
+              "path": "material/close",
+              "style": {
+                "cursor": "pointer",
+                "padding": "2px"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "32px"
+        },
+        "props": {
+          "justify": "space-between",
+          "style": {
+            "classes": "RapidDev/Widget/Title"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "events": {
+          "component": {
+            "onItemClicked": {
+              "config": {
+                "script": "\t\n\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.selectionData[0].value,\n\t\t\t\t\"index\":self.view.params.index\n\t\t\t\t}\n\t\t\t\t\n\t\n\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)\n\tsystem.perspective.closeDock(\"FunctionDock\")"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Tree"
+        },
+        "position": {
+          "basis": "200px",
+          "grow": 1
+        },
+        "propConfig": {
+          "props.items": {
+            "binding": {
+              "config": {
+                "fallbackDelay": 2.5,
+                "mode": "expression",
+                "tagPath": "{session.custom.tagProvider}  + \"RapidDev/View Editor/Settings/rootViewPath\""
+              },
+              "transforms": [
+                {
+                  "code": "\treturn vieweditor.util.buildViewTree(value)",
+                  "type": "script"
+                }
+              ],
+              "type": "tag"
+            }
+          }
+        },
+        "props": {
+          "appearance": {
+            "defaultNodeIcons": {
+              "collapsed": {
+                "path": "material/folder"
+              },
+              "empty": {
+                "path": "material/stop"
+              },
+              "expanded": {
+                "path": "material/folder_open"
+              }
+            },
+            "expandIcons": {
+              "collapsed": {
+                "path": "material/arrow_right"
+              },
+              "expanded": {
+                "path": "material/arrow_drop_down"
+              }
+            }
+          },
+          "selection": [
+            "0/4/0"
+          ],
+          "selectionData": [
+            {
+              "itemPath": "0/4/0",
+              "value": "SCADA/JBLM/Wastewater System/Desktop"
+            }
+          ],
+          "style": {
+            "padding": "10px 5px"
+          }
+        },
+        "type": "ia.display.tree"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "backgroundColor": "var(--neutral-10)",
+        "opacity": 0.95
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

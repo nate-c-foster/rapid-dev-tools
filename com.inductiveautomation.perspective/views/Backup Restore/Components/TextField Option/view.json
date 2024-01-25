@@ -1,0 +1,102 @@
+{
+  "custom": {},
+  "params": {
+    "label": "Tag Provider",
+    "type": "",
+    "value": "SCADA"
+  },
+  "propConfig": {
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.type": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 30,
+      "width": 625
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Label"
+        },
+        "position": {
+          "basis": "150px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.label"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "backgroundColor": "var(--neutral-30)",
+            "borderBottomLeftRadius": "2px",
+            "borderBottomRightRadius": "2px",
+            "borderTopLeftRadius": "2px",
+            "borderTopRightRadius": "2px",
+            "color": "var(--neutral-80)",
+            "fontSize": "12px",
+            "fontWeight": "bold",
+            "marginRight": "10px",
+            "padding": "0px 10px"
+          },
+          "textStyle": {
+            "color": "var(--neutral-70)"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "TextField"
+        },
+        "position": {
+          "basis": "300px",
+          "grow": 1,
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "bidirectional": true,
+                "path": "view.params.value"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "deferUpdates": false,
+          "style": {
+            "classes": "RapidDev/TextField",
+            "color": "var(--neutral-70)"
+          }
+        },
+        "type": "ia.input.text-field"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "type": "ia.container.flex"
+  }
+}

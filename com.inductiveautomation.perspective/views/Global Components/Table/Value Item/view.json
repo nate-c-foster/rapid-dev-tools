@@ -1,0 +1,146 @@
+{
+  "custom": {},
+  "params": {
+    "index": 0,
+    "value": "testing 1 2 3"
+  },
+  "propConfig": {
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 30,
+      "width": 400
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Index"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.index"
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\tif isinstance(value,long):\n\t\treturn \u0027[\u0027 + str(value) + \u0027]:\u0027\n\telse:\n\t\treturn \u0027\u0027",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "color": "var(--green-77)",
+            "fontSize": "14px",
+            "marginRight": "5px"
+          },
+          "textStyle": {
+            "fontWeight": "bold"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Label"
+        },
+        "position": {
+          "display": false
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.value"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "color": "var(--neutral-70)",
+            "fontSize": "14px"
+          },
+          "textStyle": {
+            "textAlign": "left",
+            "wordWrap": "break-word"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\t\n\tparams \u003d {\n\t\t\u0027value\u0027: self.view.params.value\n\t\t}\n\tsystem.perspective.openPopup(\u0027ValuePopup\u0027, \n\t\t\t\t\t\t\t\t\u0027Global Components/Table/Value Popup\u0027, \n\t\t\t\t\t\t\t\tparams\u003dparams,\n\t\t\t\t\t\t\t\tresizable\u003dTrue)\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Button"
+        },
+        "position": {
+          "basis": "600px"
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.value"
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\tif isinstance(value,bool) or isinstance(value,int) or isinstance(value,long) or isinstance(value,float):\n\t\treturn value\n\telif value:\n\t\treturn str(value)[:100]\n\telse:\n\t\treturn value",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "justify": "start",
+          "primary": false,
+          "style": {
+            "backgroundColor": "var(--neutral-30)",
+            "color": "var(--neutral-80)",
+            "fontSize": "12px",
+            "fontWeight": "normal"
+          }
+        },
+        "type": "ia.input.button"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "style": {
+        "overflow": "hidden"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "custom": {},
+  "params": {
+    "tagConfig": [],
+    "tagPath": "",
+    "tagType": ""
+  },
+  "propConfig": {
+    "params.tagConfig": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagType": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {},
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "EmbeddedView"
+        },
+        "position": {
+          "basis": "320px",
+          "grow": 1
+        },
+        "propConfig": {
+          "props.params.tagConfig": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagConfig"
+              },
+              "type": "property"
+            }
+          },
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
+          },
+          "props.params.tagType": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagType"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "path": "Global Components/Tags/Tag Config Tree"
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

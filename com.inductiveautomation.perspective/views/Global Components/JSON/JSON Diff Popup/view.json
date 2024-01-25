@@ -1,0 +1,197 @@
+{
+  "custom": {},
+  "params": {
+    "current": "",
+    "preview": ""
+  },
+  "propConfig": {
+    "params.current": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.preview": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 1400
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "32px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Widget/Title",
+                "color": "var(--blue-85)",
+                "fontSize": "20px",
+                "textAlign": "center"
+              },
+              "text": "Current"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Markdown"
+            },
+            "position": {
+              "basis": "200px",
+              "grow": 1
+            },
+            "propConfig": {
+              "props.source": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.current"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\n\treturn value",
+                      "type": "script"
+                    },
+                    {
+                      "expression": "jsonFormat({value})",
+                      "type": "expression"
+                    },
+                    {
+                      "code": "\t\n\tif value:\n\t\timport re\n\t\t\n\n\t\tblue \u003d \u0027#07d1f4\u0027\n\t\tgreen \u003d \u0027#5aff00\u0027\n\t\torange \u003d \u0027#fbae01\u0027\n\t\tred \u003d \u0027red\u0027\n\t\tpurple \u003d \u0027#663399\u0027\n\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\tvalue \u003d value.replace(\u0027 \u0027,\u0027\u0026ensp;\u0027)\n\t\tvalue \u003d value.replace(\u0027\\u0027\u0027,\"\u0027\")\n\t\tvalue \u003d value.replace(\u0027\\u003c\u0027,\u0027\u0026lt;\u0027)\n\t\tvalue \u003d value.replace(\u0027\\u003e\u0027,\u0027\u0026gt;\u0027)\n\t\tvalue \u003d value.replace(\u0027\\u003d\u0027,\u0027\u003d\u0027)\t\n\t\n\t\tvalue \u003d re.sub(r\u0027\"code\":\u0026ensp;\"\\\\t([^,]+)\",\u0027,r\u0027\"code\": \"\u003cp style\u003d\"padding:20px 50px;background-color:#00000018;\"\u003e\u003ccode\u003e\\1\u003c/code\u003e\u003c/p\u003e\",\u0027,value)\n\t\tvalue \u003d re.sub(r\u0027\"code_add\":\u0026ensp;\"\\\\t([^,]+)\",\u0027,r\u0027\"code_add\": \"\u003cp style\u003d\"padding:20px 50px;background-color:#00000018;\"\u003e\u003ccode\u003e\\1\u003c/code\u003e\u003c/p\u003e\",\u0027,value)\t\n\t\tvalue \u003d re.sub(r\u0027\"code_mod\":\u0026ensp;\"\\\\t([^,]+)\",\u0027,r\u0027\"code_mod\": \"\u003cp style\u003d\"padding:20px 50px;background-color:#00000018;\"\u003e\u003ccode\u003e\\1\u003c/code\u003e\u003c/p\u003e\",\u0027,value)\t\n\t\tvalue \u003d value.replace(\u0027\\\\t\u0027,\u0027\u0026emsp;\u0027)\n\t\tvalue \u003d value.replace(\u0027\\\\n\u0027,\u0027\u003cbr\u003e\u0027)\t\n\t\tvalue \u003d value.replace(\u0027\\n\u0027,\u0027\u003cbr\u003e\u0027)\n\t\tvalue \u003d value.replace(\u0027\\\\\"\u0027, \u0027\"\u0027)\n\t\n\t\tvalue \u003d re.sub(r\u0027\"([\\w\\.]+)_add\"\u0027,r\u0027\u003cspan style\u003d\"color:red;\"\u003e\"\\1\"\u003c/span\u003e\u0027,value)\n\t\tvalue \u003d re.sub(r\u0027\"([\\w\\.]+)_mod\"\u0027,r\u0027\u003cspan style\u003d\"color:#fbae01;\"\u003e\"\\1\"\u003c/span\u003e\u0027,value)\t\n\t\t\n\t\n\t\tvalue \u003d \u0027\u003chtml\u003e\u0027 + value + \u0027\u003c/html\u003e\u0027\n\t\n\t\treturn value\n\t\t\n\t\t\n\telse:\n\t\treturn \"\"",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "markdown": {
+                "escapeHtml": false
+              },
+              "style": {
+                "backgroundColor": "var(--neutral-10)",
+                "color": "var(--neutral-70)",
+                "padding": "10px"
+              }
+            },
+            "type": "ia.display.markdown"
+          }
+        ],
+        "meta": {
+          "name": "Current"
+        },
+        "position": {
+          "position": "left"
+        },
+        "props": {
+          "direction": "column"
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "32px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Widget/Title",
+                "color": "var(--blue-85)",
+                "fontSize": "20px",
+                "textAlign": "center"
+              },
+              "text": "New"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Markdown"
+            },
+            "position": {
+              "basis": "200px",
+              "grow": 1
+            },
+            "propConfig": {
+              "props.source": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.preview"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\n\treturn value",
+                      "type": "script"
+                    },
+                    {
+                      "expression": "jsonFormat({value})",
+                      "type": "expression"
+                    },
+                    {
+                      "code": "\t\n\tif value:\n\t\timport re\n\t\t\n\n\t\tvalue \u003d value.replace(\u0027 \u0027,\u0027\u0026ensp;\u0027)\n\t\tvalue \u003d value.replace(\u0027\\u0027\u0027,\"\u0027\")\n\t\tvalue \u003d value.replace(\u0027\\u003c\u0027,\u0027\u0026lt;\u0027)\n\t\tvalue \u003d value.replace(\u0027\\u003e\u0027,\u0027\u0026gt;\u0027)\n\t\tvalue \u003d value.replace(\u0027\\u003d\u0027,\u0027\u003d\u0027)\t\n\t\n\t\tvalue \u003d re.sub(r\u0027\"code\":\u0026ensp;\"\\\\t([^,]+)\",\u0027,r\u0027\"code\": \"\u003cp style\u003d\"padding:20px 50px;background-color:#00000018;\"\u003e\u003ccode\u003e\\1\u003c/code\u003e\u003c/p\u003e\",\u0027,value)\n\t\tvalue \u003d re.sub(r\u0027\"code_add\":\u0026ensp;\"\\\\t([^,]+)\",\u0027,r\u0027\"code_add\": \"\u003cp style\u003d\"padding:20px 50px;background-color:#00000018;\"\u003e\u003ccode\u003e\\1\u003c/code\u003e\u003c/p\u003e\",\u0027,value)\t\n\t\tvalue \u003d re.sub(r\u0027\"code_mod\":\u0026ensp;\"\\\\t([^,]+)\",\u0027,r\u0027\"code_mod\": \"\u003cp style\u003d\"padding:20px 50px;background-color:#00000018;\"\u003e\u003ccode\u003e\\1\u003c/code\u003e\u003c/p\u003e\",\u0027,value)\t\n\t\tvalue \u003d value.replace(\u0027\\\\t\u0027,\u0027\u0026emsp;\u0027)\n\t\tvalue \u003d value.replace(\u0027\\\\n\u0027,\u0027\u003cbr\u003e\u0027)\t\n\t\tvalue \u003d value.replace(\u0027\\n\u0027,\u0027\u003cbr\u003e\u0027)\n\t\tvalue \u003d value.replace(\u0027\\\\\"\u0027, \u0027\"\u0027)\n\t\n\t\tvalue \u003d re.sub(r\u0027\"([\\w\\.]+)_add\"\u0027,r\u0027\u003cspan style\u003d\"color:#3da903;\"\u003e\"\\1\"\u003c/span\u003e\u0027,value)\n\t\tvalue \u003d re.sub(r\u0027\"([\\w\\.]+)_mod\"\u0027,r\u0027\u003cspan style\u003d\"color:#fbae01;\"\u003e\"\\1\"\u003c/span\u003e\u0027,value)\t\n\t\t\n\t\n\t\tvalue \u003d \u0027\u003chtml\u003e\u0027 + value + \u0027\u003c/html\u003e\u0027\n\t\n\t\treturn value\n\t\t\n\t\t\n\telse:\n\t\treturn \"\"",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "markdown": {
+                "escapeHtml": false
+              },
+              "style": {
+                "background-color": "--neutral-10",
+                "color": "var(--neutral-70)",
+                "padding": "10px"
+              }
+            },
+            "type": "ia.display.markdown"
+          }
+        ],
+        "meta": {
+          "name": "Preview"
+        },
+        "position": {
+          "position": "right"
+        },
+        "props": {
+          "direction": "column"
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "scripts": {
+      "customMethods": [
+        {
+          "name": "JSONdiff",
+          "params": [
+            "JSONobj1",
+            "JSONobj2",
+            "modified"
+          ],
+          "script": "\t\n\tif isinstance(JSONobj1, dict) and isinstance(JSONobj2, dict):\n\t\t\n\t\ttaggedDict \u003d {}\n\t\tfor key in JSONobj1.keys():\n\t\t\t\n\t\t\tif key in JSONobj2.keys() and modified !\u003d \u0027add\u0027:\n\t\t\t\t\n\t\t\t\tif JSONobj1[key] \u003d\u003d JSONobj2[key]:\n\t\t\t\t\ttaggedDict[key] \u003d JSONobj1[key]\n\t\t\t\telse:\n\t\t\t\t\ttaggedDict[key + \u0027_mod\u0027] \u003d JSONdiff(JSONobj1[key], JSONobj2[key], \u0027mod\u0027)\n\t\t\n\t\t\telse:\n\t\t\t\t\n\t\t\t\ttaggedDict[key + \u0027_add\u0027] \u003d JSONdiff(JSONobj1[key],JSONobj1[key], \u0027add\u0027)\n\t\t\n\t\treturn taggedDict\n\t\t\n\t\t\n\t\t\n\telif isinstance(JSONobj1, list) and isinstance(JSONobj2, list):\n\t\t\n\t\ttaggedList \u003d []\n\t\tfor x in JSONobj1:\n\t\t\t\t\n\t\t\tif modified \u003d\u003d \u0027add\u0027:\n\t\t\t\ttaggedList.append(JSONdiff(x,x,\u0027add\u0027))\n\t\t\t\t\n\t\t\telse:\n\t\t\t\t\n\t\t\t\tif x in JSONobj2:\n\t\t\t\t\ttaggedList.append(x)\n\t\t\t\telse:\n\t\t\t\t\tmatch \u003d False\n\t\t\t\t\tfor y in JSONobj2:\n\t\t\t\t\t\tif isinstance(x,dict) and isinstance(y,dict):\n\t\t\t\t\t\t\tif \u0027meta\u0027 in x and \u0027meta\u0027 in y:\n\t\t\t\t\t\t\t\tif \u0027name\u0027 in x[\u0027meta\u0027] and \u0027name\u0027 in y[\u0027meta\u0027]:\n\t\t\t\t\t\t\t\t\tif x[\u0027meta\u0027][\u0027name\u0027] \u003d\u003d y[\u0027meta\u0027][\u0027name\u0027]:\n\t\t\t\t\t\t\t\t\t\ttaggedList.append(JSONdiff(x,y,\u0027mod\u0027))\n\t\t\t\t\t\t\t\t\t\tmatch \u003d True\n\t\t\t\t\t\t\t\t\t\tbreak\n\t\t\t\t\tif not match:\n\t\t\t\t\t\ttaggedList.append(JSONdiff(x,x,\u0027add\u0027))\n\t\t\n\t\treturn taggedList\n\t\t\n\t\t\t\n\telse:\n\t\treturn JSONobj1"
+        }
+      ],
+      "extensionFunctions": null,
+      "messageHandlers": []
+    },
+    "type": "ia.container.split"
+  }
+}

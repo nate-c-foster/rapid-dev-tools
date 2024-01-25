@@ -1,0 +1,40 @@
+{
+  "scope": "DG",
+  "version": 2,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "query.sql"
+  ],
+  "attributes": {
+    "useMaxReturnSize": false,
+    "autoBatchEnabled": false,
+    "fallbackValue": "",
+    "maxReturnSize": 100,
+    "cacheUnit": "SEC",
+    "type": "Query",
+    "enabled": true,
+    "cacheAmount": 1,
+    "cacheEnabled": false,
+    "database": "SCADA",
+    "fallbackEnabled": false,
+    "lastModificationSignature": "cf663661f15b2fb928783154a3525a77afb53a425e03b7345637dac2c0c70e79",
+    "permissions": [
+      {
+        "zone": "",
+        "role": ""
+      }
+    ],
+    "lastModification": {
+      "actor": "nfoster",
+      "timestamp": "2024-01-24T12:12:14Z"
+    },
+    "parameters": [
+      {
+        "type": "Parameter",
+        "identifier": "Name",
+        "sqlType": 7
+      }
+    ]
+  }
+}

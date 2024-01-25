@@ -1,0 +1,1301 @@
+{
+  "custom": {},
+  "params": {},
+  "permissions": {
+    "securityLevels": [
+      {
+        "children": [],
+        "name": "Authenticated"
+      }
+    ],
+    "type": "AllOf"
+  },
+  "props": {
+    "defaultSize": {
+      "width": 1414
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "meta": {
+                          "name": "Title"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Location Model"
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "children": [
+                          {
+                            "custom": {
+                              "enabled": true
+                            },
+                            "events": {
+                              "dom": {
+                                "onClick": {
+                                  "config": {
+                                    "script": "\t\n\tlocation.model.updateModelTag()\n\n"
+                                  },
+                                  "scope": "G",
+                                  "type": "script"
+                                }
+                              }
+                            },
+                            "meta": {
+                              "name": "Icon_Update",
+                              "tooltip": {
+                                "enabled": true,
+                                "text": "Update model"
+                              }
+                            },
+                            "position": {
+                              "basis": "25px"
+                            },
+                            "propConfig": {
+                              "props.color": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.style.cursor": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              }
+                            },
+                            "props": {
+                              "path": "material/refresh",
+                              "style": {
+                                "padding": "2px"
+                              }
+                            },
+                            "type": "ia.display.icon"
+                          },
+                          {
+                            "events": {
+                              "dom": {
+                                "onClick": {
+                                  "config": {
+                                    "script": "\t\n\t\n\tif self.custom.enabled:\n\t\n\t\tlocationData \u003d self.parent.parent.parent.getChild(\"Tree\").props.selectionData\n\t\t\n\t\t\n\t\tparams \u003d {\u0027ParentLocationID\u0027: locationData[0][\u0027value\u0027][\u0027locationID\u0027]}\n\t\tlocationName \u003d locationData[0][\u0027value\u0027][\u0027locationName\u0027]\n\t\t\n\t\tsystem.perspective.openPopup(\u0027AddLocationPopup\u0027, \u0027Location Model/Components/Popups/AddLocationPopup\u0027, params, title\u003d\u0027Add Location to \u0027 + locationName)\n"
+                                  },
+                                  "scope": "G",
+                                  "type": "script"
+                                }
+                              }
+                            },
+                            "meta": {
+                              "name": "Icon_Add",
+                              "tooltip": {
+                                "enabled": true,
+                                "text": "Add location"
+                              }
+                            },
+                            "position": {
+                              "basis": "25px"
+                            },
+                            "propConfig": {
+                              "custom.enabled": {
+                                "binding": {
+                                  "config": {
+                                    "path": "parent.custom.locationDetails"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value.keys():\n\t\treturn True\n\telse:\n\t\treturn False",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.color": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.style.cursor": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              }
+                            },
+                            "props": {
+                              "path": "material/add",
+                              "style": {
+                                "padding": "2px"
+                              }
+                            },
+                            "type": "ia.display.icon"
+                          },
+                          {
+                            "events": {
+                              "dom": {
+                                "onClick": {
+                                  "config": {
+                                    "script": "\t\n\t\n\tif self.custom.enabled:\n\t\n\t\tlocationData \u003d self.parent.parent.parent.getChild(\"Tree\").props.selectionData\t\n\t\tparams \u003d {\u0027LocationID\u0027: locationData[0][\u0027value\u0027][\u0027locationID\u0027]}\n\t\tlocationName \u003d locationData[0][\u0027value\u0027][\u0027locationName\u0027]\n\t\tsystem.perspective.openPopup(\u0027EditLocationPopup\u0027, \u0027Location Model/Components/Popups/EditLocationPopup\u0027, params, title\u003d\u0027Edit Location \u0027 + locationName)\n"
+                                  },
+                                  "scope": "G",
+                                  "type": "script"
+                                }
+                              }
+                            },
+                            "meta": {
+                              "name": "Icon_Edit",
+                              "tooltip": {
+                                "enabled": true,
+                                "text": "Add location"
+                              }
+                            },
+                            "position": {
+                              "basis": "25px"
+                            },
+                            "propConfig": {
+                              "custom.enabled": {
+                                "binding": {
+                                  "config": {
+                                    "path": "parent.custom.locationDetails"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value.keys():\n\t\treturn True\n\telse:\n\t\treturn False",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.color": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.style.cursor": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              }
+                            },
+                            "props": {
+                              "path": "material/edit",
+                              "style": {
+                                "padding": "2px"
+                              }
+                            },
+                            "type": "ia.display.icon"
+                          },
+                          {
+                            "events": {
+                              "dom": {
+                                "onClick": {
+                                  "config": {
+                                    "script": "\t\n\tif self.custom.enabled:\n\t\n\t\tlocationDetails \u003d self.parent.custom.locationDetails\n\t\torderNumber \u003d int(locationDetails[\u0027orderNumber\u0027])\n\t\tlocationID \u003d locationDetails[\u0027locationID\u0027]\n\t\tparentID \u003d locationDetails[\u0027parentID\u0027]\n\t\tmodelDBType \u003d self.session.custom.modelDBType\t\n\t\t\n\t\t# get all siblings\n\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/getChildren\u0027\n\t\tsiblingsDS \u003d system.db.runNamedQuery(query,{\"LocationID\":parentID})\n\t\tsiblings \u003d []\n\t\tfor row in range(siblingsDS.getRowCount()):\n\t\t\tsiblingID \u003d siblingsDS.getValueAt(row,\"LocationID\")\n\t\t\tsiblingOrder \u003d siblingsDS.getValueAt(row,\"orderNumber\")\n\t\t\tsiblings.append({\u0027id\u0027:siblingID, \u0027order\u0027:siblingOrder})\n\t\t\t\t\n\t\t# find the infimum\n\t\tlowerbounds \u003d filter(lambda x : x[\u0027order\u0027] and x[\u0027order\u0027] \u003c orderNumber, siblings)\n\t\tinf \u003d max(lowerbounds, key\u003dlambda x : x[\u0027order\u0027])\n\t\t\n\t\t# swap with the infimum\n\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/updateOrderNumber\u0027\n\t\tsystem.db.runNamedQuery(query,{\"orderNumber\":inf[\u0027order\u0027], \"locationID\":locationID})\t\t\n\t\tsystem.db.runNamedQuery(query,{\"orderNumber\":orderNumber, \"locationID\":inf[\u0027id\u0027]})\t\t\t\n\t\t\n\t\tlocation.model.updateModelTag()"
+                                  },
+                                  "scope": "G",
+                                  "type": "script"
+                                }
+                              }
+                            },
+                            "meta": {
+                              "name": "Icon_Up",
+                              "tooltip": {
+                                "enabled": true,
+                                "text": "Order up"
+                              }
+                            },
+                            "position": {
+                              "basis": "25px"
+                            },
+                            "propConfig": {
+                              "custom.enabled": {
+                                "binding": {
+                                  "config": {
+                                    "path": "parent.custom.locationDetails"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\t\n\ttry:\n\t\torderNumber \u003d value[\u0027orderNumber\u0027]\n\t\tif orderNumber \u003d\u003d 1 or not orderNumber:\n\t\t\treturn False\n\t\telse:\n\t\t\treturn True\n\texcept:\n\t\treturn False",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.color": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.style.cursor": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              }
+                            },
+                            "props": {
+                              "path": "material/arrow_upward",
+                              "style": {
+                                "marginRight": "5px",
+                                "padding": "2px"
+                              }
+                            },
+                            "type": "ia.display.icon"
+                          },
+                          {
+                            "events": {
+                              "dom": {
+                                "onClick": {
+                                  "config": {
+                                    "script": "\t\n\tif self.custom.enabled:\n\t\n\t\tlocationDetails \u003d self.parent.custom.locationDetails\n\t\torderNumber \u003d int(locationDetails[\u0027orderNumber\u0027])\n\t\tlocationID \u003d locationDetails[\u0027locationID\u0027]\n\t\tparentID \u003d locationDetails[\u0027parentID\u0027]\n\t\tmodelDBType \u003d self.session.custom.modelDBType\t\n\t\t\n\t\t# get all siblings\n\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/getChildren\u0027\n\t\tsiblingsDS \u003d system.db.runNamedQuery(query,{\"LocationID\":parentID})\n\t\tsiblings \u003d []\n\t\tfor row in range(siblingsDS.getRowCount()):\n\t\t\tsiblingID \u003d siblingsDS.getValueAt(row,\"LocationID\")\n\t\t\tsiblingOrder \u003d siblingsDS.getValueAt(row,\"orderNumber\")\n\t\t\tsiblings.append({\u0027id\u0027:siblingID, \u0027order\u0027:siblingOrder})\n\t\t\t\t\n\t\t# find the supremum\n\t\tupperbounds \u003d filter(lambda x : x[\u0027order\u0027] and x[\u0027order\u0027] \u003e orderNumber, siblings)\n\t\tsup \u003d min(upperbounds, key\u003dlambda x : x[\u0027order\u0027])\n\t\t\n\t\t# swap with the supremum\n\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/updateOrderNumber\u0027\n\t\tsystem.db.runNamedQuery(query,{\"orderNumber\":sup[\u0027order\u0027], \"locationID\":locationID})\t\t\n\t\tsystem.db.runNamedQuery(query,{\"orderNumber\":orderNumber, \"locationID\":sup[\u0027id\u0027]})\t\t\t\n\t\t\n\t\tlocation.model.updateModelTag()\n"
+                                  },
+                                  "scope": "G",
+                                  "type": "script"
+                                }
+                              }
+                            },
+                            "meta": {
+                              "name": "Icon_Down",
+                              "tooltip": {
+                                "enabled": true,
+                                "text": "Order down"
+                              }
+                            },
+                            "position": {
+                              "basis": "25px"
+                            },
+                            "propConfig": {
+                              "custom.enabled": {
+                                "binding": {
+                                  "config": {
+                                    "path": "parent.custom.locationDetails"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\t\n\ttry:\n\t\tmodelDBType \u003d self.session.custom.modelDBType\n\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/getMaxOrderNumber\u0027\n\t\tmaxOrderNumber \u003d system.db.runNamedQuery(query, {\u0027parentLocationID\u0027: value[\u0027parentID\u0027]})\n\t\torderNumber \u003d value[\u0027orderNumber\u0027]\n\t\n\t\tif not orderNumber or orderNumber \u003d\u003d maxOrderNumber:\n\t\t\treturn False\n\t\telse:\n\t\t\treturn True\n\texcept:\n\t\treturn False",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.color": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.style.cursor": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              }
+                            },
+                            "props": {
+                              "path": "material/arrow_downward",
+                              "style": {
+                                "marginRight": "5px",
+                                "padding": "2px"
+                              }
+                            },
+                            "type": "ia.display.icon"
+                          },
+                          {
+                            "events": {
+                              "dom": {
+                                "onClick": {
+                                  "config": {
+                                    "script": "\t\n\tif self.custom.enabled:\n\t\n\t\tlocationData \u003d self.parent.parent.parent.getChild(\"Tree\").props.selectionData\t\n\t\tparams \u003d {\u0027LocationID\u0027: locationData[0][\u0027value\u0027][\u0027locationID\u0027]}\n\t\tlocationName \u003d locationData[0][\u0027value\u0027][\u0027locationName\u0027]\n\t\tsystem.perspective.openPopup(\u0027MoveLocationPopup\u0027, \u0027Location Model/Components/Popups/MoveLocationPopup\u0027, params, title\u003d\u0027Move Location \u0027 + locationName)\n"
+                                  },
+                                  "scope": "G",
+                                  "type": "script"
+                                }
+                              }
+                            },
+                            "meta": {
+                              "name": "Icon_Move",
+                              "tooltip": {
+                                "enabled": true,
+                                "text": "Move"
+                              }
+                            },
+                            "position": {
+                              "basis": "25px"
+                            },
+                            "propConfig": {
+                              "custom.enabled": {
+                                "binding": {
+                                  "config": {
+                                    "path": "parent.custom.locationDetails"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value.keys():\n\t\treturn True\n\telse:\n\t\treturn False",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.color": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.style.cursor": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              }
+                            },
+                            "props": {
+                              "path": "material/open_with",
+                              "style": {
+                                "marginRight": "5px",
+                                "padding": "2px"
+                              }
+                            },
+                            "type": "ia.display.icon"
+                          },
+                          {
+                            "events": {
+                              "dom": {
+                                "onClick": {
+                                  "config": {
+                                    "script": "\t\n\tif self.custom.enabled:\n\t\tlocationData \u003d self.parent.parent.parent.getChild(\"Tree\").props.selectionData\n\t\tparams \u003d {\u0027LocationID\u0027: locationData[0][\u0027value\u0027][\u0027locationID\u0027]}\n\t\tlocationName \u003d locationData[0][\u0027value\u0027][\u0027locationName\u0027]\n\t\tsystem.perspective.openPopup(\u0027DeleteLocationPopup\u0027, \u0027Location Model/Components/Popups/DeleteLocationPopup\u0027, params, title\u003d\u0027Delete Location \u0027 + locationName)\n"
+                                  },
+                                  "scope": "G",
+                                  "type": "script"
+                                }
+                              }
+                            },
+                            "meta": {
+                              "name": "Icon_Delete",
+                              "tooltip": {
+                                "enabled": true,
+                                "text": "Remove location"
+                              }
+                            },
+                            "position": {
+                              "basis": "25px"
+                            },
+                            "propConfig": {
+                              "custom.enabled": {
+                                "binding": {
+                                  "config": {
+                                    "path": "parent.custom.locationDetails"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\t\n\ttry:\n\t\tif value[\u0027childrenCount\u0027] \u003d\u003d 0:\n\t\t\treturn True\n\t\telse:\n\t\t\treturn False\n\texcept:\n\t\treturn False\n\t\n\n",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.color": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.style.cursor": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              }
+                            },
+                            "props": {
+                              "path": "material/delete_outline",
+                              "style": {
+                                "marginRight": "5px",
+                                "padding": "2px"
+                              }
+                            },
+                            "type": "ia.display.icon"
+                          }
+                        ],
+                        "meta": {
+                          "name": "FlexContainer"
+                        },
+                        "position": {
+                          "basis": "200px",
+                          "grow": 1
+                        },
+                        "propConfig": {
+                          "custom.locationDetails": {
+                            "binding": {
+                              "config": {
+                                "path": ".../Tree.props.selectionData"
+                              },
+                              "transforms": [
+                                {
+                                  "code": "\tif value:\n\t\treturn value[0][\u0027value\u0027]\n\telse:\n\t\treturn {}",
+                                  "type": "script"
+                                }
+                              ],
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "justify": "flex-end",
+                          "style": {
+                            "padding": "0px"
+                          }
+                        },
+                        "type": "ia.container.flex"
+                      }
+                    ],
+                    "meta": {
+                      "name": "Header"
+                    },
+                    "position": {
+                      "basis": "30px"
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "RapidDev/Widget/Title"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "events": {
+                      "component": {
+                        "onItemClicked": {
+                          "config": {
+                            "script": "\n\tlocationPath \u003d event.data[\u0027locationPath\u0027]\n\tsystem.perspective.sendMessage(\"MoveToParentPath\", {\"locationPath\":locationPath})\n"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "Tree"
+                    },
+                    "position": {
+                      "basis": "200px",
+                      "grow": 1
+                    },
+                    "propConfig": {
+                      "custom.modelTagExists": {
+                        "binding": {
+                          "config": {
+                            "struct": {
+                              "modelTagPath": "{session.custom.modelTagPath}",
+                              "tagValue": "tag({session.custom.modelTagPath})"
+                            },
+                            "waitOnAll": true
+                          },
+                          "transforms": [
+                            {
+                              "code": "\tif system.tag.exists(value[\u0027modelTagPath\u0027]) and value[\u0027tagValue\u0027]:\n\t\treturn True\n\telse:\n\t\treturn False",
+                              "type": "script"
+                            }
+                          ],
+                          "type": "expr-struct"
+                        }
+                      },
+                      "position.display": {
+                        "binding": {
+                          "config": {
+                            "path": "this.custom.modelTagExists"
+                          },
+                          "type": "property"
+                        }
+                      },
+                      "props.items": {
+                        "binding": {
+                          "config": {
+                            "fallbackDelay": 2.5,
+                            "mode": "expression",
+                            "tagPath": "{session.custom.modelTagPath}"
+                          },
+                          "transforms": [
+                            {
+                              "code": "\n\trootLocationID \u003d self.session.custom.rootLocationID\n\t\n\t# transfrom the tree with icons\n\tdef addIcons(item):\n\t\tlocationType \u003d item[\u0027data\u0027][\u0027locationType\u0027]\n\t\tif locationType \u003d\u003d \u0027Process\u0027:\n\t\t\ticon \u003d { \u0027path\u0027: \u0027material/stop\u0027, \u0027color\u0027: \u0027var(--blue-77)\u0027 }\n\t\telse:\n\t\t\ticon \u003d { \u0027path\u0027: \u0027material/view_list\u0027, \u0027color\u0027: \u0027var(--green-77)\u0027 }\n\t\titem[\u0027icon\u0027] \u003d icon\n\t\treturn item\n\n\n\treturn location.model.updateModelTree(rootLocationID, value, expanded\u003dTrue, transformFunction\u003daddIcons)[\u0027items\u0027]",
+                              "type": "script"
+                            }
+                          ],
+                          "type": "tag"
+                        }
+                      }
+                    },
+                    "props": {
+                      "appearance": {
+                        "defaultNodeIcons": {
+                          "empty": {
+                            "color": "var(--blue-77)",
+                            "path": "material/stop"
+                          }
+                        },
+                        "expandIcons": {
+                          "collapsed": {
+                            "path": "material/chevron_right",
+                            "style": {
+                              "padding": "4px"
+                            }
+                          },
+                          "expanded": {
+                            "path": "material/keyboard_arrow_down",
+                            "style": {
+                              "padding": "4px"
+                            }
+                          }
+                        }
+                      },
+                      "style": {
+                        "color": "var(--neutral-70)"
+                      }
+                    },
+                    "type": "ia.display.tree"
+                  },
+                  {
+                    "children": [
+                      {
+                        "meta": {
+                          "name": "Label"
+                        },
+                        "position": {
+                          "basis": "32px"
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "RapidDev/Text/Value",
+                            "textAlign": "center"
+                          },
+                          "text": "Location Model Tag Does Not Exist"
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "events": {
+                          "component": {
+                            "onActionPerformed": {
+                              "config": {
+                                "script": "\t\n\tmodelTagPath \u003d self.session.custom.modelTagPath\n\tname \u003d modelTagPath.split(\u0027/\u0027)[-1]\n\tbasePath \u003d \u0027/\u0027.join(modelTagPath.split(\u0027/\u0027)[:-1])\n\t\n\ttag \u003d {\n\t\t\t\"name\": name,\n\t\t\t\"valueSource\": \"memory\",\n\t\t\t\"dataType\": \"DataSet\",\n\t\t\t\"tagType\": \"AtomicTag\"\n\t}\n\t\n\tsystem.tag.configure(basePath, [tag], \"a\")\n\t\n\t\n\tlocation.model.updateModelTag()\n\t\n\tself.parent.parent.getChild(\"Tree\").refreshBinding(\u0027custom.modelTagExists\u0027)"
+                              },
+                              "scope": "G",
+                              "type": "script"
+                            }
+                          }
+                        },
+                        "meta": {
+                          "name": "Button"
+                        },
+                        "position": {
+                          "basis": "34px"
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "RapidDev/Button/Primary",
+                            "margin": "5px 20px",
+                            "padding": "0px 50px"
+                          },
+                          "text": "Create"
+                        },
+                        "type": "ia.input.button"
+                      }
+                    ],
+                    "meta": {
+                      "name": "Does Not Exist"
+                    },
+                    "position": {
+                      "basis": "200px",
+                      "grow": 1
+                    },
+                    "propConfig": {
+                      "position.display": {
+                        "binding": {
+                          "config": {
+                            "path": "../Tree.custom.modelTagExists"
+                          },
+                          "transforms": [
+                            {
+                              "code": "\tif value:\n\t\treturn False\n\telse:\n\t\treturn True",
+                              "type": "script"
+                            }
+                          ],
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "alignItems": "center",
+                      "direction": "column",
+                      "justify": "center"
+                    },
+                    "type": "ia.container.flex"
+                  }
+                ],
+                "meta": {
+                  "name": "ModelTree"
+                },
+                "position": {
+                  "position": "left"
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "RapidDev/Widget/Root"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "meta": {
+                          "name": "Title"
+                        },
+                        "position": {
+                          "basis": "32px"
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "RapidDev/Widget/Title"
+                          },
+                          "text": "Location Info"
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "meta": {
+                                  "name": "Label"
+                                },
+                                "position": {
+                                  "basis": "32px",
+                                  "shrink": 0
+                                },
+                                "props": {
+                                  "style": {
+                                    "color": "var(--neutral-80)",
+                                    "fontSize": "16px"
+                                  },
+                                  "text": "Details"
+                                },
+                                "type": "ia.display.label"
+                              },
+                              {
+                                "meta": {
+                                  "name": "FlexRepeater"
+                                },
+                                "position": {
+                                  "basis": "500px",
+                                  "grow": 1
+                                },
+                                "propConfig": {
+                                  "props.instances": {
+                                    "binding": {
+                                      "config": {
+                                        "path": "....../ModelTree/Tree.props.selectionData"
+                                      },
+                                      "transforms": [
+                                        {
+                                          "code": "\t\n\tinstances \u003d []\n\t\n\t# have to explicitly give keys to preserve order\n\tkeys \u003d [\n\t\t\t\t\"locationName\",\n\t\t\t\t\"locationID\",\n\t\t\t\t\"orderNumber\",\n\t\t\t\t\"shortName\",\n\t\t\t\t\"description\",\t\t\t\n\t\t\t\t\"icon\",\t\t\n\t\t\t\t\"parentID\",\n\t\t\t\t\"childrenCount\",\n\t\t\t\t\"childrenIDs\",\n\t\t\t\t\"locationIDPath\",\n\t\t\t\t\"locationPath\",\t\t\t\t\n\t\t\t\t\"tagPath\",\n\t\t\t\t\"viewPath\",\n\t\t\t\t\"treePath\",\n\t\t\t\t\"locationType\",\n\t\t\t\t\"locationTypeID\",\n\t\t\t\t\"locationTypeDefinition\",\n\t\t\t\t\"locationTypeDefinitionID\",\n\t\t\t\t\"udtPath\",\n\t\t\t\t\"viewTemplatePath\",\n\t\t\t\t\"lastModifiedBy\",\n\t\t\t\t\"lastModifiedOn\"\n\t\t\t\t]\n\t\t\t\t\n\t#keys \u003d value[0][\u0027value\u0027].keys()\n\t\n\tif value:\n\t\tfor key in keys:\n\t\t\tinstances.append({\u0027label\u0027:key, \u0027value\u0027:value[0][\u0027value\u0027][key]})\n\t\n\treturn instances",
+                                          "type": "script"
+                                        }
+                                      ],
+                                      "type": "property"
+                                    }
+                                  }
+                                },
+                                "props": {
+                                  "direction": "column",
+                                  "elementPosition": {
+                                    "basis": "auto",
+                                    "grow": 0,
+                                    "shrink": 0
+                                  },
+                                  "elementStyle": {
+                                    "borderTopColor": "var(--neutral-30)",
+                                    "borderTopStyle": "solid",
+                                    "borderTopWidth": "0px",
+                                    "minHeight": "25px",
+                                    "padding": "2px 0px"
+                                  },
+                                  "path": "Global Components/Forms/Label Value Item",
+                                  "useDefaultViewHeight": false,
+                                  "useDefaultViewWidth": false
+                                },
+                                "type": "ia.display.flex-repeater"
+                              }
+                            ],
+                            "meta": {
+                              "name": "Details"
+                            },
+                            "position": {
+                              "basis": "500px",
+                              "grow": 1
+                            },
+                            "props": {
+                              "direction": "column",
+                              "style": {
+                                "padding": "20px"
+                              }
+                            },
+                            "scripts": {
+                              "customMethods": [],
+                              "extensionFunctions": null,
+                              "messageHandlers": [
+                                {
+                                  "messageType": "UpdateLocationDetails",
+                                  "pageScope": true,
+                                  "script": "\t\n\n\tself.parent.parent.parent.parent.getChild(\"ModelTree\").getChild(\"Tree\").refreshBinding(\u0027props.items\u0027)\n\tself.parent.parent.parent.parent.getChild(\"ModelTree\").getChild(\"Tree\").props.selection \u003d \u0027\u0027\n\tself.getChild(\"FlexRepeater\").props.instances \u003d []",
+                                  "sessionScope": false,
+                                  "viewScope": false
+                                }
+                              ]
+                            },
+                            "type": "ia.container.flex"
+                          },
+                          {
+                            "children": [
+                              {
+                                "meta": {
+                                  "name": "Label"
+                                },
+                                "position": {
+                                  "basis": "32px",
+                                  "shrink": 0
+                                },
+                                "props": {
+                                  "style": {
+                                    "color": "var(--neutral-80)",
+                                    "fontSize": "16px"
+                                  },
+                                  "text": "Components"
+                                },
+                                "type": "ia.display.label"
+                              },
+                              {
+                                "meta": {
+                                  "name": "FlexRepeater"
+                                },
+                                "position": {
+                                  "basis": "300px",
+                                  "grow": 1
+                                },
+                                "propConfig": {
+                                  "props.instances": {
+                                    "binding": {
+                                      "config": {
+                                        "path": "....../ModelTree/Tree.props.selectionData"
+                                      },
+                                      "transforms": [
+                                        {
+                                          "code": "\t\n\tinstances \u003d []\n\n\tif value:\n\t\trootTagPath \u003d value[0][\u0027value\u0027][\u0027tagPath\u0027]\n\t\tcomponents \u003d location.model.getChildrenComponents(rootTagPath)\n\t\tfor component in components:\n\t\t\tinstances.append({\u0027label\u0027:component[\u0027name\u0027], \u0027value\u0027:component[\u0027type\u0027]})\n\t\t\n\treturn instances",
+                                          "type": "script"
+                                        }
+                                      ],
+                                      "type": "property"
+                                    }
+                                  }
+                                },
+                                "props": {
+                                  "direction": "column",
+                                  "elementPosition": {
+                                    "basis": "auto",
+                                    "grow": 0,
+                                    "shrink": 0
+                                  },
+                                  "elementStyle": {
+                                    "borderTopColor": "var(--neutral-30)",
+                                    "borderTopStyle": "solid",
+                                    "borderTopWidth": "0px",
+                                    "minHeight": "25px",
+                                    "padding": "2px 0px"
+                                  },
+                                  "path": "Global Components/Forms/Label Value Item",
+                                  "useDefaultViewHeight": false,
+                                  "useDefaultViewWidth": false
+                                },
+                                "type": "ia.display.flex-repeater"
+                              }
+                            ],
+                            "meta": {
+                              "name": "Components"
+                            },
+                            "position": {
+                              "basis": "200px",
+                              "grow": 1
+                            },
+                            "props": {
+                              "direction": "column",
+                              "style": {
+                                "padding": "20px"
+                              }
+                            },
+                            "type": "ia.container.flex"
+                          }
+                        ],
+                        "meta": {
+                          "name": "FlexContainer"
+                        },
+                        "position": {
+                          "basis": "320px",
+                          "grow": 1
+                        },
+                        "type": "ia.container.flex"
+                      }
+                    ],
+                    "meta": {
+                      "name": "LocationDetails"
+                    },
+                    "position": {
+                      "grow": 1
+                    },
+                    "props": {
+                      "direction": "column"
+                    },
+                    "type": "ia.container.flex"
+                  }
+                ],
+                "meta": {
+                  "name": "FlexContainer"
+                },
+                "position": {
+                  "position": "right"
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "RapidDev/Widget/Root"
+                  }
+                },
+                "type": "ia.container.flex"
+              }
+            ],
+            "meta": {
+              "name": "SplitContainer"
+            },
+            "position": {
+              "grow": 1
+            },
+            "props": {
+              "split": {
+                "position": "20%"
+              }
+            },
+            "type": "ia.container.split"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "props": {
+          "style": {
+            "overflow": "hidden",
+            "padding": "20px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "SelectOperation"
+                },
+                "position": {
+                  "basis": "320px"
+                },
+                "props": {
+                  "params": {
+                    "label": "Operation",
+                    "options": [
+                      {
+                        "label": "Create Locations",
+                        "value": "Create Locations"
+                      },
+                      {
+                        "label": "Move Locations",
+                        "value": "Move Locations"
+                      },
+                      {
+                        "label": "Rename Locations",
+                        "value": "Rename Locations"
+                      }
+                    ],
+                    "value": ""
+                  },
+                  "path": "Global Components/Forms/Label Dropdown Item",
+                  "style": {
+                    "height": "40px",
+                    "margin": "auto 20px"
+                  }
+                },
+                "type": "ia.display.view"
+              }
+            ],
+            "meta": {
+              "name": "Header"
+            },
+            "position": {
+              "basis": "100px",
+              "shrink": 0
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "custom": {
+              "default": {
+                "createLocations": [
+                  {
+                    "CreateTags": true,
+                    "CreateViews": true,
+                    "Definition": "General Process",
+                    "Name": "High Service",
+                    "ParentLocationPath": "JBLM/Water System/Distribution",
+                    "ShortName": "HS",
+                    "Type": "Process"
+                  },
+                  {
+                    "CreateTags": true,
+                    "CreateViews": true,
+                    "Definition": "General Process",
+                    "Name": "Low Service",
+                    "ParentLocationPath": "JBLM/Water System/Distribution",
+                    "ShortName": "LS",
+                    "Type": "Process"
+                  }
+                ],
+                "moveLocations": [
+                  {
+                    "Destination": "JBLM/Water System/Tanks",
+                    "Source": "JBLM/Water System/Distribution/High Service",
+                    "UpdateHist": true,
+                    "UpdateTags": true,
+                    "UpdateViews": true
+                  },
+                  {
+                    "Destination": "JBLM/Water System/Tanks",
+                    "Source": "JBLM/Water System/Distribution/Low Service",
+                    "UpdateHist": true,
+                    "UpdateTags": true,
+                    "UpdateViews": true
+                  }
+                ],
+                "renameLocations": [
+                  {
+                    "NewName": "High Service Zone",
+                    "Path": "JBLM/Water System/Tanks/High Service",
+                    "UpdateHist": true,
+                    "UpdateTags": true,
+                    "UpdateViews": true
+                  },
+                  {
+                    "NewName": "Low Service Zone",
+                    "Path": "JBLM/Water System/Tanks/Low Service",
+                    "UpdateHist": true,
+                    "UpdateTags": true,
+                    "UpdateViews": true
+                  }
+                ]
+              }
+            },
+            "meta": {
+              "name": "EmbeddedView"
+            },
+            "position": {
+              "basis": "320px",
+              "grow": 1
+            },
+            "propConfig": {
+              "custom.type": {
+                "binding": {
+                  "config": {
+                    "path": "../Header/SelectOperation.props.params.value"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.params.columns": {
+                "binding": {
+                  "config": {
+                    "path": "this.props.params.type"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\tprops \u003d []\n\tif value \u003d\u003d \"Create Locations\":\n\t\tprops \u003d [\t{\u0027header\u0027: \u0027ParentLocationPath\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027string\u0027, \u0027width\u0027:2 },\n\t\t\t\t\t{\u0027header\u0027: \u0027Name\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027string\u0027, \u0027width\u0027: 1},\n\t\t\t\t\t{\u0027header\u0027: \u0027ShortName\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027string\u0027, \u0027width\u0027: 1},\n\t\t\t\t\t{\u0027header\u0027: \u0027Type\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027string\u0027, \u0027width\u0027: 1},\n\t\t\t\t\t{\u0027header\u0027: \u0027Definition\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027string\u0027, \u0027width\u0027: 1},\t\n\t\t\t\t\t{\u0027header\u0027: \u0027CreateTags\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027boolean\u0027, \u0027width\u0027: 1},\t\n\t\t\t\t\t{\u0027header\u0027: \u0027CreateViews\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027boolean\u0027, \u0027width\u0027: 1}\t\t\t\t\t\t\t\n\t\t\t\t]\n\telif value \u003d\u003d \"Move Locations\":\n\t\tprops \u003d [\t{\u0027header\u0027: \u0027Source\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027string\u0027, \u0027width\u0027:2 },\n\t\t\t\t\t{\u0027header\u0027: \u0027Destination\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027string\u0027, \u0027width\u0027: 2},\n\t\t\t\t\t{\u0027header\u0027: \u0027UpdateTags\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027boolean\u0027, \u0027width\u0027: 1},\n\t\t\t\t\t{\u0027header\u0027: \u0027UpdateHist\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027boolean\u0027, \u0027width\u0027: 1},\n\t\t\t\t\t{\u0027header\u0027: \u0027UpdateViews\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027boolean\u0027, \u0027width\u0027: 1}\n\t\t\t\t]\n\telif value \u003d\u003d \"Rename Locations\":\n\t\t\tprops \u003d [\t{\u0027header\u0027: \u0027Path\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027string\u0027, \u0027width\u0027:2 },\n\t\t\t\t\t\t{\u0027header\u0027: \u0027NewName\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027string\u0027, \u0027width\u0027: 1},\n\t\t\t\t\t\t{\u0027header\u0027: \u0027UpdateTags\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027boolean\u0027, \u0027width\u0027: 1},\n\t\t\t\t\t\t{\u0027header\u0027: \u0027UpdateHist\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027boolean\u0027, \u0027width\u0027: 1},\n\t\t\t\t\t\t{\u0027header\u0027: \u0027UpdateViews\u0027, \u0027editable\u0027: True, \u0027render\u0027: \u0027boolean\u0027, \u0027width\u0027: 1}\n\t\t\t\t\t]\n\t\t\t\t\t\t\n\t\n\tcolumns \u003d []\n\tfor prop in props:\n\t\n\t\tcolumn \u003d   {\n\t\t    \"align\": \"center\",\n\t\t    \"boolean\": \"checkbox\",\n\t\t    \"dateFormat\": \"MM/DD/YYYY\",\n\t\t    \"editable\": prop[\u0027editable\u0027],\n\t\t    \"field\": prop[\u0027header\u0027],\n\t\t    \"footer\": {\n\t\t      \"align\": \"center\",\n\t\t      \"justify\": \"left\",\n\t\t      \"style\": {\n\t\t        \"classes\": \"\"\n\t\t      },\n\t\t      \"title\": \"\"\n\t\t    },\n\t\t    \"header\": {\n\t\t      \"align\": \"center\",\n\t\t      \"justify\": \"left\",\n\t\t      \"style\": {\n\t\t        \"classes\": \"\"\n\t\t      },\n\t\t      \"title\": prop[\u0027header\u0027]\n\t\t    },\n\t\t    \"justify\": \"left\",\n\t\t    \"number\": \"value\",\n\t\t    \"numberFormat\": \"0,0.##\",\n\t\t    \"progressBar\": {\n\t\t      \"bar\": {\n\t\t        \"color\": \"\",\n\t\t        \"style\": {\n\t\t          \"classes\": \"\"\n\t\t        }\n\t\t      },\n\t\t      \"max\": 100,\n\t\t      \"min\": 0,\n\t\t      \"track\": {\n\t\t        \"color\": \"\",\n\t\t        \"style\": {\n\t\t          \"classes\": \"\"\n\t\t        }\n\t\t      },\n\t\t      \"value\": {\n\t\t        \"enabled\": True,\n\t\t        \"format\": \"0,0.##\",\n\t\t        \"justify\": \"center\",\n\t\t        \"style\": {\n\t\t          \"classes\": \"\"\n\t\t        }\n\t\t      }\n\t\t    },\n\t\t    \"render\": prop[\u0027render\u0027],\n\t\t    \"resizable\": True,\n\t\t    \"sort\": \"none\",\n\t\t    \"sortable\": False,\n\t\t    \"strictWidth\": False,\n\t\t    \"style\": {\n\t\t      \"classes\": \"\",\n\t\t      \"paddingLeft\": \"5px\"\n\t\t    },\n\t\t    \"toggleSwitch\": {\n\t\t      \"color\": {\n\t\t        \"selected\": \"\",\n\t\t        \"unselected\": \"\"\n\t\t      }\n\t\t    },\n\t\t    \"viewParams\": {},\n\t\t    \"viewPath\": \"\",\n\t\t    \"visible\": True,\n\t\t    \"width\": prop[\u0027width\u0027]\n\t\t  }\n\t\t  \n\t\tif prop[\u0027header\u0027] \u003d\u003d \u0027Parameters\u0027:\n\t\t\tcolumn[\u0027viewPath\u0027]\u003d \"Global Components/Table/Parameter List\"\n\t\t\t\n\t\tcolumns.append(column)\n\t\t  \n\t\t  \n\treturn columns\n\t\n\t",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.params.default": {
+                "binding": {
+                  "config": {
+                    "path": "this.props.params.type"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value \u003d\u003d \"Create Locations\":\n\t\treturn self.custom.default.createLocations\n\telif value \u003d\u003d \"Move Locations\":\n\t\treturn self.custom.default.moveLocations\n\telif value \u003d\u003d \"Rename Locations\":\n\t\treturn self.custom.default.renameLocations",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.params.title": {
+                "binding": {
+                  "config": {
+                    "path": "this.props.params.type"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.params.type": {
+                "binding": {
+                  "config": {
+                    "path": "this.custom.type"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.params.updateFunction": {
+                "binding": {
+                  "config": {
+                    "path": "this.props.params.type"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\tif value \u003d\u003d \"Create Locations\":\n\t\treturn \u0027location.bulk.bulkCreateLocations\u0027\n\telif value \u003d\u003d \"Move Locations\":\n\t\treturn \u0027location.bulk.bulkMoveLocations\u0027\n\telif value \u003d\u003d \"Rename Locations\":\n\t\treturn \u0027location.bulk.bulkRenameLocations\u0027",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "path": "Global Components/Table/Bulk Configure Table",
+              "style": {
+                "margin": "0px 20px"
+              }
+            },
+            "type": "ia.display.view"
+          }
+        ],
+        "meta": {
+          "name": "Bulk Tag Editor"
+        },
+        "position": {
+          "tabIndex": 1
+        },
+        "props": {
+          "direction": "column"
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "KPI Editor"
+        },
+        "position": {
+          "tabIndex": 2
+        },
+        "props": {
+          "style": {
+            "color": "var(--neutral-70)",
+            "fontSize": "20px",
+            "textAlign": "center"
+          },
+          "text": "Coming Soon!"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Doc Generator"
+        },
+        "position": {
+          "tabIndex": 3
+        },
+        "props": {
+          "style": {
+            "color": "var(--neutral-70)",
+            "fontSize": "20px",
+            "textAlign": "center"
+          },
+          "text": "Coming Soon!"
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "menuType": "modern",
+      "style": {
+        "padding": "20px"
+      },
+      "tabSize": {
+        "width": 250
+      },
+      "tabStyle": {
+        "active": {
+          "color": ""
+        },
+        "inactive": {
+          "fontSize": ""
+        }
+      },
+      "tabs": [
+        "Model Editor",
+        "Bulk Editor",
+        "KPI Editor",
+        "Doc Generator"
+      ]
+    },
+    "type": "ia.container.tab"
+  }
+}

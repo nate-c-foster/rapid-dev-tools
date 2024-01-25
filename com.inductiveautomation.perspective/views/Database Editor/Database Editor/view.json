@@ -1,0 +1,230 @@
+{
+  "custom": {},
+  "params": {},
+  "permissions": {
+    "securityLevels": [
+      {
+        "children": [],
+        "name": "Authenticated"
+      }
+    ],
+    "type": "AllOf"
+  },
+  "props": {},
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "SelectDatabase"
+                },
+                "position": {
+                  "basis": "320px"
+                },
+                "propConfig": {
+                  "props.params.options": {
+                    "binding": {
+                      "config": {
+                        "fallbackDelay": 2.5,
+                        "mode": "expression",
+                        "tagPath": "{session.custom.tagProvider} + \u0027RapidDev/Database Editor/Settings/databaseConnections\u0027"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\toptions \u003d []\n\t\n\tfor row in range(value.getRowCount()):\n\t\tname \u003d value.getValueAt(row,\u0027Name\u0027)\n\t\toptions.append({\u0027label\u0027:name, \u0027value\u0027:name})\n\t\t\n\treturn options",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "tag"
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "label": "Database",
+                    "value": ""
+                  },
+                  "path": "Global Components/Forms/Label Dropdown Item",
+                  "style": {
+                    "height": "40px",
+                    "margin": "auto 20px"
+                  }
+                },
+                "type": "ia.display.view"
+              },
+              {
+                "meta": {
+                  "name": "SelectTable"
+                },
+                "position": {
+                  "basis": "320px"
+                },
+                "propConfig": {
+                  "props.params.options": {
+                    "binding": {
+                      "config": {
+                        "path": "../SelectDatabase.props.params.value"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\n\t\n\toptions \u003d []\n\tif value:\n\t\tconnections \u003d settings.getValue(\u0027Database Editor\u0027, \u0027databaseConnections\u0027)\n\t\tfor row in range(connections.getRowCount()):\n\t\t\tif value \u003d\u003d connections.getValueAt(row, \u0027Name\u0027):\n\t\t\t\ttranslator \u003d connections.getValueAt(row, \u0027Translator\u0027)\n\t\t\t\tqueryPath \u003d \"General/\" + translator + \"/getTableNames\"\n\t\t\t\tresults \u003d system.db.runNamedQuery(queryPath, {\u0027database\u0027: value})\n\t\t\t\tfor row in range(results.getRowCount()):\n\t\t\t\t\tschema \u003d results.getValueAt(row,\"TABLE_SCHEMA\")\n\t\t\t\t\ttableName \u003d results.getValueAt(row,\"TABLE_NAME\")\n\t\t\t\t\toptions.append({\"label\": schema + \u0027.\u0027 + tableName, \"value\": schema + \u0027.\u0027 + tableName})\n\t\n\treturn options",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "label": "Table",
+                    "value": ""
+                  },
+                  "path": "Global Components/Forms/Label Dropdown Item",
+                  "style": {
+                    "height": "40px",
+                    "margin": "auto 20px"
+                  }
+                },
+                "type": "ia.display.view"
+              }
+            ],
+            "meta": {
+              "name": "Header"
+            },
+            "position": {
+              "basis": "100px",
+              "shrink": 0
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "meta": {
+              "name": "Table"
+            },
+            "position": {
+              "basis": "320px",
+              "grow": 1
+            },
+            "propConfig": {
+              "props.params.columns": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "dbName": "{this.props.params.dbName}",
+                      "dbType": "{this.props.params.dbType}",
+                      "primaryKey": "{this.props.params.primaryKey}",
+                      "tableName": "{this.props.params.tableName}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\n\tdbName \u003d value[\u0027dbName\u0027]\n\tdbType \u003d value[\u0027dbType\u0027]\n\tfullTableName \u003d value[\u0027tableName\u0027]\n\tprimaryKey \u003d value[\u0027primaryKey\u0027]\n\t\n\tcolumns \u003d []\n\tif dbName and dbType and fullTableName and primaryKey:\n\t\t[tableSchema, tableName] \u003d fullTableName.split(\u0027.\u0027)\n\n\t\ttry:\n\t\t\tqueryPath \u003d \"General/\" + dbType + \"/getColumnNames\"\n\t\t\tcolumnNames \u003d system.db.runNamedQuery(queryPath, {\u0027database\u0027: dbName, \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\u0027tableName\u0027:tableName})\n\t\texcept:\n\t\t\treturn []\n\t\t\n\t\tfor row in range(columnNames.getRowCount()):\n\t\t\tname \u003d columnNames.getValueAt(row,0)\n\t\t\tif name \u003d\u003d primaryKey:\n\t\t\t\tcolumns.append({\u0027columnName\u0027:name, \u0027editable\u0027:False, \u0027width\u0027:1})\n\t\t\telse:\n\t\t\t\tcolumns.append({\u0027columnName\u0027:name, \u0027editable\u0027:True, \u0027width\u0027:1})\n\t\treturn columns\n\t\t\t\n\telse:\n\t\treturn []\n",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              },
+              "props.params.dbName": {
+                "binding": {
+                  "config": {
+                    "path": "../Header/SelectDatabase.props.params.value"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.params.dbType": {
+                "binding": {
+                  "config": {
+                    "path": "this.props.params.dbName"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\n\tconnections \u003d settings.getValue(\u0027Database Editor\u0027, \u0027databaseConnections\u0027)\n\tfor row in range(connections.getRowCount()):\n\t\tif value \u003d\u003d connections.getValueAt(row, \u0027Name\u0027):\n\t\t\ttranslator \u003d connections.getValueAt(row, \u0027Translator\u0027)\n\t\t\treturn translator\n\t\t\t\n\telse:\n\t\treturn \u0027\u0027",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.params.primaryKey": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "dbName": "{this.props.params.dbName}",
+                      "dbType": "{this.props.params.dbType}",
+                      "tableName": "{this.props.params.tableName}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\n\tdbName \u003d value[\u0027dbName\u0027]\n\tdbType \u003d value[\u0027dbType\u0027]\n\tfullTableName \u003d value[\u0027tableName\u0027]\n\t\n\n\tif dbName and dbType and fullTableName:\n\t\t[tableSchema, tableName] \u003d fullTableName.split(\u0027.\u0027)\n\n\t\tqueryPath \u003d \"General/\" + dbType + \"/getPrimaryKey\"\n\t\ttry:\n\t\t\tprimaryKey \u003d system.db.runNamedQuery(queryPath, {\u0027database\u0027: dbName, \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\u0027tableName\u0027:tableName, \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\u0027tableSchema\u0027: tableSchema}).getValueAt(0,0)\n\t\texcept:\n\t\t\treturn \u0027\u0027\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\treturn primaryKey\n\telse:\n\t\treturn \u0027\u0027\n",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              },
+              "props.params.tableName": {
+                "binding": {
+                  "config": {
+                    "path": "../Header/SelectTable.props.params.value"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "allowEdits": true
+              },
+              "path": "Database Editor/Components/Tables/DB Editor",
+              "style": {
+                "margin": "0px 20px"
+              }
+            },
+            "type": "ia.display.view"
+          }
+        ],
+        "meta": {
+          "name": "Database Editor"
+        },
+        "props": {
+          "direction": "column"
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "menuType": "modern",
+      "style": {
+        "padding": "20px"
+      },
+      "tabSize": {
+        "width": 250
+      },
+      "tabStyle": {
+        "active": {
+          "color": "",
+          "fontSize": ""
+        },
+        "inactive": {
+          "fontSize": ""
+        }
+      },
+      "tabs": [
+        "Database Editor"
+      ]
+    },
+    "type": "ia.container.tab"
+  }
+}

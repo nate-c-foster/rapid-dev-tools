@@ -1,0 +1,311 @@
+{
+  "custom": {},
+  "params": {
+    "LocationID": 205
+  },
+  "propConfig": {
+    "params.LocationID": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 407,
+      "width": 454
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "LocationNameLabel"
+                },
+                "position": {
+                  "basis": "20px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "path": "/root.custom.orderNumber"
+                      },
+                      "enabled": false,
+                      "transforms": [
+                        {
+                          "code": "\treturn \u0027Location Name: %s\u0027 %value",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "RapidDev/Text/Label"
+                  },
+                  "text": "Location Name"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "32px"
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "path": "/root.custom.locationDetails.locationName"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "RapidDev/TextField",
+                    "paddingLeft": "10px"
+                  }
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "ParentPathLabel"
+                },
+                "position": {
+                  "basis": "20px",
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "RapidDev/Text/Label",
+                    "marginTop": "10px"
+                  },
+                  "text": "Select New Parent Path"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Parent Path"
+                },
+                "position": {
+                  "basis": "30px"
+                },
+                "props": {
+                  "style": {
+                    "classes": "RapidDev/TextField"
+                  }
+                },
+                "type": "ia.input.text-field"
+              },
+              {
+                "meta": {
+                  "name": "Move Model"
+                },
+                "position": {
+                  "basis": "36px"
+                },
+                "props": {
+                  "selected": true,
+                  "style": {
+                    "marginTop": "20px"
+                  },
+                  "text": "Move Location"
+                },
+                "type": "ia.input.checkbox"
+              },
+              {
+                "meta": {
+                  "name": "Move Tag"
+                },
+                "position": {
+                  "basis": "36px"
+                },
+                "props": {
+                  "selected": true,
+                  "text": "Move Tag"
+                },
+                "type": "ia.input.checkbox"
+              },
+              {
+                "meta": {
+                  "name": "Move Hist"
+                },
+                "position": {
+                  "basis": "36px"
+                },
+                "props": {
+                  "selected": true,
+                  "text": "Move Historian"
+                },
+                "type": "ia.input.checkbox"
+              },
+              {
+                "meta": {
+                  "name": "Move Views"
+                },
+                "position": {
+                  "basis": "36px"
+                },
+                "props": {
+                  "selected": true,
+                  "text": "Move View"
+                },
+                "type": "ia.input.checkbox"
+              }
+            ],
+            "meta": {
+              "name": "FlexContainer_Inner"
+            },
+            "position": {
+              "basis": "300px",
+              "grow": 1
+            },
+            "props": {
+              "direction": "column"
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer_Outer"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 0
+        },
+        "props": {
+          "justify": "space-evenly",
+          "style": {
+            "paddingLeft": "10px",
+            "paddingRight": "10px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\t\n\tsource \u003d self.view.getChild(\"root\").custom.locationDetails.locationPath\n\tdestination \u003d self.parent.parent.getChild(\"FlexContainer_Outer\").getChild(\"FlexContainer_Inner\").getChild(\"Parent Path\").props.text\n\tparentPath \u003d \u0027/\u0027.join(source.split(\u0027/\u0027)[:-1])\n\tmoveLoc \u003d self.parent.parent.getChild(\"FlexContainer_Outer\").getChild(\"FlexContainer_Inner\").getChild(\"Move Model\").props.selected\n\tmoveTags \u003d self.parent.parent.getChild(\"FlexContainer_Outer\").getChild(\"FlexContainer_Inner\").getChild(\"Move Tag\").props.selected\n\tmoveHist \u003d self.parent.parent.getChild(\"FlexContainer_Outer\").getChild(\"FlexContainer_Inner\").getChild(\"Move Hist\").props.selected\n\tmoveViews \u003dself.parent.parent.getChild(\"FlexContainer_Outer\").getChild(\"FlexContainer_Inner\").getChild(\"Move Views\").props.selected\n\t\n\ttagPathPrefix \u003d settings.getValue(\u0027Location Model\u0027, \u0027tagPathPrefix\u0027)\n\tviewPathPrefix \u003d settings.getValue(\u0027Location Model\u0027, \u0027viewPathPrefix\u0027)\n\t\n\tviewImports \u003d []\n\t\n\tdestination \u003d destination.strip()\n\t\n\tif str(destination) !\u003d str(parentPath): \n\t\n\t\tif moveLoc:\n\t\t\tlocation.bulk.moveLocation(source, destination)\n\n\t\tif moveTags:\n\t\t\ttageditor.bulk.moveTag(tagPathPrefix + source, tagPathPrefix + destination, moveHist)\n\t\t\t\n\t\tif moveViews:\n\t\t\tnewViews \u003d vieweditor.bulk.moveView(viewPathPrefix + source, viewPathPrefix + destination)\n\t\t\tviewImports \u003d viewImports + newViews\n\t\n\t\tif viewImports:\n\t\t\tvieweditor.util.generateViewImport(viewImports)\n\t\n\n\t\n\n\t\n\tsystem.perspective.closePopup(\"MoveLocationPopup\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Ok"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/ButtonPrimary",
+                "margin": "2px 5px"
+              },
+              "text": "Ok"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.closePopup(\"MoveLocationPopup\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Cancel"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/ButtonPrimary",
+                "margin": "2px 5px"
+              },
+              "text": "Cancel"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Buttons"
+        },
+        "position": {
+          "basis": "35px",
+          "shrink": 0
+        },
+        "props": {
+          "justify": "flex-end",
+          "style": {
+            "margin-top": "20px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "propConfig": {
+      "custom.locationDetails": {
+        "binding": {
+          "config": {
+            "path": "view.params.LocationID"
+          },
+          "transforms": [
+            {
+              "code": "\n\tmodelDS \u003d system.tag.readBlocking(self.session.custom.modelTagPath)[0].value\n\n\treturn location.model.getLocationDetails(value, modelDS)",
+              "type": "script"
+            }
+          ],
+          "type": "property"
+        }
+      }
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "padding": "10px"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "MoveToParentPath",
+          "pageScope": true,
+          "script": "\t# implement your handler here\n\t\n\tlocationPath \u003d payload[\u0027locationPath\u0027]\n\tself.getChild(\"FlexContainer_Outer\").getChild(\"FlexContainer_Inner\").getChild(\"Parent Path\").props.text \u003d locationPath",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

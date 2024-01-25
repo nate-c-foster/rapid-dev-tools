@@ -1,0 +1,350 @@
+{
+  "custom": {},
+  "params": {
+    "ParentLocationID": 65
+  },
+  "propConfig": {
+    "params.ParentLocationID": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 351,
+      "width": 351
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "LocationLabel"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "/root.custom.orderNumber"
+                  },
+                  "enabled": false,
+                  "transforms": [
+                    {
+                      "code": "\treturn \u0027Location Name: %s\u0027 %value",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Text/Label"
+              },
+              "text": "Location Name"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "LocationName"
+            },
+            "position": {
+              "basis": "30px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/TextField"
+              }
+            },
+            "type": "ia.input.text-field"
+          },
+          {
+            "meta": {
+              "name": "ShortNameLabel"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Text/Label",
+                "marginTop": "10px"
+              },
+              "text": "Short Name"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "ShortName"
+            },
+            "position": {
+              "basis": "30px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/TextField"
+              }
+            },
+            "type": "ia.input.text-field"
+          },
+          {
+            "meta": {
+              "name": "LocationTypeLabel"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Text/Label",
+                "marginTop": "10px"
+              },
+              "text": "Location Type"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "LocationType"
+            },
+            "position": {
+              "basis": "36px"
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "path": "session.custom.modelDBType"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\n\tqueryPath \u003d \"Location Model/\" + value + \"/getLocationTypes\"\n\t\n\treturn system.db.runNamedQuery(queryPath)",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "dropdownOptionStyle": {
+                "classes": "RapidDev/Dropdown/Options"
+              },
+              "placeholder": {
+                "color": "--neutral-20"
+              },
+              "style": {
+                "classes": "RapidDev/Dropdown/Root"
+              }
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "LocationTypeDefinitionLabel"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Text/Label",
+                "marginTop": "10px"
+              },
+              "text": "Location Type Definition"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "LocationTypeDefinition"
+            },
+            "position": {
+              "basis": "36px"
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "locationTypeID": "{../LocationType.props.value}",
+                      "modelDBType": "{session.custom.modelDBType}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\n\tif value[\u0027locationTypeID\u0027]:\n\n\t\tqueryPath \u003d \"Location Model/\" + value[\u0027modelDBType\u0027] + \"/getLocationTypeDefinitions\"\n\t\treturn system.db.runNamedQuery(queryPath, {\u0027LocationTypeID\u0027: value[\u0027locationTypeID\u0027]})\n\t\t\n\telse:\n\t\treturn []",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              }
+            },
+            "props": {
+              "dropdownOptionStyle": {
+                "classes": "RapidDev/Dropdown/Options"
+              },
+              "style": {
+                "classes": "RapidDev/Dropdown/Root"
+              }
+            },
+            "type": "ia.input.dropdown"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer_Inner"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "padding": "10px 20px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\t\n\tlocationName \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"LocationName\").props.text\n\tlocationTypeID \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"LocationType\").props.value\n\tparentLocationID \u003d self.view.params.ParentLocationID\n\tlocationTypeDefinitionID \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"LocationTypeDefinition\").props.value\n\tshortName \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"ShortName\").props.text\n\tmodifiedBy \u003d self.session.props.auth.user.userName\n\t\n\tnewViews \u003d location.bulk.createLocation(locationName,\n\t\t\t\t\t\t\t\t\t\t\t\tlocationTypeID,\n\t\t\t\t\t\t\t\t\t\t\t\tparentLocationID, \n\t\t\t\t\t\t\t\t\t\t\t\tlocationTypeDefinitionID, \n\t\t\t\t\t\t\t\t\t\t\t\tshortName\u003dshortName,\n\t\t\t\t\t\t\t\t\t\t\t\tmodifiedBy \u003d modifiedBy)\n\t\t\t\t\t\t\t\t\t\t\t\t\n\tvieweditor.util.generateViewImport(newViews)\n\n\n\tsystem.perspective.closePopup(\u0027AddLocationPopup\u0027)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Ok"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "locationName": "{.../FlexContainer_Inner/LocationName.props.text}",
+                      "locationType": "{.../FlexContainer_Inner/LocationType.props.value}",
+                      "locationTypeDefinition": "{.../FlexContainer_Inner/LocationTypeDefinition.props.value}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value[\u0027locationName\u0027] and value[\u0027locationType\u0027] and value[\u0027locationTypeDefinition\u0027]:\n\t\treturn True\n\telse:\n\t\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/ButtonPrimary",
+                "margin": "2px 5px"
+              },
+              "text": "Ok"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.closePopup(\u0027AddLocationPopup\u0027)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Cancel"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/ButtonPrimary",
+                "margin": "2px 5px"
+              },
+              "text": "Cancel"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Buttons_0"
+        },
+        "position": {
+          "basis": "35px",
+          "shrink": 0
+        },
+        "props": {
+          "justify": "flex-end",
+          "style": {
+            "margin-top": "20px",
+            "marginBottom": "5px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "propConfig": {
+      "custom.orderNumber": {
+        "binding": {
+          "config": {
+            "parameters": {
+              "parentLocationID": "{view.params.ParentLocationID}"
+            },
+            "queryPath": "Model/MSSQL/getMaxOrderNumber"
+          },
+          "transforms": [
+            {
+              "code": "\tif value is None:\n\t\treturn 1\n\telse:\n\t\treturn int(value) + 1",
+              "type": "script"
+            }
+          ],
+          "type": "query"
+        }
+      }
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "RapidDev/Popup/Background",
+        "overflow": "hidden",
+        "padding": "5px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

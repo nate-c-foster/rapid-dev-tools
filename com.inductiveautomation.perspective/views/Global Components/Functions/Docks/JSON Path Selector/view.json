@@ -1,0 +1,198 @@
+{
+  "custom": {},
+  "params": {
+    "argName": "",
+    "functionPath": "",
+    "index": ""
+  },
+  "propConfig": {
+    "params.argName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.functionPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {},
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "289px"
+            },
+            "props": {
+              "text": "Select JSON Path"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "id": "FunctionDock",
+                    "type": "close"
+                  },
+                  "scope": "C",
+                  "type": "dock"
+                }
+              }
+            },
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "30px"
+            },
+            "props": {
+              "color": "var(--neutral-70)",
+              "path": "material/close",
+              "style": {
+                "cursor": "pointer",
+                "padding": "2px"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "32px"
+        },
+        "props": {
+          "justify": "space-between",
+          "style": {
+            "classes": "RapidDev/Widget/Title"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "dom": {
+                "onKeyDown": {
+                  "config": {
+                    "script": "\n\tif event.key \u003d\u003d \u0027Enter\u0027:\n\t\n\t\tjsonStr \u003d self.props.text\n\t\tif jsonStr:\n\t\t\titems \u003d  util.json.jsonToTree(jsonStr)\n\t\t\tself.getSibling(\"Tree\").props.items \u003d items\n\t\telse:\n\t\t\tself.getSibling(\"Tree\").props.items \u003d []"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "TextArea"
+            },
+            "position": {
+              "position": "top"
+            },
+            "props": {
+              "placeholder": "Paste JSON string here ..",
+              "style": {
+                "backgroundColor": "var(--neutral-10)",
+                "padding": "10px"
+              }
+            },
+            "type": "ia.input.text-area"
+          },
+          {
+            "events": {
+              "component": {
+                "onItemClicked": {
+                  "config": {
+                    "script": "\t\n\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.selectionData[0].value[1:],\n\t\t\t\t\"index\":self.view.params.index\n\t\t\t\t}\n\t\n\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)\n\tsystem.perspective.closeDock(\"FunctionDock\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Tree"
+            },
+            "position": {
+              "position": "bottom"
+            },
+            "props": {
+              "appearance": {
+                "defaultNodeIcons": {
+                  "collapsed": {
+                    "path": "material/folder"
+                  },
+                  "empty": {
+                    "path": "material/stop"
+                  },
+                  "expanded": {
+                    "path": "material/folder_open"
+                  }
+                },
+                "expandIcons": {
+                  "collapsed": {
+                    "path": "material/arrow_right"
+                  },
+                  "expanded": {
+                    "path": "material/arrow_drop_down"
+                  }
+                }
+              },
+              "style": {
+                "backgroundColor": "var(--neutral-10)",
+                "padding": "10px"
+              }
+            },
+            "type": "ia.display.tree"
+          }
+        ],
+        "meta": {
+          "name": "SplitContainer"
+        },
+        "position": {
+          "basis": "200px",
+          "grow": 1
+        },
+        "props": {
+          "orientation": "vertical"
+        },
+        "type": "ia.container.split"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "backgroundColor": "var(--neutral-00)",
+        "opacity": 1
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "UpdateKeyPathDock",
+          "pageScope": true,
+          "script": "\n\tjsonStr \u003d payload[\u0027jsonStr\u0027]\n\t\n\tif jsonStr:\n\t\titems \u003d util.json.jsonToTree(jsonStr)\n\t\tself.getChild(\"SplitContainer\").getChild(\"Tree\").props.items \u003d items\n\telse:\n\t\tself.getChild(\"SplitContainer\").getChild(\"Tree\").props.items \u003d []",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

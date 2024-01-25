@@ -1,0 +1,352 @@
+{
+  "custom": {},
+  "params": {
+    "mode": "",
+    "tagPath": "",
+    "type": ""
+  },
+  "propConfig": {
+    "params.mode": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.type": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 291
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "150px"
+                },
+                "props": {
+                  "text": "Function Name"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "TextField"
+                },
+                "position": {
+                  "basis": "300px"
+                },
+                "props": {
+                  "style": {
+                    "classes": "RapidDev/TextField"
+                  }
+                },
+                "type": "ia.input.text-field"
+              }
+            ],
+            "meta": {
+              "name": "Name"
+            },
+            "position": {
+              "basis": "40px"
+            },
+            "props": {
+              "style": {
+                "padding": "5px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "150px"
+                },
+                "props": {
+                  "text": "Description"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "TextField"
+                },
+                "position": {
+                  "basis": "200px",
+                  "grow": 1
+                },
+                "props": {
+                  "style": {
+                    "classes": "RapidDev/TextField"
+                  }
+                },
+                "type": "ia.input.text-field"
+              }
+            ],
+            "meta": {
+              "name": "Description"
+            },
+            "position": {
+              "basis": "40px"
+            },
+            "props": {
+              "style": {
+                "padding": "5px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "150px"
+                },
+                "props": {
+                  "text": "Function Path"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "TextField"
+                },
+                "position": {
+                  "basis": "150px",
+                  "grow": 1
+                },
+                "props": {
+                  "placeholder": "RapidDev.View.Filter.regexFilter(pathFilter, viewJSONFilter)",
+                  "style": {
+                    "classes": "RapidDev/TextField"
+                  }
+                },
+                "type": "ia.input.text-field"
+              }
+            ],
+            "meta": {
+              "name": "Path"
+            },
+            "position": {
+              "basis": "40px"
+            },
+            "props": {
+              "style": {
+                "padding": "5px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "150px"
+                },
+                "props": {
+                  "text": "Dock Paths"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "TextField"
+                },
+                "position": {
+                  "basis": "150px",
+                  "grow": 1
+                },
+                "props": {
+                  "placeholder": "{\"argument name\":\"dock path\"}",
+                  "style": {
+                    "classes": "RapidDev/TextField"
+                  }
+                },
+                "type": "ia.input.text-field"
+              }
+            ],
+            "meta": {
+              "name": "Dock"
+            },
+            "position": {
+              "basis": "40px"
+            },
+            "props": {
+              "style": {
+                "padding": "5px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "150px"
+                },
+                "props": {
+                  "text": "Dropdown Paths"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "TextField"
+                },
+                "position": {
+                  "basis": "150px",
+                  "grow": 1
+                },
+                "props": {
+                  "placeholder": "{\"argument name\":\"dropdown path\"}",
+                  "style": {
+                    "classes": "RapidDev/TextField"
+                  }
+                },
+                "type": "ia.input.text-field"
+              }
+            ],
+            "meta": {
+              "name": "Dropdown"
+            },
+            "position": {
+              "basis": "40px"
+            },
+            "props": {
+              "style": {
+                "padding": "5px"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "200px"
+        },
+        "props": {
+          "direction": "column"
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\t\n\tfunctionType \u003d self.view.params.type\n\tfunctionName \u003d self.parent.parent.getChild(\"FlexContainer\").getChild(\"Name\").getChild(\"TextField\").props.text\n\tfunctionPathWithArgs \u003d self.parent.parent.getChild(\"FlexContainer\").getChild(\"Path\").getChild(\"TextField\").props.text\n\tdockPath \u003d self.parent.parent.getChild(\"FlexContainer\").getChild(\"Dock\").getChild(\"TextField\").props.text\n\tdropdownPath \u003d self.parent.parent.getChild(\"FlexContainer\").getChild(\"Dropdown\").getChild(\"TextField\").props.text\n\tdescription \u003d self.parent.parent.getChild(\"FlexContainer\").getChild(\"Description\").getChild(\"TextField\").props.text\n\t\n\tif not dockPath:\n\t\tdockPath \u003d \u0027{}\u0027\n\t\n\tif not dropdownPath:\n\t\tdropdownPath \u003d \u0027{}\u0027\n\t\n\t\n\tfunctionPath \u003d functionPathWithArgs[:-1].split(\u0027(\u0027)[0]\n\targs \u003d functionPathWithArgs[:-1].split(\u0027(\u0027)[1].split(\u0027,\u0027)\n\t\n#\tkwargs \u003d {}\t\n#\tfor arg in args:\n#\t\tif arg:\n#\t\t\tkwargs[arg.lstrip().rstrip()] \u003d \"\"\n\t\n\tkwargs \u003d \"\"\n\tfor arg in args:\n\t\tkwargs \u003d kwargs +  \u0027\"\u0027 + arg.lstrip().rstrip() + \u0027\":\"\",\u0027\n\tkwargs \u003d \u0027{\u0027 + kwargs[:-1] + \u0027}\u0027\n\t\n\ttagPath \u003d self.view.params.tagPath\n\tregisteredFunctions \u003d system.tag.readBlocking(tagPath)[0].value\n\tcount \u003d registeredFunctions.getRowCount()\n\tsystem.tag.writeBlocking(tagPath, system.dataset.addRow(registeredFunctions, [functionName,functionPath, kwargs, dockPath, dropdownPath,description, count + 1]) )\n\t\t\n\n\tsystem.perspective.closePopup(\u0027AddFunctionPopup\u0027)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Ok"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Button/Primary",
+                "margin": "2px 5px"
+              },
+              "text": "Ok"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "draggable": true,
+                    "id": "AddFunctionPopup",
+                    "modal": false,
+                    "overlayDismiss": false,
+                    "resizable": true,
+                    "showCloseIcon": true,
+                    "type": "close",
+                    "viewPath": "Components/Functions/Edit Function Popup",
+                    "viewportBound": false
+                  },
+                  "scope": "C",
+                  "type": "popup"
+                }
+              }
+            },
+            "meta": {
+              "name": "Cancel"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Button/Primary",
+                "margin": "2px 5px"
+              },
+              "text": "Cancel"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Buttons"
+        },
+        "position": {
+          "basis": "40px"
+        },
+        "props": {
+          "justify": "flex-end",
+          "style": {
+            "margin-top": "20px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "justify": "space-around",
+      "style": {
+        "padding": "10px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

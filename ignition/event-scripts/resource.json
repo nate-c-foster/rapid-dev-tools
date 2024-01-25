@@ -1,0 +1,16 @@
+{
+  "scope": "G",
+  "version": 1,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "data.bin"
+  ],
+  "attributes": {
+    "lastModification": {
+      "actor": "nfoster",
+      "timestamp": "2023-06-03T14:15:03Z"
+    },
+    "lastModificationSignature": "fd69e7d688b8322e8054c8341fd9461f69763307bffab7f058b08aae7c106898"
+  }
+}

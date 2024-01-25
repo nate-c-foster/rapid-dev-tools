@@ -1,0 +1,47 @@
+{
+  "scope": "DG",
+  "documentation": "Description: This query is to update the parent location used in the configuration scripts.\nAuthor: Derrick Chambers\nCompany: Flexware Innovation\nDate Created: 3/9/2021\nDate Updated: NA",
+  "version": 2,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "query.sql"
+  ],
+  "attributes": {
+    "useMaxReturnSize": false,
+    "autoBatchEnabled": false,
+    "fallbackValue": "",
+    "maxReturnSize": 100,
+    "cacheUnit": "SEC",
+    "description": "Description: This query is to update the parent location used in the configuration scripts.\nAuthor: Derrick Chambers\nCompany: Flexware Innovation\nDate Created: 3/9/2021\nDate Updated: NA",
+    "type": "UpdateQuery",
+    "enabled": true,
+    "cacheAmount": 1,
+    "cacheEnabled": false,
+    "database": "",
+    "fallbackEnabled": false,
+    "lastModificationSignature": "e2bfcfb65e24b6fc6d52a2fa37a895a255cab71c54dc285b38b95142e89a688f",
+    "permissions": [
+      {
+        "zone": "",
+        "role": ""
+      }
+    ],
+    "lastModification": {
+      "actor": "nfoster",
+      "timestamp": "2024-01-24T12:12:14Z"
+    },
+    "parameters": [
+      {
+        "type": "Parameter",
+        "identifier": "LocationID",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "newParentLocationID",
+        "sqlType": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "custom": {},
+  "params": {
+    "options": [
+      {
+        "label": "[default]RapidDev",
+        "value": true,
+        "viewPath": "Backup Restore/Components/Checkbox Option"
+      },
+      {
+        "label": "[SCADA]",
+        "value": true,
+        "viewPath": "Backup Restore/Components/Checkbox Option"
+      },
+      {
+        "label": "[SCADA]JBLM",
+        "value": true,
+        "viewPath": "Backup Restore/Components/Checkbox Option"
+      }
+    ]
+  },
+  "propConfig": {
+    "params.options": {
+      "paramDirection": "inout",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 295,
+      "width": 703
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "FlexRepeater"
+        },
+        "position": {
+          "basis": 0,
+          "grow": 1
+        },
+        "propConfig": {
+          "props.instances": {
+            "binding": {
+              "config": {
+                "bidirectional": true,
+                "path": "view.params.options"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "elementStyle": {
+            "margin": "3px"
+          },
+          "path": "Backup Restore/Components/Option Container",
+          "useDefaultViewWidth": false
+        },
+        "type": "ia.display.flex-repeater"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

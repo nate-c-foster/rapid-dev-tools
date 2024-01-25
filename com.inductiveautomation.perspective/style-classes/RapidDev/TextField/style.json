@@ -1,0 +1,24 @@
+{
+  "base": {
+    "style": {
+      "backgroundColor": "var(--neutral-10)",
+      "borderColor": "var(--neutral-40)",
+      "borderStyle": "none",
+      "borderWidth": "1px",
+      "borderTopLeftRadius": "2px",
+      "borderTopRightRadius": "2px",
+      "borderBottomLeftRadius": "2px",
+      "borderBottomRightRadius": "2px"
+    }
+  },
+  "variants": [
+    {
+      "pseudo": "focus",
+      "style": {
+        "outlineColor": "var(--callToAction--active)",
+        "outlineStyle": "solid",
+        "outlineWidth": "1px"
+      }
+    }
+  ]
+}

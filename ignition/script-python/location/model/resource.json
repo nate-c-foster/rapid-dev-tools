@@ -1,0 +1,17 @@
+{
+  "scope": "A",
+  "version": 1,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "code.py"
+  ],
+  "attributes": {
+    "lastModification": {
+      "actor": "nfoster",
+      "timestamp": "2024-01-24T12:12:15Z"
+    },
+    "hintScope": 2,
+    "lastModificationSignature": "b88c89e95c99e610dfee359bbda1d7d3e88fc9c0ef422d7c18ccac97512f9f52"
+  }
+}

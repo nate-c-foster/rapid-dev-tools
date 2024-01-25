@@ -1,0 +1,125 @@
+{
+  "custom": {},
+  "params": {
+    "tagPath": "[SCADA]RapidDev/Tag Editor/Settings/udtTypeFilters"
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 394
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "FlexRepeater"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.instances": {
+            "binding": {
+              "config": {
+                "fallbackDelay": 2.5,
+                "mode": "expression",
+                "tagPath": "{view.params.tagPath}"
+              },
+              "transforms": [
+                {
+                  "code": "\ttagPath \u003d str(self.view.params.tagPath)\n\t\n\tinstances \u003d []\n\tfor i, item in enumerate(value):\n\t\tinstances.append({\u0027tagPath\u0027: tagPath + \u0027[\u0027 + str(i) + \u0027]\u0027, \u0027index\u0027: i, \u0027arrayElement\u0027:True})\n\t\t\n\treturn instances\n\n\t\t\n\t\t",
+                  "type": "script"
+                }
+              ],
+              "type": "tag"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "elementPosition": {
+            "basis": "auto"
+          },
+          "path": "Settings/Components/Setting Type/String",
+          "useDefaultViewHeight": false,
+          "useDefaultViewWidth": false
+        },
+        "type": "ia.display.flex-repeater"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\ttagPath \u003d self.view.params.tagPath\n\ttagArray \u003d system.tag.readBlocking(tagPath)[0].value\n\t\n\tnewArray \u003d [x for x in tagArray]\n\tnewArray.append(\u0027\u0027)\n\t\n\tsystem.tag.writeBlocking([tagPath], [newArray])"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "30px",
+              "shrink": 0
+            },
+            "props": {
+              "color": "var(--green-77)",
+              "path": "material/add",
+              "style": {
+                "cursor": "pointer",
+                "width": "22px"
+              }
+            },
+            "type": "ia.display.icon"
+          },
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "props": {
+              "style": {
+                "marginLeft": "3px"
+              },
+              "text": "add new item",
+              "textStyle": {
+                "color": "var(--enabled-Icon)",
+                "fontSize": "13px"
+              }
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "22px"
+        },
+        "props": {
+          "style": {
+            "marginTop": "3px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

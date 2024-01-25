@@ -1,0 +1,105 @@
+{
+  "custom": {},
+  "params": {
+    "argName": "",
+    "argValue": "",
+    "functionPath": "",
+    "index": ""
+  },
+  "propConfig": {
+    "params.argName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.argValue": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.functionPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 41,
+      "width": 218
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\n\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.value,\n\t\t\t\t\"index\": self.view.params.index,\n\t\t\t\t\"updateTable\": False\n\t\t\t\t}\n\t\n\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)\n\t\n\n\t\n\n\tproperty \u003d self.props.value\n\n\n\tpayload \u003d {\t\"property\":property,\n\t\t\t\t\"index\": self.view.params.index\n\t}\n\n\n\tsystem.perspective.sendMessage(\"UpdateTagProperty\",payload)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          },
+          "system": {
+            "onStartup": {
+              "config": {
+                "script": "\t\n\tproperty \u003d self.props.value\n\n\n\tpayload \u003d {\t\"property\":property,\n\t\t\t\t\"index\": self.view.params.index\n\t}\n\n\n\tsystem.perspective.sendMessage(\"UpdateTagProperty\",payload)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Dropdown"
+        },
+        "position": {
+          "basis": "36px"
+        },
+        "propConfig": {
+          "props.options": {
+            "binding": {
+              "config": {
+                "path": "view.params.argName"
+              },
+              "transforms": [
+                {
+                  "code": "\n\tdef optionSort(option):\n\t\treturn option[\u0027value\u0027]\n\n\n\toptions \u003d [ \t{\u0027value\u0027: \u0027.name\u0027, \u0027label\u0027: \u0027Name\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027.dataType\u0027, \u0027label\u0027: \u0027Data Type\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027.value\u0027, \u0027label\u0027: \u0027Value\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027.enabled\u0027, \u0027label\u0027: \u0027Enabled\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027.quality\u0027, \u0027label\u0027: \u0027Quality\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027.valueSource\u0027, \u0027label\u0027: \u0027Value Source\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027.opcItemPath\u0027, \u0027label\u0027: \u0027OPC Item Path\u0027},\t\t\t\t\t\n\t\t\t\t\t{\u0027value\u0027: \u0027.engUnit\u0027, \u0027label\u0027: \u0027Engineering Units\u0027},\t\t\t\t\t\n\t\t\t\t\t{\u0027value\u0027: \u0027.formatString\u0027, \u0027label\u0027: \u0027Format String\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027.historyEnabled\u0027, \u0027label\u0027: \u0027History Enabled\u0027},\t\n\t\t\t\t\t{\u0027value\u0027: \u0027.documentation\u0027, \u0027label\u0027: \u0027Documentation\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027.tooltip\u0027, \u0027label\u0027: \u0027Tooltip\u0027},\n\t\t\t\t\t{\u0027value\u0027: \u0027.readOnly\u0027, \u0027label\u0027: \u0027Read Only\u0027}\n\t\t\t\t\t]\n\t\n\toptions.sort(key\u003doptionSort)\n\t\n\treturn options",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.value": {
+            "binding": {
+              "config": {
+                "path": "view.params.argValue"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "dropdownOptionStyle": {
+            "classes": "RapidDev/Dropdown/Options"
+          },
+          "style": {
+            "classes": "RapidDev/Dropdown/Root"
+          }
+        },
+        "type": "ia.input.dropdown"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "custom": {},
+  "params": {
+    "column": "",
+    "columnIndex": "",
+    "row": "",
+    "rowData": "",
+    "rowIndex": "",
+    "value": ""
+  },
+  "propConfig": {
+    "params.column": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.columnIndex": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.row": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.rowData": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.rowIndex": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 40,
+      "width": 129
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\n\tJSONobjCurrent \u003d system.util.jsonDecode(vieweditor.util.getViewJSON(self.view.params.rowData[\u0027viewPath\u0027]))\n\tJSONobjPreview \u003d system.util.jsonDecode(self.view.params.rowData[\u0027viewJSON\u0027])\n\t\n\tcurrentDiff \u003d system.util.jsonEncode( util.json.JSONdiff(JSONobjCurrent, JSONobjPreview, False) )\n\tpreviewDiff \u003d system.util.jsonEncode( util.json.JSONdiff(JSONobjPreview, JSONobjCurrent, False) )\n\t\n\tparams \u003d { \"current\": currentDiff,\n\t\t\t\t\"preview\": previewDiff}\n\t\n\tsystem.perspective.openPopup(\u0027JsonDiffPopup\u0027, \u0027Global Components/JSON/JSON Diff Popup\u0027, params \u003d params, resizable\u003dTrue)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Icon Diff",
+          "tooltip": {
+            "enabled": true,
+            "text": "compare current config with transformed config"
+          }
+        },
+        "position": {
+          "basis": "30px"
+        },
+        "props": {
+          "color": "var(--green-77)",
+          "path": "material/compare",
+          "style": {
+            "cursor": "pointer",
+            "margin": "0px 10px"
+          }
+        },
+        "type": "ia.display.icon"
+      },
+      {
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\t\n\t\n\texpandedLambda \u003d \"lambda x : True if isinstance(x,list) or (isinstance(x,dict) and (\u0027children\u0027 in x.keys() or \u0027root\u0027 in x.keys())) else False\"\n\n\tparams \u003d { \"jsonStr\": self.view.params.rowData[\u0027viewJSON\u0027], \"expanded\": expandedLambda}\n\t\n\t\n\n\tsystem.perspective.openPopup(\u0027JsonRawPopup\u0027, \u0027Global Components/JSON/JSON Tree Popup\u0027, params \u003d params, resizable\u003dTrue)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Icon Tree",
+          "tooltip": {
+            "enabled": true,
+            "text": "current config tree"
+          }
+        },
+        "position": {
+          "basis": "30px"
+        },
+        "props": {
+          "color": "var(--green-77)",
+          "path": "material/account_tree",
+          "style": {
+            "cursor": "pointer",
+            "margin": "0px 10px"
+          }
+        },
+        "type": "ia.display.icon"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "justify": "center"
+    },
+    "type": "ia.container.flex"
+  }
+}

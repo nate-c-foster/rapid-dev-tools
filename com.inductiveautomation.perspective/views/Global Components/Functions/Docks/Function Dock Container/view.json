@@ -1,0 +1,87 @@
+{
+  "custom": {},
+  "params": {
+    "argName": "",
+    "dockPath": "Components/Function Docks/View Path Selector",
+    "functionPath": "",
+    "index": ""
+  },
+  "propConfig": {
+    "params.argName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.dockPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.functionPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 401
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "EmbeddedView"
+        },
+        "position": {
+          "basis": "320px",
+          "grow": 1
+        },
+        "propConfig": {
+          "props.params.argName": {
+            "binding": {
+              "config": {
+                "path": "view.params.argName"
+              },
+              "type": "property"
+            }
+          },
+          "props.params.functionPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.functionPath"
+              },
+              "type": "property"
+            }
+          },
+          "props.params.index": {
+            "binding": {
+              "config": {
+                "path": "view.params.index"
+              },
+              "type": "property"
+            }
+          },
+          "props.path": {
+            "binding": {
+              "config": {
+                "path": "view.params.dockPath"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "custom": {},
+  "propConfig": {
+    "custom.modelDBType": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "expression",
+          "tagPath": "{this.custom.tagProvider} + \"RapidDev/Location Model/Settings/modelDBType\""
+        },
+        "type": "tag"
+      }
+    },
+    "custom.modelTagPath": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "expression",
+          "tagPath": "{this.custom.tagProvider} + \"RapidDev/Location Model/Settings/modelTagPath\""
+        },
+        "type": "tag"
+      }
+    },
+    "custom.rootLocationID": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "expression",
+          "tagPath": "{this.custom.tagProvider} + \"RapidDev/Location Model/Settings/rootLocationID\""
+        },
+        "type": "tag"
+      }
+    },
+    "custom.tagProvider": {
+      "binding": {
+        "config": {
+          "expression": "now()"
+        },
+        "transforms": [
+          {
+            "code": "\treturn settings.getTagProvider()",
+            "type": "script"
+          }
+        ],
+        "type": "expr"
+      }
+    },
+    "props.auth": {
+      "access": "PRIVATE",
+      "persistent": false
+    },
+    "props.device.accelerometer": {
+      "access": "SYSTEM",
+      "persistent": false
+    },
+    "props.device.identifier": {
+      "access": "SYSTEM",
+      "persistent": false
+    },
+    "props.device.timezone": {
+      "access": "SYSTEM",
+      "persistent": false
+    },
+    "props.device.type": {
+      "access": "SYSTEM",
+      "persistent": false
+    },
+    "props.device.userAgent": {
+      "access": "SYSTEM",
+      "persistent": false
+    },
+    "props.gateway": {
+      "access": "SYSTEM",
+      "persistent": false
+    },
+    "props.geolocation.data": {
+      "access": "SYSTEM",
+      "persistent": false
+    },
+    "props.geolocation.permissionGranted": {
+      "access": "SYSTEM",
+      "persistent": false
+    },
+    "props.host": {
+      "access": "SYSTEM",
+      "persistent": false
+    },
+    "props.id": {
+      "access": "SYSTEM",
+      "persistent": false
+    },
+    "props.lastActivity": {
+      "access": "SYSTEM",
+      "persistent": false
+    },
+    "props.theme": {
+      "binding": {
+        "config": {
+          "bidirectional": true,
+          "fallbackDelay": 2.5,
+          "mode": "expression",
+          "tagPath": "{this.custom.tagProvider} + \u0027RapidDev/Global/Settings/theme\u0027"
+        },
+        "type": "tag"
+      }
+    }
+  },
+  "props": {
+    "address": "127.0.0.1",
+    "device": {},
+    "geolocation": {},
+    "locale": "en-US",
+    "timeZoneId": "America/Chicago"
+  }
+}

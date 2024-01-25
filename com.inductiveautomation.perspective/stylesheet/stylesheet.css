@@ -1,0 +1,80 @@
+/* Direct stylesheet authoring is an advanced feature. Knowledge of CSS required.*/
+
+
+
+
+
+
+/* ---- For function Tag/View editor. Function help popup. ------ */
+
+
+.psc-docstring-root {
+	padding: 0px 10px;
+}
+
+
+.psc-docstring-root h2 {
+	padding: 0px;
+	margin: 5px 0px;
+	color: var(--neutral-70);
+	font-size: 14px;
+}
+
+.psc-docstring-shortdescription {
+	color: var(--neutral-80);
+	font-size: 14px;
+	font-weight: normal;
+	padding: 0px;
+	margin: 0px;
+}
+
+.psc-docstring-details {
+	margin-left: 20px;
+}
+
+.psc-docstring-longdescription {
+	color: var(--neutral-70);
+	margin: 20px 0px;
+}
+
+.psc-docstring-args {
+	margin: 30px 0px;
+}
+
+
+.psc-docstring-arg-name {
+	color: var(--blue-85);
+	margin-left: 20px;
+	font-size: 14px;
+}
+
+.psc-docstring-arg-type {
+	background-color: var(--neutral-10);
+	color: var(--neutral-60);
+	margin: 0px 5px;
+	font-size: 14px;
+}
+
+.psc-docstring-arg-description {
+	color:var(--neutral-70);
+	font-size: 14px;
+}
+
+
+.psc-docstring-returns {
+	
+}
+
+.psc-docstring-return-description {
+	color: var(--neutral-70);
+	margin-left: 20px;
+	font-size: 14px;
+}
+
+.psc-docstring-returns {
+	
+}
+
+.psc-docstring-example-description {
+	color:yellow;
+}

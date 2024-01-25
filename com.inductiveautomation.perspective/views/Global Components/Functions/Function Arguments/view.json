@@ -1,0 +1,85 @@
+{
+  "custom": {},
+  "params": {
+    "index": 0,
+    "selectedFunction": {
+      "dockPaths": {
+        "rootTagPath": "Global Components/Functions/Docks/Tag Path Selector"
+      },
+      "dropdownPaths": {
+        "typeId": "Global Components/Functions/Dropdowns/UDT Type Id"
+      },
+      "functionPath": "RapidDev.Tag.Generate.getUdtTags",
+      "kwargs": {
+        "rootTagPath": "",
+        "typeId": ""
+      },
+      "kwargsOrder": {
+        "rootTagPath": 1,
+        "typeId": 2
+      },
+      "name": "Location Type (Exact Match)"
+    }
+  },
+  "propConfig": {
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.selectedFunction": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 333,
+      "width": 703
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "FlexRepeater"
+        },
+        "position": {
+          "basis": 0,
+          "grow": 1
+        },
+        "propConfig": {
+          "props.instances": {
+            "binding": {
+              "config": {
+                "path": "view.params.selectedFunction"
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\tdef keyOrder(argument):\n\t\treturn argument[\u0027order\u0027]\n\t\n\t\n\titems \u003d []\n\n\tkwargs \u003d value[\u0027kwargs\u0027]\n\tkwargsOrder \u003d value[\u0027kwargsOrder\u0027]\n\targName \u003d \u0027\u0027\n\targValue \u003d \u0027\u0027\n\tdockPath \u003d \u0027\u0027\n\tdropdownPath \u003d \u0027\u0027\n\t\n\tfor key in kwargs.keys():\n\t\targName \u003d key\n\t\targValue \u003d kwargs[key]\n\t\tif key in value[\u0027dockPaths\u0027].keys():\n\t\t\tdockPath \u003d value[\u0027dockPaths\u0027][key]\n\t\telse:\n\t\t\tdockPath \u003d \"\"\n\t\tif key in value[\u0027dropdownPaths\u0027].keys():\n\t\t\tdropdownPath \u003d value[\u0027dropdownPaths\u0027][key]\n\t\telse:\n\t\t\tdropdownPath \u003d \"\"\n\t\t\n\t\torder \u003d kwargsOrder[key]\n\n\t\titems.append({\u0027argName\u0027: argName, \u0027argValue\u0027: argValue, \u0027dockPath\u0027: dockPath, \u0027dropdownPath\u0027: dropdownPath, \n\t\t\t\t\t\t\u0027functionPath\u0027:self.view.params.selectedFunction.functionPath, \u0027index\u0027: self.view.params.index, \u0027order\u0027:order})\n\t\t\n\titems.sort(key\u003dkeyOrder)\t\n\t\n\treturn items",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "elementStyle": {
+            "margin": "3px"
+          },
+          "path": "Global Components/Functions/Function Argument Item",
+          "useDefaultViewWidth": false
+        },
+        "type": "ia.display.flex-repeater"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

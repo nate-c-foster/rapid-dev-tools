@@ -1,0 +1,170 @@
+{
+  "custom": {},
+  "params": {
+    "dbName": "",
+    "dbType": "",
+    "primaryKey": "",
+    "primaryKeyValue": "",
+    "tableName": ""
+  },
+  "propConfig": {
+    "params.dbName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.dbType": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.primaryKey": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.primaryKeyValue": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tableName": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 122,
+      "width": 362
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "32px"
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.primaryKeyValue"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\treturn \"Delete row with primary key:   \" + str(value)",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "textStyle": {
+                "textAlign": "center"
+              }
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer"
+        },
+        "position": {
+          "basis": "200px",
+          "grow": 1
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "padding": "10px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\t\n\tquery \u003d \"General/\" + self.view.params.dbType + \"/deleteRow\"\n\tparams \u003d { \t\"database\": self.view.params.dbName,\n\t\t\t\t\"tableName\": self.view.params.tableName,\n\t\t\t\t\"primaryKey\": self.view.params.primaryKey,\n\t\t\t\t\"primaryKeyValue\": self.view.params.primaryKeyValue }\n\t\t\t\t\n\tsystem.db.runNamedQuery(query, parameters\u003dparams)\n\t\n\tsystem.perspective.sendMessage(\"UpdateDBTable\", {})\n\t\n\tsystem.perspective.closePopup(\"DeleteTableRow\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Ok"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/ButtonPrimary",
+                "margin": "2px 5px"
+              },
+              "text": "Ok"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.closePopup(\"DeleteTableRow\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Cancel"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/ButtonPrimary",
+                "margin": "2px 5px"
+              },
+              "text": "Cancel"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Buttons"
+        },
+        "position": {
+          "basis": "35px",
+          "shrink": 0
+        },
+        "props": {
+          "justify": "flex-end",
+          "style": {
+            "margin-top": "20px",
+            "marginBottom": "5px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

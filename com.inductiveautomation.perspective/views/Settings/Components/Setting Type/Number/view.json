@@ -1,0 +1,59 @@
+{
+  "custom": {},
+  "params": {
+    "tagPath": "[SCADA]RapidDev/Location Model/Settings/rootLocationID"
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 35,
+      "width": 500
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "NumericEntryField"
+        },
+        "position": {
+          "basis": "32px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.value": {
+            "binding": {
+              "config": {
+                "bidirectional": true,
+                "fallbackDelay": 2.5,
+                "mode": "expression",
+                "tagPath": "{view.params.tagPath}"
+              },
+              "type": "tag"
+            }
+          }
+        },
+        "props": {
+          "align": "left",
+          "style": {
+            "width": "600px"
+          }
+        },
+        "type": "ia.input.numeric-entry-field"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "alignItems": "flex-start",
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

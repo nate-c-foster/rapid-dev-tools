@@ -1,0 +1,9 @@
+{
+  "base": {
+    "style": {
+      "backgroundColor": "var(--neutral-10)",
+      "color": "var(--neutral-80)",
+      "cursor": "pointer"
+    }
+  }
+}

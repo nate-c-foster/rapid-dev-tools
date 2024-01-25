@@ -1,0 +1,117 @@
+{
+  "custom": {},
+  "params": {
+    "icon": "material/local_offer",
+    "name": "Tag Editor",
+    "pageURL": "/"
+  },
+  "propConfig": {
+    "params.icon": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.name": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.pageURL": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 59,
+      "width": 94
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Icon",
+          "tooltip": {
+            "enabled": true
+          }
+        },
+        "position": {
+          "basis": "30px",
+          "grow": 1
+        },
+        "propConfig": {
+          "meta.tooltip.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.name"
+              },
+              "type": "property"
+            }
+          },
+          "props.color": {
+            "binding": {
+              "config": {
+                "path": "page.props.path"
+              },
+              "transforms": [
+                {
+                  "code": "\tif value \u003d\u003d self.view.params.pageURL:\n\t\treturn \u0027var(--neutral-80)\u0027\n\telse:\n\t\treturn \u0027var(--neutral-60)\u0027",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.path": {
+            "binding": {
+              "config": {
+                "path": "view.params.icon"
+              },
+              "type": "property"
+            }
+          },
+          "props.style.borderLeftWidth": {
+            "binding": {
+              "config": {
+                "path": "page.props.path"
+              },
+              "transforms": [
+                {
+                  "code": "\tif value \u003d\u003d self.view.params.pageURL:\n\t\treturn \u00274px\u0027\n\telse:\n\t\treturn \u00270px\u0027",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "backgroundColor": "var(--neutral-20)",
+            "borderLeftColor": "var(--menu-selected)",
+            "borderLeftStyle": "solid",
+            "cursor": "pointer"
+          }
+        },
+        "type": "ia.display.icon"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onClick": {
+          "config": {
+            "page": "{view.params.pageURL}"
+          },
+          "scope": "C",
+          "type": "nav"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

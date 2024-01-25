@@ -1,0 +1,114 @@
+{
+  "custom": {},
+  "params": {
+    "argName": "",
+    "argValue": "",
+    "functionPath": "",
+    "index": "",
+    "locationType": ""
+  },
+  "propConfig": {
+    "params.argName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.argValue": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.functionPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.index": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.locationType": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 41,
+      "width": 218
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\n\tpayload \u003d { \"functionPath\": self.view.params.functionPath,\n\t\t\t\t\"argName\": self.view.params.argName,\n\t\t\t\t\"argValue\": self.props.value,\n\t\t\t\t\"index\":self.view.params.index\n\t\t\t\t}\n\t\n\tsystem.perspective.sendMessage(\"UpdateFunctionArgument\",payload)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Dropdown"
+        },
+        "position": {
+          "basis": "36px"
+        },
+        "propConfig": {
+          "props.options": {
+            "binding": {
+              "config": {
+                "path": "view.params.locationType"
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\tlocationTypeName \u003d value\n\t\n\tif locationTypeName:\n\t\n\t\t\n\t\tpyDS \u003d system.db.runPrepQuery(\"SELECT LocationTypeID FROM core.LocationType WHERE Name \u003d ?\", [locationTypeName] )\n\t\t\n\t\tlocationTypeID \u003d pyDS[0][\u0027LocationTypeID\u0027]\n\t\t\n\t\toptions \u003d []\n\t\tpyDS \u003d system.db.runPrepQuery(\"SELECT Name FROM core.LocationTypeDefinition WHERE LocationTypeID \u003d ?\", [locationTypeID] )\n\t\t\n\t\tfor row in pyDS:\n\t\t\tname \u003d row[\u0027Name\u0027]\n\t\t\toptions.append({\u0027value\u0027: name, \u0027label\u0027: name})\n\t\t\t\n\t\treturn options\n\t\t\n\telse:\n\t\treturn []",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.value": {
+            "binding": {
+              "config": {
+                "path": "view.params.argValue"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "dropdownOptionStyle": {
+            "classes": "RapidDev/Dropdown/Options"
+          },
+          "style": {
+            "classes": "RapidDev/Dropdown/Root"
+          }
+        },
+        "type": "ia.input.dropdown"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "LocationTypeDropdownUpdate",
+          "pageScope": true,
+          "script": "\t# implement your handler here\n\tlocationType \u003d payload[\u0027locationType\u0027]\n\n\tself.view.params.locationType \u003d locationType",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

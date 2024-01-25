@@ -1,0 +1,16 @@
+{
+  "scope": "G",
+  "version": 1,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "config.json"
+  ],
+  "attributes": {
+    "lastModification": {
+      "actor": "nfoster",
+      "timestamp": "2024-01-24T12:15:58Z"
+    },
+    "lastModificationSignature": "39f1a45eb87c0ef4bb9e3b37ad07e5a9799775d780ea0c0cc55f08ec7adea455"
+  }
+}

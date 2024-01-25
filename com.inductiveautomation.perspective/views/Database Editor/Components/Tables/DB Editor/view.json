@@ -1,0 +1,107 @@
+{
+  "custom": {},
+  "params": {
+    "allowEdits": false,
+    "columns": [],
+    "dbName": "",
+    "dbType": "",
+    "primaryKey": "",
+    "tableName": ""
+  },
+  "propConfig": {
+    "params.allowEdits": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.columns": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.dbName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.dbType": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.primaryKey": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tableName": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 1151
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "EmbeddedView"
+            },
+            "position": {
+              "basis": "320px",
+              "grow": 1
+            },
+            "propConfig": {
+              "props.params": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "allowEdits": "{view.params.allowEdits}",
+                      "columns": "{view.params.columns}",
+                      "dbName": "{view.params.dbName}",
+                      "dbType": "{view.params.dbType}",
+                      "primaryKey": "{view.params.primaryKey}",
+                      "tableName": "{view.params.tableName}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\n\tdbType \u003d value[\u0027dbType\u0027]\n\tdbName \u003d value[\u0027dbName\u0027]\n\ttableName \u003d value[\u0027tableName\u0027]\n\tprimaryKey \u003d value[\u0027primaryKey\u0027]\n\tallowEdits \u003d value[\u0027allowEdits\u0027]\t\n\tcolumns \u003d value[\u0027columns\u0027]\n\n\t\n\ttableColumns \u003d []\n\t\n#\tparams \u003d {\t\"database\": dbName, \u0027tableName\u0027:tableName }\n#\tqueryPath \u003d \"RapidDev/General/\" + dbType + \"/getColumnNames\"\n#\tcolumnNames \u003d system.db.runNamedQuery(queryPath, params)\n\t\n\tfor column in columns:\n\t\t\n\t\tnewColumn \u003d {\n\t\t  \"field\": column[\u0027columnName\u0027],\n\t\t  \"visible\": True,\n\t\t  \"editable\": column[\u0027editable\u0027],\n\t\t  \"render\": \"auto\",\n\t\t  \"justify\": \"center\",\n\t\t  \"align\": \"center\",\n\t\t  \"resizable\": True,\n\t\t  \"sortable\": True,\n\t\t  \"sort\": \"none\",\n\t\t  \"filter\": {\n\t\t    \"enabled\": True,\n\t\t    \"visible\": \"on-hover\",\n\t\t    \"string\": {\n\t\t      \"condition\": \"\",\n\t\t      \"value\": \"\"\n\t\t    },\n\t\t    \"number\": {\n\t\t      \"condition\": \"\",\n\t\t      \"value\": \"\"\n\t\t    },\n\t\t    \"boolean\": {\n\t\t      \"condition\": \"\"\n\t\t    },\n\t\t    \"date\": {\n\t\t      \"condition\": \"\",\n\t\t      \"value\": \"\"\n\t\t    }\n\t\t  },\n\t\t  \"viewPath\": \"\",\n\t\t  \"viewParams\": {},\n\t\t  \"boolean\": \"checkbox\",\n\t\t  \"number\": \"value\",\n\t\t  \"progressBar\": {\n\t\t    \"max\": 100,\n\t\t    \"min\": 0,\n\t\t    \"bar\": {\n\t\t      \"color\": \"\",\n\t\t      \"style\": {\n\t\t        \"classes\": \"\"\n\t\t      }\n\t\t    },\n\t\t    \"track\": {\n\t\t      \"color\": \"\",\n\t\t      \"style\": {\n\t\t        \"classes\": \"\"\n\t\t      }\n\t\t    },\n\t\t    \"value\": {\n\t\t      \"enabled\": True,\n\t\t      \"format\": \"0,0.##\",\n\t\t      \"justify\": \"center\",\n\t\t      \"style\": {\n\t\t        \"classes\": \"\"\n\t\t      }\n\t\t    }\n\t\t  },\n\t\t  \"toggleSwitch\": {\n\t\t    \"color\": {\n\t\t      \"selected\": \"\",\n\t\t      \"unselected\": \"\"\n\t\t    }\n\t\t  },\n\t\t  \"numberFormat\": \"0,0.##\",\n\t\t  \"dateFormat\": \"MM/DD/YYYY\",\n\t\t  \"width\": column[\u0027width\u0027],\n\t\t  \"strictWidth\": False,\n\t\t  \"style\": {\n\t\t    \"classes\": \"\"\n\t\t  },\n\t\t  \"header\": {\n\t\t    \"title\": column[\u0027columnName\u0027],\n\t\t    \"justify\": \"center\",\n\t\t    \"align\": \"center\",\n\t\t    \"style\": {\n\t\t      \"classes\": \"\"\n\t\t    }\n\t\t  },\n\t\t  \"footer\": {\n\t\t    \"title\": \"\",\n\t\t    \"justify\": \"left\",\n\t\t    \"align\": \"center\",\n\t\t    \"style\": {\n\t\t      \"classes\": \"\"\n\t\t    }\n\t\t  }\n\t\t}\n\n\n\t\ttableColumns.append(newColumn)\n\t\n\t\t\n\t\t\n\t\n\t\n\tparams \u003d { \t\"tableName\": tableName,\n\t\t\t\t\"allowEdits\": allowEdits,\n\t\t\t\t\"dbName\":dbName,\n\t\t\t\t\"dbType\":dbType,\n\t\t\t\t\"primaryKey\":primaryKey,\n\t\t\t\t\"columns\": tableColumns }\n\t\t\t\t\n\t\t\t\t\n\treturn params\n",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              }
+            },
+            "props": {
+              "path": "Database Editor/Components/Tables/DB Table"
+            },
+            "type": "ia.display.view"
+          }
+        ],
+        "meta": {
+          "name": "Table"
+        },
+        "position": {
+          "grow": 1
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "overflow": "visible"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

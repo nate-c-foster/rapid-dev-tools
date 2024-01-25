@@ -1,0 +1,487 @@
+{
+  "custom": {},
+  "params": {
+    "LocationID": 1062
+  },
+  "propConfig": {
+    "params.LocationID": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 527,
+      "width": 431
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "LocationLabel"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "/root.custom.orderNumber"
+                  },
+                  "enabled": false,
+                  "transforms": [
+                    {
+                      "code": "\treturn \u0027Location Name: %s\u0027 %value",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Text/Label"
+              },
+              "text": "Location Name"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "LocationName"
+            },
+            "position": {
+              "basis": "30px"
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "/root.custom.locationDetails.locationName"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/TextField"
+              }
+            },
+            "type": "ia.input.text-field"
+          },
+          {
+            "meta": {
+              "name": "ShortNameLabel"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Text/Label",
+                "marginTop": "10px"
+              },
+              "text": "Short Name"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "ShortName"
+            },
+            "position": {
+              "basis": "30px"
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "/root.custom.locationDetails.shortName"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value:\n\t\treturn value\n\telse:\n\t\treturn \"\"",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/TextField"
+              }
+            },
+            "type": "ia.input.text-field"
+          },
+          {
+            "meta": {
+              "name": "LocationTypeLabel"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Text/Label",
+                "marginTop": "10px"
+              },
+              "text": "Location Type"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "LocationType"
+            },
+            "position": {
+              "basis": "36px"
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "path": "session.custom.modelDBType"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\n\tqueryPath \u003d \"Location Model/\" + value + \"/getLocationTypes\"\n\t\n\treturn system.db.runNamedQuery(queryPath)",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "path": "/root.custom.locationDetails.locationTypeID"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "dropdownOptionStyle": {
+                "classes": "RapidDev/Dropdown/Options"
+              },
+              "placeholder": {
+                "color": "--neutral-20"
+              },
+              "style": {
+                "classes": "RapidDev/Dropdown/Root"
+              }
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "LocationTypeDefinitionLabel"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/Text/Label",
+                "marginTop": "10px"
+              },
+              "text": "Location Type Definition"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "LocationTypeDefinition"
+            },
+            "position": {
+              "basis": "36px"
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "locationTypeID": "{../LocationType.props.value}",
+                      "modelDBType": "{session.custom.modelDBType}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\n\tif value[\u0027locationTypeID\u0027]:\n\n\t\tqueryPath \u003d \"Location Model/\" + value[\u0027modelDBType\u0027] + \"/getLocationTypeDefinitions\"\n\t\treturn system.db.runNamedQuery(queryPath, {\u0027LocationTypeID\u0027: value[\u0027locationTypeID\u0027]})\n\t\t\n\telse:\n\t\treturn []",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              },
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "path": "/root.custom.locationDetails.locationTypeDefinitionID"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "dropdownOptionStyle": {
+                "classes": "RapidDev/Dropdown/Options"
+              },
+              "style": {
+                "classes": "RapidDev/Dropdown/Root"
+              }
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "Rename Location"
+            },
+            "position": {
+              "basis": "36px"
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "path": "../LocationName.props.text"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\toriginalName \u003d self.view.getChild(\"root\").custom.locationDetails.locationName\n\n\tif str(value) !\u003d originalName:\n\t\treturn True\n\telse:\n\t\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "selected": true,
+              "style": {
+                "marginTop": "20px"
+              },
+              "text": "Rename Location"
+            },
+            "type": "ia.input.checkbox"
+          },
+          {
+            "meta": {
+              "name": "Rename Tag"
+            },
+            "position": {
+              "basis": "36px"
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "path": "../LocationName.props.text"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\toriginalName \u003d self.view.getChild(\"root\").custom.locationDetails.locationName\n\n\tif str(value) !\u003d originalName:\n\t\treturn True\n\telse:\n\t\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "selected": true,
+              "text": "Rename Tags"
+            },
+            "type": "ia.input.checkbox"
+          },
+          {
+            "meta": {
+              "name": "Rename Hist"
+            },
+            "position": {
+              "basis": "36px"
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "path": "../LocationName.props.text"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\toriginalName \u003d self.view.getChild(\"root\").custom.locationDetails.locationName\n\n\tif str(value) !\u003d originalName:\n\t\treturn True\n\telse:\n\t\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "selected": true,
+              "text": "Rename Historian"
+            },
+            "type": "ia.input.checkbox"
+          },
+          {
+            "meta": {
+              "name": "Rename View"
+            },
+            "position": {
+              "basis": "36px"
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "path": "../LocationName.props.text"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\toriginalName \u003d self.view.getChild(\"root\").custom.locationDetails.locationName\n\n\tif str(value) !\u003d originalName:\n\t\treturn True\n\telse:\n\t\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "selected": true,
+              "text": "Rename Views"
+            },
+            "type": "ia.input.checkbox"
+          }
+        ],
+        "meta": {
+          "name": "FlexContainer_Inner"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "padding": "10px 20px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\t\n\tlocationID \u003d self.view.params.LocationID\n\tcurrentName \u003d self.view.getChild(\"root\").custom.locationDetails.locationName\n\tcurrentPath \u003d self.view.getChild(\"root\").custom.locationDetails.tagPath\t\n\tlocationName \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"LocationName\").props.text\n\tlocationTypeID \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"LocationType\").props.value\n\tlocationTypeDefinitionID \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"LocationTypeDefinition\").props.value\n\tshortName \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"ShortName\").props.text\n\t\n\tlocationName \u003d locationName.strip()\n\tname \u003d currentName\n\t\n\trenameLocation \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Rename Location\").props.selected\n\t\n\tif renameLocation:\n\t\tname \u003d locationName\n\n\tparams \u003d {\n\t\u0027LocationID\u0027: locationID,\n\t\u0027LocationTypeID\u0027: locationTypeID,\n\t\u0027Name\u0027: name,\n\t\u0027Description\u0027: None,\n\t\u0027LastModifiedBy\u0027: self.session.props.auth.user.userName,\n\t\u0027LocationTypeDefinitionID\u0027: locationTypeDefinitionID,\n\t\u0027ShortName\u0027:shortName\n\t}\t\n\t\n\t\n\tmodelDBType \u003d self.session.custom.modelDBType\n\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/editLocation\u0027\n\tsystem.db.runNamedQuery(query,params)\t\n\tlocation.model.updateModelTag()\t\n\n\trenameTag \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Rename Tag\").props.selected\n\trenameHist \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Rename Hist\").props.selected\n\trenameView \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Rename View\").props.selected\n\tnewViews \u003d []\n\n\tif locationName !\u003d currentName:\n\n\t\tif renameTag:\n\t\t\ttagPath \u003d self.view.getChild(\"root\").custom.locationDetails.tagPath\n\t\t\ttageditor.bulk.renameTag(tagPath, locationName, renameHist)\n\t\t\t\n\t\tif renameView:\n\t\t\tviewPath \u003d self.view.getChild(\"root\").custom.locationDetails.viewPath\n\t\t\tnewViews \u003d vieweditor.bulk.renameView(viewPath, locationName)\n\t\t\tif newViews:\n\t\t\t\tvieweditor.util.generateViewImport(newViews)\t\t\t\n\t\t\t\n\t\t\t\n\tsystem.perspective.sendMessage(\u0027UpdateLocationDetails\u0027, {})\n\t\n\tsystem.perspective.closePopup(\u0027EditLocationPopup\u0027)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Ok"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/ButtonPrimary",
+                "margin": "2px 5px"
+              },
+              "text": "Ok"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.closePopup(\u0027EditLocationPopup\u0027)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Cancel"
+            },
+            "position": {
+              "basis": "80px"
+            },
+            "props": {
+              "style": {
+                "classes": "RapidDev/ButtonPrimary",
+                "margin": "2px 5px"
+              },
+              "text": "Cancel"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Buttons_0"
+        },
+        "position": {
+          "basis": "35px",
+          "shrink": 0
+        },
+        "props": {
+          "justify": "flex-end",
+          "style": {
+            "margin-top": "20px",
+            "marginBottom": "5px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "propConfig": {
+      "custom.locationDetails": {
+        "binding": {
+          "config": {
+            "path": "view.params.LocationID"
+          },
+          "transforms": [
+            {
+              "code": "\n\tmodelDS \u003d system.tag.readBlocking(self.session.custom.modelTagPath)[0].value\n\n\treturn location.model.getLocationDetails(value, modelDS)",
+              "type": "script"
+            }
+          ],
+          "type": "property"
+        }
+      }
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "Widget/Component_Style Widget/Shadow_Box",
+        "overflow": "hidden",
+        "padding": "10px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}
