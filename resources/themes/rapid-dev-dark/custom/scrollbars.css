@@ -1,0 +1,24 @@
+
+
+/* Firefox */
+html {
+    scrollbar-color: var(--neutral-30) var(--neutral-10);
+    scrollbar-width: thin;
+  }
+  
+  
+/* WebKit and Chromiums */
+::-webkit-scrollbar {
+    width: 15px;
+    height: 15px; 
+    background-color: var(--neutral-10);
+    cursor:default;
+
+  }
+  
+::-webkit-scrollbar-thumb {
+    background: var(--neutral-30);
+    cursor:default;
+  }
+
+

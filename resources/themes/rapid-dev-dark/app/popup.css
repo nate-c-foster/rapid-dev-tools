@@ -1,0 +1,13 @@
+.ia_popup {
+    background-color: var(--container);
+    box-shadow: var(--boxShadow5);
+    border: var(--containerBorder);
+}
+
+.ia_popup__header {
+    background-color: var(--containerNested);
+    color: var(--neutral-70);
+    border-bottom: var(--containerBorder);
+    padding-left: 5px;
+    font-size: 0.875rem;
+}

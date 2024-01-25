@@ -1,0 +1,10 @@
+.ia_dockedView__handle {
+    color: var(--neutral-10);
+    background-color: var(--neutral-90);
+}
+
+/*
+.docked-view .dock-border.drag-border {
+    background-color: var(--neutral-80) !important;
+}
+*/
