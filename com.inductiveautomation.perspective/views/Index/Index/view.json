@@ -1,0 +1,42 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {},
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Label"
+        },
+        "position": {
+          "basis": "32px"
+        },
+        "props": {
+          "style": {
+            "textAlign": "center"
+          },
+          "text": "Index"
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "events": {
+      "system": {
+        "onStartup": {
+          "config": {
+            "script": "\t\n\t\n\tmenuDS \u003d settings.getValue(\"Global\", \"menu\")\n\n\n\tfor row in range(menuDS.getRowCount()):\n\t\torder \u003d menuDS.getValueAt(row,\"order\")\n\t\tif row \u003d\u003d 0:\n\t\t\tminOrder \u003d order\n\t\t\trootRow \u003d row\n\t\telif order \u003c minOrder:\n\t\t\tminOrder \u003d order\n\t\t\trootRow \u003d row\n\t\n\trootURL \u003d menuDS.getValueAt(rootRow, \"pageURL\")\n\t\n\tsystem.perspective.navigate(rootURL[1:])\n\t"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

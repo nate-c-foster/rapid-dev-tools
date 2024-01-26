@@ -2,7 +2,7 @@
   "pages": {
     "/": {
       "title": "",
-      "viewPath": "Location Model/Location Model"
+      "viewPath": "Index/Index"
     },
     "/backup-restore": {
       "title": "",
