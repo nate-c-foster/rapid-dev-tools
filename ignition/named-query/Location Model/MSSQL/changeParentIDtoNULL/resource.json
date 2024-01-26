@@ -20,7 +20,7 @@
     "cacheEnabled": false,
     "database": "{}",
     "fallbackEnabled": false,
-    "lastModificationSignature": "048a282c9faef32b99694299cf73c40ea5c5c57c9028be108da07d2cee709035",
+    "lastModificationSignature": "6d110271ae56cfe7565aa4f89ede9651ca654a0ecf3621b8ebcdc386f4ece0b7",
     "permissions": [
       {
         "zone": "",
@@ -29,7 +29,7 @@
     ],
     "lastModification": {
       "actor": "nfoster",
-      "timestamp": "2024-01-26T22:19:59Z"
+      "timestamp": "2024-01-26T22:19:58Z"
     },
     "parameters": [
       {
@@ -40,11 +40,6 @@
       {
         "type": "Parameter",
         "identifier": "LocationID",
-        "sqlType": 2
-      },
-      {
-        "type": "Parameter",
-        "identifier": "newParentLocationID",
         "sqlType": 2
       }
     ]

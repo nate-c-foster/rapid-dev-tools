@@ -16,9 +16,9 @@
     "enabled": true,
     "cacheAmount": 1,
     "cacheEnabled": false,
-    "database": "SCADA",
+    "database": "{}",
     "fallbackEnabled": false,
-    "lastModificationSignature": "33d8f1c8b9bfb3e7b41c46ba77ab2c8c8945c561d807016d2a8c17b757d497d1",
+    "lastModificationSignature": "84130e77a4dfd02b5d9aba0c15867cd1a286c531cd42a113fc11a66291e6d714",
     "permissions": [
       {
         "zone": "",
@@ -27,9 +27,14 @@
     ],
     "lastModification": {
       "actor": "nfoster",
-      "timestamp": "2024-01-24T12:12:14Z"
+      "timestamp": "2024-01-26T22:19:59Z"
     },
     "parameters": [
+      {
+        "type": "Database",
+        "identifier": "database",
+        "sqlType": 7
+      },
       {
         "type": "Parameter",
         "identifier": "LocationID",

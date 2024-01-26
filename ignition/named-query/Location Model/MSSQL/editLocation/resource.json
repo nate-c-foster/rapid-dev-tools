@@ -18,9 +18,9 @@
     "enabled": true,
     "cacheAmount": 1,
     "cacheEnabled": false,
-    "database": "",
+    "database": "{}",
     "fallbackEnabled": false,
-    "lastModificationSignature": "d91e67e32bbc66dbc68b096aeb91fbd1c6266c7dea7ee854115fdecb11b4f017",
+    "lastModificationSignature": "cc43c0362af2865e1bfc1abd8857cec13434a63dc94439198e506663f0160067",
     "permissions": [
       {
         "zone": "",
@@ -29,9 +29,14 @@
     ],
     "lastModification": {
       "actor": "nfoster",
-      "timestamp": "2024-01-24T12:12:15Z"
+      "timestamp": "2024-01-26T22:19:58Z"
     },
     "parameters": [
+      {
+        "type": "Database",
+        "identifier": "database",
+        "sqlType": 7
+      },
       {
         "type": "Parameter",
         "identifier": "LocationTypeID",

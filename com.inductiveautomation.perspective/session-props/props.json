@@ -1,6 +1,16 @@
 {
   "custom": {},
   "propConfig": {
+    "custom.modelDBName": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "expression",
+          "tagPath": "{this.custom.tagProvider} + \"RapidDev/Location Model/Settings/modelDBName\""
+        },
+        "type": "tag"
+      }
+    },
     "custom.modelDBType": {
       "binding": {
         "config": {

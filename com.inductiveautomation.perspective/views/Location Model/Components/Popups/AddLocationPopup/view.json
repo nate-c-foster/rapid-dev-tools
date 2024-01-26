@@ -129,7 +129,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\n\tqueryPath \u003d \"Location Model/\" + value + \"/getLocationTypes\"\n\t\n\treturn system.db.runNamedQuery(queryPath)",
+                      "code": "\n\tqueryPath \u003d \"Location Model/\" + value + \"/getLocationTypes\"\n\tdbName \u003d self.session.custom.modelDBName\n\t\n\treturn system.db.runNamedQuery(queryPath, {\u0027database\u0027:dbName})",
                       "type": "script"
                     }
                   ],
@@ -180,13 +180,14 @@
                   "config": {
                     "struct": {
                       "locationTypeID": "{../LocationType.props.value}",
+                      "modelDBName": "{session.custom.modelDBName}",
                       "modelDBType": "{session.custom.modelDBType}"
                     },
                     "waitOnAll": true
                   },
                   "transforms": [
                     {
-                      "code": "\n\tif value[\u0027locationTypeID\u0027]:\n\n\t\tqueryPath \u003d \"Location Model/\" + value[\u0027modelDBType\u0027] + \"/getLocationTypeDefinitions\"\n\t\treturn system.db.runNamedQuery(queryPath, {\u0027LocationTypeID\u0027: value[\u0027locationTypeID\u0027]})\n\t\t\n\telse:\n\t\treturn []",
+                      "code": "\n\tif value[\u0027locationTypeID\u0027]:\n\n\t\tqueryPath \u003d \"Location Model/\" + value[\u0027modelDBType\u0027] + \"/getLocationTypeDefinitions\"\n\t\treturn system.db.runNamedQuery(queryPath, {\u0027LocationTypeID\u0027: value[\u0027locationTypeID\u0027], \u0027database\u0027:value[\u0027modelDBName\u0027]})\n\t\t\n\telse:\n\t\treturn []",
                       "type": "script"
                     }
                   ],

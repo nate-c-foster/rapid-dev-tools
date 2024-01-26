@@ -20,7 +20,7 @@
     "cacheEnabled": false,
     "database": "{}",
     "fallbackEnabled": false,
-    "lastModificationSignature": "ded387e7157c3664580170197cbd3f59cee9f56f2a76c65e01865c6ee841f9ab",
+    "lastModificationSignature": "f57fa10d4003100341f8f1ce887eb5ac5d1cefb9d3fbf72997729a6929638708",
     "permissions": [
       {
         "zone": "",
@@ -36,11 +36,6 @@
         "type": "Database",
         "identifier": "database",
         "sqlType": 7
-      },
-      {
-        "type": "Parameter",
-        "identifier": "parentLocationID",
-        "sqlType": 3
       }
     ]
   }

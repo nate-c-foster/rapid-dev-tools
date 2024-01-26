@@ -11,11 +11,14 @@ import os
 def createLocation(locationName, locationTypeID, parentLocationID, locationTypeDefinitionID, shortName='', modifiedBy = 'Uknown'):
 
 
+	dbType = settings.getValue('Location Model', 'modelDBType')
+	dbName = settings.getValue('Location Model', 'modelDBName')
+
 	if parentLocationID < 0:
 		parentLocationID = None
 
-	queryPath = "Location Model/" + settings.getValue('Location Model', 'modelDBType') + "/getMaxOrderNumber"
-	maxOrderNumber = system.db.runNamedQuery(queryPath, {'parentLocationID': parentLocationID})
+	queryPath = "Location Model/" + dbType + "/getMaxOrderNumber"
+	maxOrderNumber = system.db.runNamedQuery(queryPath, {'parentLocationID': parentLocationID, 'database':dbName})
 	if maxOrderNumber is None:
 		orderNumber = 1
 	else:
@@ -30,11 +33,11 @@ def createLocation(locationName, locationTypeID, parentLocationID, locationTypeD
 		'LastModifiedBy': modifiedBy,
 		'LocationTypeDefinitionID': locationTypeDefinitionID,
 		'orderNumber': orderNumber,
-		'ShortName':shortName
+		'ShortName':shortName,
+		'database':dbName
 	}
 	
-	modelDBType = settings.getValue('Location Model', 'modelDBType')
-	query = 'Location Model/' + modelDBType + '/addLocation'
+	query = 'Location Model/' + dbType + '/addLocation'
 	system.db.runNamedQuery(query,params)	
 	
 	location.model.updateModelTag()
@@ -167,6 +170,9 @@ def bulkCreateLocations(jsonData):
 
 	viewImports = []
 	
+	dbType = settings.getValue('Location Model', 'modelDBType')
+	dbName = settings.getValue('Location Model', 'modelDBName')
+	
 	for row in jsonData:
 		parentPath = row['ParentLocationPath']
 		name = row['Name']
@@ -183,11 +189,8 @@ def bulkCreateLocations(jsonData):
 			raise Exception ("Error: Parent Location Path (" + parentPath + ") Does Not Exist")
 
 
-		modelDBType = settings.getValue("Location Model", "modelDBType")
-
-
 		# get locationTypeID
-		results = system.db.runNamedQuery("Location Model/" + modelDBType + "/getLocationTypes")
+		results = system.db.runNamedQuery("Location Model/" + dbType + "/getLocationTypes", {'database':dbName})
 		locationTypeID = -1
 		for row in range(results.getRowCount()):
 			if locationType == results.getValueAt(row,"Name"):
@@ -196,7 +199,7 @@ def bulkCreateLocations(jsonData):
 			raise Exception( "Error: Location Type (" + locationType + ") is defined multiple times in LocationType" )
 
 		# get locationTypeDefinitionID
-		results = system.db.runNamedQuery("Location Model/" + modelDBType + "/getLocationTypeDefinitions",{"LocationTypeID": locationTypeID})
+		results = system.db.runNamedQuery("Location Model/" + dbType + "/getLocationTypeDefinitions",{"LocationTypeID": locationTypeID, 'database':dbName})
 		locationTypeDefinitionID = -1
 		for row in range(results.getRowCount()):
 			if definition == results.getValueAt(row,"Name"):
@@ -233,12 +236,14 @@ def bulkCreateLocations(jsonData):
 def bulkEditLocations(jsonData):
 
 	jsonData
+	dbType = settings.getValue('Location Model', 'modelDBType')
+	dbName = settings.getValue('Location Model', 'modelDBName')
 
 	for row in jsonData:
 		path = row["Path"]
 		LocationID = location.model.getLocationID(path)
 		if LocationID > 0:
-			system.db.runPrepUpdate("UPDATE core.Location SET shortName = ?, Description = ?, Latitude = ?, Longitude = ?   WHERE LocationID = ?", [row["shortName"],row["Description"],row["Latitude"],row["Longitude"],LocationID])
+			system.db.runPrepUpdate("UPDATE core.Location SET shortName = ?, Description = ?, Latitude = ?, Longitude = ?   WHERE LocationID = ?", [row["shortName"],row["Description"],row["Latitude"],row["Longitude"],LocationID], dbName)
 
 
 
@@ -305,21 +310,55 @@ def moveLocation(source, destination):
 
 	print 'moving location ', source, ' to ', destination
 
+	dbType = settings.getValue('Location Model', 'modelDBType')
+	dbName = settings.getValue('Location Model', 'modelDBName')
+	
 	locationID = location.model.getLocationID(source)
 	
-	if locationID > 0:
-		parentID = location.model.getLocationID(destination)
-
-		if parentID > 0:
+	if locationID > 0: 
 		
-			query = 'Location Model/' + settings.getValue('Location Model', 'modelDBType')  + '/changeParentID'
-			system.db.runNamedQuery(query, {'newParentLocationID':parentID, 'LocationID': locationID})
+		
+		# Destination is not a root location
+		if destination:
+
+			parentID = location.model.getLocationID(destination)
+	
+			if parentID > 0:
 			
-			location.model.updateModelTag()
-			return 1
+				query = 'Location Model/' + dbType  + '/getMaxOrderNumber'
+				maxOrder = system.db.runNamedQuery(query, {'parentLocationID':parentID, 'database':dbName})
+				if maxOrder:
+					newOrder = maxOrder + 1
+				else:
+					newOrder = 1
+				
+				query = 'Location Model/' + dbType  + '/updateOrderNumber'
+				results = system.db.runNamedQuery(query, {'locationID':locationID, 'orderNumber':newOrder, 'database':dbName})
+								
+				query = 'Location Model/' + dbType  + '/changeParentID'
+				system.db.runNamedQuery(query, {'newParentLocationID':parentID, 'LocationID': locationID, 'database':dbName})
 			
+				location.model.updateModelTag()
+
+				
+			else:
+				raise Exception("Destination path location ID does not exists")
+					
+		# Destination is a root location
 		else:
-			raise Exception("Destination path location ID does not exists")
+		
+			query = 'Location Model/' + dbType  + '/getMaxOrderNumberRoots'
+			maxOrder = system.db.runNamedQuery(query, {'database':dbName})
+			if maxOrder:
+				newOrder = maxOrder + 1
+			else:
+				newOrder = 1
+			
+			query = 'Location Model/' + dbType  + '/updateOrderNumber'
+			results = system.db.runNamedQuery(query, {'locationID':locationID, 'orderNumber':newOrder, 'database':dbName})
+		
+			query = 'Location Model/' + dbType  + '/changeParentIDtoNULL'
+			system.db.runNamedQuery(query, {'LocationID': locationID})
 
 	else:
 		raise Exception("Error: Source path location ID does not exists")
@@ -342,18 +381,19 @@ def bulkRenameLocations(jsonData):
 
 	viewImports = []
 	
+	dbType = settings.getValue('Location Model', 'modelDBType')
+	dbName = settings.getValue('Location Model', 'modelDBName')
+	
 	for row in jsonData:
 		path = row['Path']
 		newName = row['NewName']
 		renameTags = row['UpdateTags']
 		renameHist = row['UpdateHist']
 		renameViews = row['UpdateViews']
-		
-		
 
 		locationID = location.model.getLocationID(path)
 		if locationID > 0:
-			system.db.runPrepUpdate("UPDATE core.Location SET Name = ? WHERE LocationID = ?", [newName, locationID], "SCADA")
+			system.db.runPrepUpdate("UPDATE core.Location SET Name = ? WHERE LocationID = ?", [newName, locationID], dbName)
 		else:
 			raise Exception("Couldn't find location: " + path)
 

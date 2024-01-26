@@ -103,11 +103,14 @@
                             "type": "ia.display.icon"
                           },
                           {
+                            "custom": {
+                              "enabled": true
+                            },
                             "events": {
                               "dom": {
                                 "onClick": {
                                   "config": {
-                                    "script": "\t\n\t\n\tif self.custom.enabled:\n\t\n\t\tlocationData \u003d self.parent.parent.parent.getChild(\"Tree\").props.selectionData\n\t\t\n\t\t\n\t\tparams \u003d {\u0027ParentLocationID\u0027: locationData[0][\u0027value\u0027][\u0027locationID\u0027]}\n\t\tlocationName \u003d locationData[0][\u0027value\u0027][\u0027locationName\u0027]\n\t\t\n\t\tsystem.perspective.openPopup(\u0027AddLocationPopup\u0027, \u0027Location Model/Components/Popups/AddLocationPopup\u0027, params, title\u003d\u0027Add Location to \u0027 + locationName)\n"
+                                    "script": "\t\n\t\n\tif self.custom.enabled:\n\t\n\t\tlocationData \u003d self.parent.parent.parent.getChild(\"Tree\").props.selectionData\n\t\t\n\t\tif locationData:\n\t\t\tparams \u003d {\u0027ParentLocationID\u0027: locationData[0][\u0027value\u0027][\u0027locationID\u0027]}\n\t\t\tlocationName \u003d locationData[0][\u0027value\u0027][\u0027locationName\u0027]\n\t\telse:\n\t\t\tparams \u003d {\u0027ParentLocationID\u0027: None}\n\t\t\tlocationName \u003d \u0027root of tree\u0027\n\t\t\t\n\t\t\n\t\tsystem.perspective.openPopup(\u0027AddLocationPopup\u0027, \u0027Location Model/Components/Popups/AddLocationPopup\u0027, params, title\u003d\u0027Add Location to \u0027 + locationName)\n"
                                   },
                                   "scope": "G",
                                   "type": "script"
@@ -130,6 +133,7 @@
                                   "config": {
                                     "path": "parent.custom.locationDetails"
                                   },
+                                  "enabled": false,
                                   "transforms": [
                                     {
                                       "code": "\tif value.keys():\n\t\treturn True\n\telse:\n\t\treturn False",
@@ -255,7 +259,7 @@
                               "dom": {
                                 "onClick": {
                                   "config": {
-                                    "script": "\t\n\tif self.custom.enabled:\n\t\n\t\tlocationDetails \u003d self.parent.custom.locationDetails\n\t\torderNumber \u003d int(locationDetails[\u0027orderNumber\u0027])\n\t\tlocationID \u003d locationDetails[\u0027locationID\u0027]\n\t\tparentID \u003d locationDetails[\u0027parentID\u0027]\n\t\tmodelDBType \u003d self.session.custom.modelDBType\t\n\t\t\n\t\t# get all siblings\n\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/getChildren\u0027\n\t\tsiblingsDS \u003d system.db.runNamedQuery(query,{\"LocationID\":parentID})\n\t\tsiblings \u003d []\n\t\tfor row in range(siblingsDS.getRowCount()):\n\t\t\tsiblingID \u003d siblingsDS.getValueAt(row,\"LocationID\")\n\t\t\tsiblingOrder \u003d siblingsDS.getValueAt(row,\"orderNumber\")\n\t\t\tsiblings.append({\u0027id\u0027:siblingID, \u0027order\u0027:siblingOrder})\n\t\t\t\t\n\t\t# find the infimum\n\t\tlowerbounds \u003d filter(lambda x : x[\u0027order\u0027] and x[\u0027order\u0027] \u003c orderNumber, siblings)\n\t\tinf \u003d max(lowerbounds, key\u003dlambda x : x[\u0027order\u0027])\n\t\t\n\t\t# swap with the infimum\n\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/updateOrderNumber\u0027\n\t\tsystem.db.runNamedQuery(query,{\"orderNumber\":inf[\u0027order\u0027], \"locationID\":locationID})\t\t\n\t\tsystem.db.runNamedQuery(query,{\"orderNumber\":orderNumber, \"locationID\":inf[\u0027id\u0027]})\t\t\t\n\t\t\n\t\tlocation.model.updateModelTag()"
+                                    "script": "\t\n\tif self.custom.enabled:\n\t\n\t\tlocationDetails \u003d self.parent.custom.locationDetails\n\t\torderNumber \u003d int(locationDetails[\u0027orderNumber\u0027])\n\t\tlocationID \u003d locationDetails[\u0027locationID\u0027]\n\t\tparentID \u003d locationDetails[\u0027parentID\u0027]\n\t\tmodelDBType \u003d self.session.custom.modelDBType\t\n\t\tmodelDBName \u003d self.session.custom.modelDBName\n\t\t\n\t\t# get all siblings\t\n\t\tif parentID:\n\t\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/getChildren\u0027\n\t\t\tsiblingsDS \u003d system.db.runNamedQuery(query,{\"LocationID\":parentID, \u0027database\u0027:modelDBName})\n\t\telse:\n\t\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/getRootLocations\u0027\n\t\t\tsiblingsDS \u003d system.db.runNamedQuery(query, {\u0027database\u0027:modelDBName})\n\t\tsiblings \u003d []\n\t\tfor row in range(siblingsDS.getRowCount()):\n\t\t\tsiblingID \u003d siblingsDS.getValueAt(row,\"LocationID\")\n\t\t\tsiblingOrder \u003d siblingsDS.getValueAt(row,\"orderNumber\")\n\t\t\tsiblings.append({\u0027id\u0027:siblingID, \u0027order\u0027:siblingOrder})\n\t\t\t\t\n\t\t# find the infimum\n\t\tlowerbounds \u003d filter(lambda x : x[\u0027order\u0027] and x[\u0027order\u0027] \u003c orderNumber, siblings)\n\t\tinf \u003d max(lowerbounds, key\u003dlambda x : x[\u0027order\u0027])\n\t\t\n\t\t# swap with the infimum\n\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/updateOrderNumber\u0027\n\t\tsystem.db.runNamedQuery(query,{\"orderNumber\":inf[\u0027order\u0027], \"locationID\":locationID, \u0027database\u0027:modelDBName})\t\t\n\t\tsystem.db.runNamedQuery(query,{\"orderNumber\":orderNumber, \"locationID\":inf[\u0027id\u0027], \u0027database\u0027:modelDBName})\t\t\t\n\t\t\n\t\tlocation.model.updateModelTag()"
                                   },
                                   "scope": "G",
                                   "type": "script"
@@ -330,7 +334,7 @@
                               "dom": {
                                 "onClick": {
                                   "config": {
-                                    "script": "\t\n\tif self.custom.enabled:\n\t\n\t\tlocationDetails \u003d self.parent.custom.locationDetails\n\t\torderNumber \u003d int(locationDetails[\u0027orderNumber\u0027])\n\t\tlocationID \u003d locationDetails[\u0027locationID\u0027]\n\t\tparentID \u003d locationDetails[\u0027parentID\u0027]\n\t\tmodelDBType \u003d self.session.custom.modelDBType\t\n\t\t\n\t\t# get all siblings\n\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/getChildren\u0027\n\t\tsiblingsDS \u003d system.db.runNamedQuery(query,{\"LocationID\":parentID})\n\t\tsiblings \u003d []\n\t\tfor row in range(siblingsDS.getRowCount()):\n\t\t\tsiblingID \u003d siblingsDS.getValueAt(row,\"LocationID\")\n\t\t\tsiblingOrder \u003d siblingsDS.getValueAt(row,\"orderNumber\")\n\t\t\tsiblings.append({\u0027id\u0027:siblingID, \u0027order\u0027:siblingOrder})\n\t\t\t\t\n\t\t# find the supremum\n\t\tupperbounds \u003d filter(lambda x : x[\u0027order\u0027] and x[\u0027order\u0027] \u003e orderNumber, siblings)\n\t\tsup \u003d min(upperbounds, key\u003dlambda x : x[\u0027order\u0027])\n\t\t\n\t\t# swap with the supremum\n\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/updateOrderNumber\u0027\n\t\tsystem.db.runNamedQuery(query,{\"orderNumber\":sup[\u0027order\u0027], \"locationID\":locationID})\t\t\n\t\tsystem.db.runNamedQuery(query,{\"orderNumber\":orderNumber, \"locationID\":sup[\u0027id\u0027]})\t\t\t\n\t\t\n\t\tlocation.model.updateModelTag()\n"
+                                    "script": "\t\n\tif self.custom.enabled:\n\t\n\t\tlocationDetails \u003d self.parent.custom.locationDetails\n\t\torderNumber \u003d int(locationDetails[\u0027orderNumber\u0027])\n\t\tlocationID \u003d locationDetails[\u0027locationID\u0027]\n\t\tparentID \u003d locationDetails[\u0027parentID\u0027]\n\t\tmodelDBType \u003d self.session.custom.modelDBType\t\n\t\tmodelDBName \u003d self.session.custom.modelDBName\n\t\t\n\t\t# get all siblings\n\t\tif parentID:\n\t\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/getChildren\u0027\n\t\t\tsiblingsDS \u003d system.db.runNamedQuery(query,{\"LocationID\":parentID, \u0027database\u0027:modelDBName})\n\t\telse:\n\t\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/getRootLocations\u0027\n\t\t\tsiblingsDS \u003d system.db.runNamedQuery(query, {\u0027database\u0027:modelDBName})\n\t\tsiblings \u003d []\n\t\tfor row in range(siblingsDS.getRowCount()):\n\t\t\tsiblingID \u003d siblingsDS.getValueAt(row,\"LocationID\")\n\t\t\tsiblingOrder \u003d siblingsDS.getValueAt(row,\"orderNumber\")\n\t\t\tsiblings.append({\u0027id\u0027:siblingID, \u0027order\u0027:siblingOrder})\n\t\t\t\t\n\t\t# find the supremum\n\t\tupperbounds \u003d filter(lambda x : x[\u0027order\u0027] and x[\u0027order\u0027] \u003e orderNumber, siblings)\n\t\tsup \u003d min(upperbounds, key\u003dlambda x : x[\u0027order\u0027])\n\t\t\n\t\t# swap with the supremum\n\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/updateOrderNumber\u0027\n\t\tsystem.db.runNamedQuery(query,{\"orderNumber\":sup[\u0027order\u0027], \"locationID\":locationID, \u0027database\u0027:modelDBName})\t\t\n\t\tsystem.db.runNamedQuery(query,{\"orderNumber\":orderNumber, \"locationID\":sup[\u0027id\u0027], \u0027database\u0027:modelDBName})\t\t\t\n\t\t\n\t\tlocation.model.updateModelTag()\n"
                                   },
                                   "scope": "G",
                                   "type": "script"
@@ -355,7 +359,7 @@
                                   },
                                   "transforms": [
                                     {
-                                      "code": "\t\n\ttry:\n\t\tmodelDBType \u003d self.session.custom.modelDBType\n\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/getMaxOrderNumber\u0027\n\t\tmaxOrderNumber \u003d system.db.runNamedQuery(query, {\u0027parentLocationID\u0027: value[\u0027parentID\u0027]})\n\t\torderNumber \u003d value[\u0027orderNumber\u0027]\n\t\n\t\tif not orderNumber or orderNumber \u003d\u003d maxOrderNumber:\n\t\t\treturn False\n\t\telse:\n\t\t\treturn True\n\texcept:\n\t\treturn False",
+                                      "code": "\t\n\ttry:\n\t\tmodelDBType \u003d self.session.custom.modelDBType\n\t\tmodelDBName \u003d self.session.custom.modelDBName\n\t\tif value[\u0027parentID\u0027]:\n\t\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/getMaxOrderNumber\u0027\n\t\t\tmaxOrderNumber \u003d system.db.runNamedQuery(query, {\u0027parentLocationID\u0027: value[\u0027parentID\u0027], \u0027database\u0027: modelDBName})\n\t\telse:\n\t\t\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/getMaxOrderNumberRoots\u0027\n\t\t\tmaxOrderNumber \u003d system.db.runNamedQuery(query, {\u0027database\u0027: modelDBName})\n\t\t\n\t\torderNumber \u003d value[\u0027orderNumber\u0027]\n\t\n\t\tif not orderNumber or orderNumber \u003d\u003d maxOrderNumber:\n\t\t\treturn False\n\t\telse:\n\t\t\treturn True\n\texcept:\n\t\treturn False",
                                       "type": "script"
                                     }
                                   ],
@@ -637,9 +641,19 @@
                       "position.display": {
                         "binding": {
                           "config": {
-                            "path": "this.custom.modelTagExists"
+                            "struct": {
+                              "modelTagExists": "{this.custom.modelTagExists}",
+                              "tabelsExist": "{/root.custom.tablesExist}"
+                            },
+                            "waitOnAll": true
                           },
-                          "type": "property"
+                          "transforms": [
+                            {
+                              "code": "\tif value[\u0027modelTagExists\u0027] and value[\u0027tabelsExist\u0027]:\n\t\treturn True\n\telse:\n\t\treturn False",
+                              "type": "script"
+                            }
+                          ],
+                          "type": "expr-struct"
                         }
                       },
                       "props.items": {
@@ -651,7 +665,7 @@
                           },
                           "transforms": [
                             {
-                              "code": "\n\trootLocationID \u003d self.session.custom.rootLocationID\n\t\n\t# transfrom the tree with icons\n\tdef addIcons(item):\n\t\tlocationType \u003d item[\u0027data\u0027][\u0027locationType\u0027]\n\t\tif locationType \u003d\u003d \u0027Process\u0027:\n\t\t\ticon \u003d { \u0027path\u0027: \u0027material/stop\u0027, \u0027color\u0027: \u0027var(--blue-77)\u0027 }\n\t\telse:\n\t\t\ticon \u003d { \u0027path\u0027: \u0027material/view_list\u0027, \u0027color\u0027: \u0027var(--green-77)\u0027 }\n\t\titem[\u0027icon\u0027] \u003d icon\n\t\treturn item\n\n\n\treturn location.model.updateModelTree(rootLocationID, value, expanded\u003dTrue, transformFunction\u003daddIcons)[\u0027items\u0027]",
+                              "code": "\n\trootLocationID \u003d self.session.custom.rootLocationID\n\t\n\t# transfrom the tree with icons\n\tdef addIcons(item):\n\t\tlocationType \u003d item[\u0027data\u0027][\u0027locationType\u0027]\n\t\tif locationType \u003d\u003d \u0027Process\u0027:\n\t\t\ticon \u003d { \u0027path\u0027: \u0027material/stop\u0027, \u0027color\u0027: \u0027var(--blue-77)\u0027 }\n\t\telse:\n\t\t\ticon \u003d { \u0027path\u0027: \u0027material/view_list\u0027, \u0027color\u0027: \u0027var(--green-77)\u0027 }\n\t\titem[\u0027icon\u0027] \u003d icon\n\t\treturn item\n\n\n\treturn location.model.updateModelTree(value, expanded\u003dTrue, transformFunction\u003daddIcons)",
                               "type": "script"
                             }
                           ],
@@ -682,6 +696,45 @@
                           }
                         }
                       },
+                      "selection": [
+                        "1"
+                      ],
+                      "selectionData": [
+                        {
+                          "itemPath": "1",
+                          "value": {
+                            "childrenCount": 2,
+                            "childrenIDs": "2,3",
+                            "description": "",
+                            "icon": "material/apartment",
+                            "lastModifiedBy": "nfoster",
+                            "lastModifiedOn": {
+                              "$": [
+                                "ts",
+                                0,
+                                1706310752458
+                              ],
+                              "$ts": 1706305046457
+                            },
+                            "locationID": 5,
+                            "locationIDPath": "5",
+                            "locationName": "New Root",
+                            "locationPath": "New Root",
+                            "locationType": "Enterprise",
+                            "locationTypeDefinition": "Enterprise",
+                            "locationTypeDefinitionID": 1,
+                            "locationTypeID": 1,
+                            "orderNumber": 2,
+                            "parentID": null,
+                            "shortName": "",
+                            "tagPath": "[SCADA]New Root",
+                            "treePath": "0",
+                            "udtPath": "[SCADA]_types_/Location Types/Enterprise",
+                            "viewPath": "SCADA/New Root",
+                            "viewTemplatePath": "Templates/Types/Enterprise Metrics"
+                          }
+                        }
+                      ],
                       "style": {
                         "color": "var(--neutral-70)"
                       }
@@ -695,14 +748,14 @@
                           "name": "Label"
                         },
                         "position": {
-                          "basis": "32px"
+                          "basis": "100px"
                         },
                         "props": {
                           "style": {
                             "classes": "RapidDev/Text/Value",
                             "textAlign": "center"
                           },
-                          "text": "Location Model Tag Does Not Exist"
+                          "text": "Location Model tag does not exist at the given path. Either update the path in the settings or create."
                         },
                         "type": "ia.display.label"
                       },
@@ -736,7 +789,7 @@
                       }
                     ],
                     "meta": {
-                      "name": "Does Not Exist"
+                      "name": "Tag Does Not Exist"
                     },
                     "position": {
                       "basis": "200px",
@@ -746,7 +799,88 @@
                       "position.display": {
                         "binding": {
                           "config": {
-                            "path": "../Tree.custom.modelTagExists"
+                            "struct": {
+                              "modelTagExists": "{../Tree.custom.modelTagExists}",
+                              "tabelsExits": "{/root.custom.tablesExist}"
+                            },
+                            "waitOnAll": true
+                          },
+                          "transforms": [
+                            {
+                              "code": "\ttabelsExist \u003d value[\u0027tabelsExits\u0027]\n\tmodelTagExists \u003d value[\u0027modelTagExists\u0027]\n\t\n\tif tabelsExist and not modelTagExists:\n\t\treturn True\n\telse:\n\t\treturn False",
+                              "type": "script"
+                            }
+                          ],
+                          "type": "expr-struct"
+                        }
+                      }
+                    },
+                    "props": {
+                      "alignItems": "center",
+                      "direction": "column",
+                      "justify": "center"
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "children": [
+                      {
+                        "meta": {
+                          "name": "Label"
+                        },
+                        "position": {
+                          "basis": "150px"
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "RapidDev/Text/Value",
+                            "textAlign": "center"
+                          },
+                          "text": "At least one table was not found in the database. Either update the settings, troubleshoot the connection, or click the button below to create and initialize the tables."
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "events": {
+                          "component": {
+                            "onActionPerformed": {
+                              "config": {
+                                "script": "\t\n\tdbName \u003d settings.getValue(\"Location Model\", \"modelDBName\")\n\tdbType \u003d settings.getValue(\"Location Model\", \"modelDBType\")\n\tversion \u003d settings.getValue(\"Location Model\", \"schemaName\")\n\n\n\ttry:\n\t\tqueryPath \u003d \"Location Model/\" + dbType + \"/initilizeTables\"\n\t\tresult \u003d system.db.runNamedQuery(queryPath, {\u0027database\u0027: dbName, \"version\": version})\n\t\tprint \u0027result \u0027, result\n\texcept:\n\t\treturn\n\n\tself.view.getChild(\"root\").refreshBinding(\u0027custom.tablesExist\u0027)\n\tlocation.model.updateModelTag()\n\tself.parent.parent.getChild(\"Tree\").refreshBinding(\u0027custom.modelTagExists\u0027)"
+                              },
+                              "scope": "G",
+                              "type": "script"
+                            }
+                          }
+                        },
+                        "meta": {
+                          "name": "Button"
+                        },
+                        "position": {
+                          "basis": "57px"
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "RapidDev/Button/Primary",
+                            "margin": "5px 20px",
+                            "padding": "0px 50px"
+                          },
+                          "text": "Create and Initialize Tables"
+                        },
+                        "type": "ia.input.button"
+                      }
+                    ],
+                    "meta": {
+                      "name": "Tabels Do Not Exist"
+                    },
+                    "position": {
+                      "basis": "200px",
+                      "grow": 1
+                    },
+                    "propConfig": {
+                      "position.display": {
+                        "binding": {
+                          "config": {
+                            "path": "/root.custom.tablesExist"
                           },
                           "transforms": [
                             {
@@ -1272,6 +1406,26 @@
     ],
     "meta": {
       "name": "root"
+    },
+    "propConfig": {
+      "custom.tablesExist": {
+        "binding": {
+          "config": {
+            "struct": {
+              "modelDBName": "{session.custom.modelDBName}",
+              "modelDBType": "{session.custom.modelDBType}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "code": "\n\tdbName \u003d value[\u0027modelDBName\u0027]\n\tdbType \u003d value[\u0027modelDBType\u0027]\n\n\n\ttry:\n\t\tqueryPath \u003d \"Location Model/\" + dbType + \"/tablesExist\"\n\t\ttabelsExist \u003d system.db.runNamedQuery(queryPath, {\u0027database\u0027: dbName})\n\texcept:\n\t\treturn False\n\t\t\n\tif tabelsExist.getRowCount() \u003e 0 and tabelsExist.getValueAt(0,0):\n\t\treturn True\n\telse:\n\t\treturn False\n",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      }
     },
     "props": {
       "menuType": "modern",

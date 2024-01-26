@@ -15,9 +15,11 @@ def updateModelTag():
 	
 	Queries location tables to update model tag.
 	"""
-
-	queryPath = "Location Model/" + settings.getValue('Location Model', 'modelDBType') + "/getModel"
-	model = system.db.runNamedQuery(queryPath)
+	
+	dbType = settings.getValue('Location Model', 'modelDBType')
+	dbName = settings.getValue('Location Model', 'modelDBName')
+	queryPath = "Location Model/" + dbType + "/getModel"
+	model = system.db.runNamedQuery(queryPath, {'database':dbName})
 
 	headers = [	
 				"locationName",
@@ -55,8 +57,8 @@ def updateModelTag():
 			
 			
 		# ------ Find all children and sort  ----------------------------------
-		queryPath = "Location Model/" + settings.getValue('Location Model', 'modelDBType') + "/getChildren"
-		children = system.db.runNamedQuery(queryPath, {'LocationID': locationID})
+		queryPath = "Location Model/" + dbType + "/getChildren"
+		children = system.db.runNamedQuery(queryPath, {'LocationID': locationID, 'database':dbName})
 		childrenCount = children.getRowCount()
 		childrenIDs = []
 		childrenIDsSorted = ""	
@@ -116,16 +118,17 @@ def updateModelTag():
 
 
 
+
+
 #*****************************************************************************************************
 # Author:         Nate Foster
 # Company:        A.W. Schultz
 # Date:           Feb 2023
 #*****************************************************************************************************	
-def updateModelTree(locationID, modelDS, expanded=True, filterFunction=lambda x : True, transformFunction=lambda x : x):
+def updateModelTree(modelDS, expanded=True, filterFunction=lambda x : True, transformFunction=lambda x : x):
 	"""Update the location model tree.
 	
 	Args:
-		locationID (int): The location ID for the root of the tree..
 		modelDS (Dataset): The location model dataset.
 		expanded (bool): All tree items are expanded if True.
 		filterFunction (function): A function that takes locationDetails and returns a bool.
@@ -135,35 +138,49 @@ def updateModelTree(locationID, modelDS, expanded=True, filterFunction=lambda x 
 		A dict where key 'items' is a list of tree items.
 	"""
 	
-	# remove locationID as parameter
-	# get list of all root nodes (i.e. Null parentIDs)
-	# for each root node, build a tree
-	# always keep the add button enabled and add new root node if no location is selected
+	def buildTree(locationID, modelDS, expanded, filterFunction, transformFunction):
 	
-	
-	try:
-		locationDetails = getLocationDetails(locationID, modelDS)
-	except:
-		return []
-	name = locationDetails['locationName']
-	items = []
-	keepMe = False # Keep this subtree if true. Used for filtering.
-	
-	# recursively build all child subtrees
-	if locationDetails['childrenCount'] > 0:
-		childrenIDs = map(int, locationDetails['childrenIDs'].split(','))
-		for childID in childrenIDs:
-			subTree = updateModelTree(childID, modelDS, expanded, filterFunction, transformFunction)
-			if subTree['keepMe']:
-				keepMe = True
-				items = items + subTree['items']
-				
+		try:
+			locationDetails = getLocationDetails(locationID, modelDS)
+		except:
+			return []
 
-	# base case
-	if filterFunction(locationDetails) or keepMe:
-		return {"keepMe": True, "items":[transformFunction({"label":name, "data":locationDetails, "expanded":expanded, "items":items})]}
-	else:
-		return {"keepMe": False, "items":[transformFunction({"label":name, "data":locationDetails, "expanded":expanded, "items":items})]}
+		name = locationDetails['locationName']
+		items = []
+		keepMe = False # Keep this subtree if true. Used for filtering.
+		
+		# recursively build all child subtrees
+		if locationDetails['childrenCount'] > 0:
+			childrenIDs = map(int, locationDetails['childrenIDs'].split(','))
+			for childID in childrenIDs:
+				subTree = buildTree(childID, modelDS, expanded, filterFunction, transformFunction)
+				if subTree['keepMe']:
+					keepMe = True
+					items = items + subTree['items']
+	
+		# base case
+		if filterFunction(locationDetails) or keepMe:
+			return {"keepMe": True, "items":[transformFunction({"label":name, "data":locationDetails, "expanded":expanded, "items":items})]}
+		else:
+			return {"keepMe": False, "items":[transformFunction({"label":name, "data":locationDetails, "expanded":expanded, "items":items})]}
+
+
+	# this was rewritten to allow for multiple roots
+	rootIDs = []
+	for row in range(modelDS.getRowCount()):
+		parentID = modelDS.getValueAt(row, "parentID")
+		if parentID == None:
+			rootIDs.append(modelDS.getValueAt(row,"locationID"))
+			
+	trees = []
+	for locationID in rootIDs:
+		trees = trees + buildTree(locationID, modelDS, expanded, filterFunction, transformFunction)['items']
+
+	trees.sort(key=lambda x : x['data']['orderNumber'])
+	return trees
+
+
+
 
 
 
@@ -306,9 +323,11 @@ def getLocationIDPath(locationID):
 	Returns:
 		A string representing the locationID path.
 	"""
-
+	dbType = settings.getValue('Location Model', 'modelDBType')
+	dbName = settings.getValue('Location Model', 'modelDBName')
+	
 	try:	
-		parentID = system.db.runPrepQuery("SELECT ParentLocationID FROM core.Location WHERE LocationID = ?", [locationID]).getValueAt(0,0)
+		parentID = system.db.runPrepQuery("SELECT ParentLocationID FROM core.Location WHERE LocationID = ?", [locationID], dbName).getValueAt(0,0)
 	except:
 		return str(locationID)
 		
@@ -370,19 +389,35 @@ def getLocationPath(locationID):
 #*****************************************************************************************************	
 def getLocationID(locationPath):
 
+	dbType = settings.getValue('Location Model', 'modelDBType')
+	dbName = settings.getValue('Location Model', 'modelDBName')
+	
 	locationNames = locationPath.split('/')
 	length = len(locationNames)	
 	locationID = -1
 	
-	# update locationID as you move down the path
-	for n in range(length-1):
+	if length < 1:
+		return -1
 	
-		query = 'Location Model/' + settings.getValue('Location Model', 'modelDBType') + '/getChildrenFromName'
-		children = system.dataset.toPyDataSet(system.db.runNamedQuery(query,{"Name": locationNames[n]}))
-		locationID = -1
-		for child in children:
-			if locationNames[n+1] == child["Name"]:
-				locationID = child["LocationID"]
+	elif length == 1:
+
+		query = 'Location Model/' + dbType + '/getRootLocations'
+		roots = system.dataset.toPyDataSet(system.db.runNamedQuery(query,{"database": dbName}))
+		for root in roots:
+			if locationNames[0] == root["Name"]:
+				locationID = root["LocationID"]
+
+	else: 
+	
+		# update locationID as you move down the path
+		for n in range(length-1):
+		
+			query = 'Location Model/' + dbType + '/getChildrenFromName'
+			children = system.dataset.toPyDataSet(system.db.runNamedQuery(query,{"Name": locationNames[n], 'database':dbName}))
+			locationID = -1
+			for child in children:
+				if locationNames[n+1] == child["Name"]:
+					locationID = child["LocationID"]
 
 				
 	return locationID
