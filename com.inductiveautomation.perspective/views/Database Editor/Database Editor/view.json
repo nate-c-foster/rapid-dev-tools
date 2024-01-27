@@ -30,7 +30,7 @@
                       "config": {
                         "fallbackDelay": 2.5,
                         "mode": "expression",
-                        "tagPath": "{session.custom.tagProvider} + \u0027RapidDev/Database Editor/Settings/databaseConnections\u0027"
+                        "tagPath": "{session.custom.settingsRootPath} + \u0027/\u0027  + \u0027RapidDev/Database Editor/Settings/databaseConnections\u0027"
                       },
                       "transforms": [
                         {

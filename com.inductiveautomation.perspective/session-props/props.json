@@ -6,7 +6,7 @@
         "config": {
           "fallbackDelay": 2.5,
           "mode": "expression",
-          "tagPath": "{this.custom.tagProvider} + \"RapidDev/Location Model/Settings/modelDBName\""
+          "tagPath": "{this.custom.settingsRootPath} + \"/RapidDev/Location Model/Settings/modelDBName\""
         },
         "type": "tag"
       }
@@ -16,7 +16,7 @@
         "config": {
           "fallbackDelay": 2.5,
           "mode": "expression",
-          "tagPath": "{this.custom.tagProvider} + \"RapidDev/Location Model/Settings/modelDBType\""
+          "tagPath": "{this.custom.settingsRootPath} + \"/RapidDev/Location Model/Settings/modelDBType\""
         },
         "type": "tag"
       }
@@ -26,7 +26,7 @@
         "config": {
           "fallbackDelay": 2.5,
           "mode": "expression",
-          "tagPath": "{this.custom.tagProvider} + \"RapidDev/Location Model/Settings/modelTagPath\""
+          "tagPath": "{this.custom.settingsRootPath} + \"/RapidDev/Location Model/Settings/modelTagPath\""
         },
         "type": "tag"
       }
@@ -36,19 +36,19 @@
         "config": {
           "fallbackDelay": 2.5,
           "mode": "expression",
-          "tagPath": "{this.custom.tagProvider} + \"RapidDev/Location Model/Settings/rootLocationID\""
+          "tagPath": "{this.custom.settingsRootPath} + \"/RapidDev/Location Model/Settings/rootLocationID\""
         },
         "type": "tag"
       }
     },
-    "custom.tagProvider": {
+    "custom.settingsRootPath": {
       "binding": {
         "config": {
-          "expression": "now()"
+          "expression": "now(0)"
         },
         "transforms": [
           {
-            "code": "\treturn settings.getTagProvider()",
+            "code": "\treturn settings.ROOT_PATH",
             "type": "script"
           }
         ],
@@ -109,7 +109,7 @@
           "bidirectional": true,
           "fallbackDelay": 2.5,
           "mode": "expression",
-          "tagPath": "{this.custom.tagProvider} + \u0027RapidDev/Global/Settings/theme\u0027"
+          "tagPath": "{this.custom.settingsRootPath} + \u0027/RapidDev/Global/Settings/theme\u0027"
         },
         "type": "tag"
       }

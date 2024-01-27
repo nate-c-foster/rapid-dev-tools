@@ -5,7 +5,6 @@ import math
 
 
 
-
 def timeIt(func):
 	
 	@functools.wraps(func)
@@ -46,8 +45,8 @@ def debug(func):
 
 def exception(logger):
 
-	@functools.wraps(func)
 	def decorator(func):
+		@functools.wraps(func)
 		def wrapper(*args, **kwarg):
 		
 			try:

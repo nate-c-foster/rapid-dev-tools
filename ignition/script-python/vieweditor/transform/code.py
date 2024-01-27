@@ -10,6 +10,60 @@ Todo:
 
 """
 
+registeredFunctions = [	
+	{
+	'name':"Update JSON Subcomponent",
+	'description':"Update a view JSON subcomponent with a new JSON subcomponent",
+	'functionPath':"vieweditor.transform.updateComponent",
+	'kwargs':{"keyPath":"","jsonString":""},
+	'dockPaths':{},
+	'dropdownPaths':{},
+	'order':1,
+	'kwargsOrder':{u'keyPath': 1, u'jsonString': 2}
+	},
+	{
+	'name':"Insert New JSON Subcomponent",
+	'description':"Insert a new JSON subcomponent into a JSON list.",
+	'functionPath':"vieweditor.transform.insertComponent",
+	'kwargs':{"keyPath":"","jsonString":""},
+	'dockPaths':{},
+	'dropdownPaths':{},
+	'order':2,
+	'kwargsOrder':{u'keyPath': 1, u'jsonString': 2}
+	},
+	{
+	'name':"For Each Perspective Component",
+	'description':"Apply a transformation to each perspective component within a view.",
+	'functionPath':"vieweditor.transform.forEachComponent",
+	'kwargs':{"componentType":"","componentFilter":"","keypath":"","updateValue":"","insertValue":""},
+	'dockPaths':{},
+	'dropdownPaths':{"componentType": "Global Components/Functions/Dropdowns/View Components"},
+	'order':3,
+	'kwargsOrder':{u'componentType': 1, u'updateValue': 4, u'insertValue': 5, u'componentFilter': 2, u'keypath': 3}
+	},
+	{
+	'name':"Update View Parameters",
+	'description':"Update view parameters. Example {'LocationID':71}.",
+	'functionPath':"vieweditor.transform.updateViewParams",
+	'kwargs':{"params":""},
+	'dockPaths':{},
+	'dropdownPaths':{},
+	'order':4,
+	'kwargsOrder':{u'params': 1}
+	},
+	{
+	'name':"Replace With Template",
+	'description':"Replace view with  template view",
+	'functionPath':"vieweditor.transform.viewReplaceWithLocationDetails",
+	'kwargs':{"templateViewPath":""},
+	'dockPaths':{"templateViewPath": "Global Components/Functions/Docks/View Path Selector"},
+	'dropdownPaths':{},
+	'order':5,
+	'kwargsOrder':{u'templateViewPath': 1}
+	}
+]
+
+
 
 # -------------  Lambda helper functions -------------------------------------------
 

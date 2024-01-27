@@ -127,7 +127,7 @@
                           },
                           "transforms": [
                             {
-                              "code": "\ttagProvider \u003d self.session.custom.tagProvider\n\tcategory \u003d value\n\t\n\tsettingTags \u003d system.tag.browse(tagProvider + \u0027RapidDev/\u0027 + category + \u0027/Settings\u0027)\n\t\n\tinstances \u003d []\n\tfor settingTag in settingTags:\n\t\n\t\ttagPath \u003d str(settingTag[\u0027fullPath\u0027])\n\t\tname \u003d settingTag[\u0027name\u0027]\n\t\tdataType \u003d settingTag[\u0027dataType\u0027]\n\t\tdescription \u003d system.tag.readBlocking(tagPath + \u0027.documentation\u0027)[0].value\n\t\tinstances.append({\u0027name\u0027:name, \u0027dataType\u0027:dataType, \u0027description\u0027: description, \u0027tagPath\u0027:tagPath})\n\t\t\n\t\t\n\treturn instances",
+                              "code": "\n\tcategory \u003d value\n\t\n\tsettingTags \u003d system.tag.browse(self.session.custom.settingsRootPath + \u0027/RapidDev/\u0027 + category + \u0027/Settings\u0027)\n\t\n\tinstances \u003d []\n\tfor settingTag in settingTags:\n\t\n\t\ttagPath \u003d str(settingTag[\u0027fullPath\u0027])\n\t\tname \u003d settingTag[\u0027name\u0027]\n\t\tdataType \u003d settingTag[\u0027dataType\u0027]\n\t\tdescription \u003d system.tag.readBlocking(tagPath + \u0027.documentation\u0027)[0].value\n\t\tinstances.append({\u0027name\u0027:name, \u0027dataType\u0027:dataType, \u0027description\u0027: description, \u0027tagPath\u0027:tagPath})\n\t\t\n\t\t\n\treturn instances",
                               "type": "script"
                             }
                           ],

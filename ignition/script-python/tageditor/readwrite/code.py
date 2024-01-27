@@ -11,6 +11,38 @@ Todo:
 """
 import re
 
+registeredFunctions = [	
+	{
+	'name':"Path Suffix",
+	'description':"Appends suffix path to tag path for read/write, value can be a lambda: tag -> value",
+	'functionPath':"tageditor.readwrite.suffixPath",
+	'kwargs':{"suffixPath":"","value":"","readOnly":""},
+	'dockPaths':{},
+	'dropdownPaths':{"readOnly":"Global Components/Functions/Dropdowns/Boolean Value"},
+	'order':1,
+	'kwargsOrder':{u'readOnly': 3, u'suffixPath': 1, u'value': 2}
+	},
+	{
+	'name':"Tag Parameter",
+	'description':"Select a parameter name for read/write, value can be a lambda: tag -> value",
+	'functionPath':"tageditor.readwrite.writeParameterValue",
+	'kwargs':{"typeId":"","parameter":"","value":"","readOnly":""},
+	'dockPaths':{},
+	'dropdownPaths':{"typeId":"Global Components/Functions/Dropdowns/Parameter UDT Type Select","parameter":"Global Components/Functions/Dropdowns/Parameter Name Select","readOnly":"Global Components/Functions/Dropdowns/Boolean Value"},
+	'order':2,
+	'kwargsOrder':{u'readOnly': 4, u'parameter': 2, u'typeId': 1, u'value': 3}
+	},
+	{
+	'name':"Tag Property",
+	'description':"Select a property for read/write, value can be a lambda: tag -> value",
+	'functionPath':"tageditor.readwrite.writePropertyValue",
+	'kwargs':{"property":"","value":"","readOnly":""},
+	'dockPaths':{},
+	'dropdownPaths':{"property":"Global Components/Functions/Dropdowns/Tag Property","value":"Global Components/Functions/Dropdowns/Tag Property Values","readOnly":"Global Components/Functions/Dropdowns/Boolean Value"},
+	'order':3,
+	'kwargsOrder':{u'readOnly': 3, u'property': 1, u'value': 2}
+	}
+]
 
 #*****************************************************************************************************
 # Author:         Nate Foster

@@ -9,7 +9,18 @@ See below for examples.
 
 import os
 
-
+registeredFunctions = [	
+	{
+	'name':"All Views",
+	'description':"Generate all children views under a root view path",
+	'functionPath':"vieweditor.generate.getViews",
+	'kwargs':{"rootViewPath":""},
+	'dockPaths':{"rootViewPath":"Global Components/Functions/Docks/View Path Selector"},
+	'dropdownPaths':{},
+	'order':1,
+	'kwargsOrder':{u'rootViewPath': 1}
+	}
+]
 
 
 #*****************************************************************************************************
