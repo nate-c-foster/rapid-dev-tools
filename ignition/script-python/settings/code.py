@@ -1,4 +1,6 @@
 
+ROOT_PATH = '[SCADA]Configuration'
+
 
 
 def getValue(category, setting):
@@ -12,8 +14,7 @@ def getValue(category, setting):
 		The setting value.     
 	"""
 	
-	tagProvider = getTagProvider()
-	return system.tag.readBlocking(tagProvider + 'RapidDev/' + category + '/Settings/' + setting)[0].value
+	return system.tag.readBlocking(ROOT_PATH + '/RapidDev/' + category + '/Settings/' + setting)[0].value
 	
 	
 def getPath(category, setting):
@@ -27,8 +28,7 @@ def getPath(category, setting):
 		The setting tag path.     
 	"""
 	
-	tagProvider = getTagProvider()
-	return tagProvider + 'RapidDev/' + category + '/Settings/' + setting
+	return ROOT_PATH + '/RapidDev/' + category + '/Settings/' + setting
 	
 	
 	

@@ -14,7 +14,48 @@ Todo:
 import re
 
 
-
+registeredFunctions = [	
+	{
+	'name':"View Path",
+	'description':"Filter by view path. Uses Python regex",
+	'functionPath':"vieweditor.filter.viewPathFilter",
+	'kwargs':{"pathFilter":""},
+	'dockPaths':{},
+	'dropdownPaths':{},
+	'order':1,
+	'kwargsOrder':{u'pathFilter': 1}
+	},
+	{
+	'name':"Keypath Value",
+	'description':"Filter by keypath value. Uses Python regex.",
+	'functionPath':"vieweditor.filter.keyPathValueFilter",
+	'kwargs':{"keyPath":"","valueFilter":""},
+	'dockPaths':{},
+	'dropdownPaths':{},
+	'order':2,
+	'kwargsOrder':{u'valueFilter': 2, u'keyPath': 1}
+	},
+	{
+	'name':"Contains Perspective Component",
+	'description':"Filter views that contain a certain perspective component and satisfy lambda predicate 'componentFilter'.",
+	'functionPath':"vieweditor.filter.containsSubcomponent",
+	'kwargs':{"componentType":"","componentFilter":""},
+	'dockPaths':{},
+	'dropdownPaths':{"componentType": "Global Components/Functions/Dropdowns/View Components"},
+	'order':3,
+	'kwargsOrder':{u'componentType': 1, u'componentFilter': 2}
+	},
+	{
+	'name':"View JSON",
+	'description':"Filter the view JSON string. Uses Python regex.",
+	'functionPath':"vieweditor.filter.viewJSONFilter",
+	'kwargs':{"viewJSONFilter":""},
+	'dockPaths':{},
+	'dropdownPaths':{},
+	'order':4,
+	'kwargsOrder':{u'viewJSONFilter': 1}
+}
+]
 
 #*****************************************************************************************************
 # Author:         Nate Foster

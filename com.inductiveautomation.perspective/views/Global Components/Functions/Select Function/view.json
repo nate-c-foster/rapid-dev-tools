@@ -147,7 +147,8 @@
                       "name": "Icon_Add"
                     },
                     "position": {
-                      "basis": "25px"
+                      "basis": "25px",
+                      "display": false
                     },
                     "props": {
                       "color": "var(--enabled-Icon)",
@@ -175,7 +176,8 @@
                       "name": "Icon_Edit"
                     },
                     "position": {
-                      "basis": "25px"
+                      "basis": "25px",
+                      "display": false
                     },
                     "props": {
                       "color": "var(--enabled-Icon)",

@@ -1,23 +1,5 @@
-#*****************************************************************************************************
-#
-# Author:         	Nate Foster
-# Company:        	A.W. Schultz
-# Date:           	March 2022		
-# 
-#  for the Rapid Tag Editor
-#*****************************************************************************************************
 
 
-
-
-
-# gets json string of tag config
-# same as right clicking and copy JSON
-# this will get replaced when Ignition adds this feature to scripting API
-
-
-#def getTagConfigStr(tagPath):
-#	return system.tag.exportTags(tagPaths = [tagPath])
 	
 def getTagConfigStr(tagPath):
 		return system.util.jsonEncode(getTagConfigObj(tagPath))
@@ -89,9 +71,5 @@ def tagConfigToSerializable(tagConfig):
    				return float(jsonObj)
    			else:
    				return str(jsonObj)
-
-   			
-   			
-
 
 	return serializeJSON(tagConfig)

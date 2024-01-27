@@ -115,7 +115,7 @@
               "config": {
                 "fallbackDelay": 2.5,
                 "mode": "expression",
-                "tagPath": "{session.custom.tagProvider}  + \"RapidDev/View Editor/Settings/rootViewPath\""
+                "tagPath": "{session.custom.settingsRootPath} + \u0027/\u0027   + \"RapidDev/View Editor/Settings/rootViewPath\""
               },
               "transforms": [
                 {

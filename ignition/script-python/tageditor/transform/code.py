@@ -11,6 +11,38 @@ Todo:
 
 """
 
+registeredFunctions = [	
+	{
+	'name':"Update Config Value",
+	'description':"Update a configuration value at the given key path.",
+	'functionPath':"tageditor.transform.updateConfigValue",
+	'kwargs':{"keyPath":"","value":""},
+	'dockPaths':{},
+	'dropdownPaths':{},
+	'order':3,
+	'kwargsOrder':{u'keyPath': 1, u'value': 2}
+	},
+	{
+	'name':"Insert Config Value",
+	'description':"Insert a new configuration value at the given key path. Useful for adding a new list element.",
+	'functionPath':"tageditor.transform.insertConfigValue",
+	'kwargs':{"keyPath":"","value":""},
+	'dockPaths':{},
+	'dropdownPaths':{},
+	'order':4,
+	'kwargsOrder':{u'keyPath': 1, u'value': 2}
+	},
+	{
+	'name':"Get Config Value",
+	'description':"Returns configs value at a given key path.",
+	'functionPath':"tageditor.transform.getConfigValue",
+	'kwargs':{"keyPath":""},
+	'dockPaths':{},
+	'dropdownPaths':{},
+	'order':4,
+	'kwargsOrder':{u'keyPath': 1}
+	}
+]
 
 # -------------------   Utility Functions that can be accessed by lambdas     --------------------------------------------------------------------------------------------
 

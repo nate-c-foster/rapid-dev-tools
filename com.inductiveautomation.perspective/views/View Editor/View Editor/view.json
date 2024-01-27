@@ -27,23 +27,21 @@
                       "props.params.registeredFunctions": {
                         "binding": {
                           "config": {
-                            "fallbackDelay": 2.5,
-                            "mode": "expression",
-                            "tagPath": "{session.custom.tagProvider} + \u0027RapidDev/View Editor/Generate Functions\u0027"
+                            "expression": "now(0)"
                           },
                           "transforms": [
                             {
-                              "code": "\n\tdef orderKey(function):\n\t\treturn function[\u0027order\u0027]\n\n\n\tregisteredFunctions \u003d []\n\tregisteredFunction \u003d {}\n\tfor row in range(value.getRowCount()):\n\t\n\t\tkwargsStr \u003d value.getValueAt(row,\"kwargs\").strip(\u0027{} \u0027)\n\t\tkwargsNames \u003d kwargsStr.split(\u0027,\u0027)\n\t\tkwargsOrder \u003d {}\n\t\tfor i, kwargName in enumerate(kwargsNames):\n\t\t\tname \u003d kwargName.split(\u0027:\u0027)[0]\n\t\t\tname \u003d name.strip(\u0027\" \u0027)\n\t\t\tkwargsOrder[name] \u003d i+1\n\t\t\t\n\t\n\t\tregisteredFunction \u003d {\t\"name\": value.getValueAt(row,\"name\"),\n\t\t\t\t\t\t\t\t\"functionPath\": value.getValueAt(row,\"functionPath\"),\n\t\t\t\t\t\t\t\t\"dockPaths\": system.util.jsonDecode(value.getValueAt(row,\"dockPaths\")),\n\t\t\t\t\t\t\t\t\"dropdownPaths\": system.util.jsonDecode(value.getValueAt(row,\"dropdownPaths\")),\n\t\t\t\t\t\t\t\t\"kwargs\": system.util.jsonDecode(value.getValueAt(row,\"kwargs\")),\n\t\t\t\t\t\t\t\t\"description\" : system.util.jsonDecode(value.getValueAt(row,\"description\")),\n\t\t\t\t\t\t\t\t\"order\" : value.getValueAt(row,\"order\"),\n\t\t\t\t\t\t\t\t\"kwargsOrder\": kwargsOrder\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\n\t\tregisteredFunctions.append(registeredFunction)\n\t\t\n\tregisteredFunctions.sort(key\u003dorderKey)\n\t\t\n\treturn registeredFunctions",
+                              "code": "\treturn vieweditor.generate.registeredFunctions",
                               "type": "script"
                             }
                           ],
-                          "type": "tag"
+                          "type": "expr"
                         }
                       },
                       "props.params.tagPath": {
                         "binding": {
                           "config": {
-                            "expression": "{session.custom.tagProvider} + \u0027RapidDev/View Editor/Generate Functions\u0027"
+                            "expression": "{session.custom.settingsRootPath} + \u0027/\u0027  + \u0027RapidDev/View Editor/Generate Functions\u0027"
                           },
                           "type": "expr"
                         }
@@ -72,23 +70,21 @@
                       "props.params.registeredFunctions": {
                         "binding": {
                           "config": {
-                            "fallbackDelay": 2.5,
-                            "mode": "expression",
-                            "tagPath": "{session.custom.tagProvider} + \u0027RapidDev/View Editor/Filter Functions\u0027"
+                            "expression": "now(0)"
                           },
                           "transforms": [
                             {
-                              "code": "\t\n\tdef orderKey(function):\n\t\treturn function[\u0027order\u0027]\n\n\n\tregisteredFunctions \u003d []\n\tregisteredFunction \u003d {}\n\tfor row in range(value.getRowCount()):\n\t\n\t\tkwargsStr \u003d value.getValueAt(row,\"kwargs\").strip(\u0027{} \u0027)\n\t\tkwargsNames \u003d kwargsStr.split(\u0027,\u0027)\n\t\tkwargsOrder \u003d {}\n\t\tfor i, kwargName in enumerate(kwargsNames):\n\t\t\tname \u003d kwargName.split(\u0027:\u0027)[0]\n\t\t\tname \u003d name.strip(\u0027\" \u0027)\n\t\t\tkwargsOrder[name] \u003d i+1\n\t\t\t\n\t\n\t\tregisteredFunction \u003d {\t\"name\": value.getValueAt(row,\"name\"),\n\t\t\t\t\t\t\t\t\"functionPath\": value.getValueAt(row,\"functionPath\"),\n\t\t\t\t\t\t\t\t\"dockPaths\": system.util.jsonDecode(value.getValueAt(row,\"dockPaths\")),\n\t\t\t\t\t\t\t\t\"dropdownPaths\": system.util.jsonDecode(value.getValueAt(row,\"dropdownPaths\")),\n\t\t\t\t\t\t\t\t\"kwargs\": system.util.jsonDecode(value.getValueAt(row,\"kwargs\")),\n\t\t\t\t\t\t\t\t\"description\" : system.util.jsonDecode(value.getValueAt(row,\"description\")),\n\t\t\t\t\t\t\t\t\"order\" : value.getValueAt(row,\"order\"),\n\t\t\t\t\t\t\t\t\"kwargsOrder\": kwargsOrder\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\n\t\tregisteredFunctions.append(registeredFunction)\n\t\t\n\tregisteredFunctions.sort(key\u003dorderKey)\n\t\t\n\treturn registeredFunctions",
+                              "code": "\treturn vieweditor.filter.registeredFunctions",
                               "type": "script"
                             }
                           ],
-                          "type": "tag"
+                          "type": "expr"
                         }
                       },
                       "props.params.tagPath": {
                         "binding": {
                           "config": {
-                            "expression": "{session.custom.tagProvider} + \u0027RapidDev/View Editor/Filter Functions\u0027"
+                            "expression": "{session.custom.settingsRootPath} + \u0027/\u0027  + \u0027RapidDev/View Editor/Filter Functions\u0027"
                           },
                           "type": "expr"
                         }
@@ -117,23 +113,21 @@
                       "props.params.registeredFunctions": {
                         "binding": {
                           "config": {
-                            "fallbackDelay": 2.5,
-                            "mode": "expression",
-                            "tagPath": "{session.custom.tagProvider} + \u0027RapidDev/View Editor/Transform Functions\u0027"
+                            "expression": "now(0)"
                           },
                           "transforms": [
                             {
-                              "code": "\n\tdef orderKey(function):\n\t\treturn function[\u0027order\u0027]\n\n\n\tregisteredFunctions \u003d []\n\tregisteredFunction \u003d {}\n\tfor row in range(value.getRowCount()):\n\t\n\t\tkwargsStr \u003d value.getValueAt(row,\"kwargs\").strip(\u0027{} \u0027)\n\t\tkwargsNames \u003d kwargsStr.split(\u0027,\u0027)\n\t\tkwargsOrder \u003d {}\n\t\tfor i, kwargName in enumerate(kwargsNames):\n\t\t\tname \u003d kwargName.split(\u0027:\u0027)[0]\n\t\t\tname \u003d name.strip(\u0027\" \u0027)\n\t\t\tkwargsOrder[name] \u003d i+1\n\t\t\t\n\t\n\t\tregisteredFunction \u003d {\t\"name\": value.getValueAt(row,\"name\"),\n\t\t\t\t\t\t\t\t\"functionPath\": value.getValueAt(row,\"functionPath\"),\n\t\t\t\t\t\t\t\t\"dockPaths\": system.util.jsonDecode(value.getValueAt(row,\"dockPaths\")),\n\t\t\t\t\t\t\t\t\"dropdownPaths\": system.util.jsonDecode(value.getValueAt(row,\"dropdownPaths\")),\n\t\t\t\t\t\t\t\t\"kwargs\": system.util.jsonDecode(value.getValueAt(row,\"kwargs\")),\n\t\t\t\t\t\t\t\t\"description\" : system.util.jsonDecode(value.getValueAt(row,\"description\")),\n\t\t\t\t\t\t\t\t\"order\" : value.getValueAt(row,\"order\"),\n\t\t\t\t\t\t\t\t\"kwargsOrder\": kwargsOrder\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\n\t\tregisteredFunctions.append(registeredFunction)\n\t\t\n\tregisteredFunctions.sort(key\u003dorderKey)\n\t\t\n\treturn registeredFunctions",
+                              "code": "\treturn vieweditor.transform.registeredFunctions",
                               "type": "script"
                             }
                           ],
-                          "type": "tag"
+                          "type": "expr"
                         }
                       },
                       "props.params.tagPath": {
                         "binding": {
                           "config": {
-                            "expression": "{session.custom.tagProvider} + \u0027RapidDev/View Editor/Transform Functions\u0027"
+                            "expression": "{session.custom.settingsRootPath} + \u0027/\u0027  + \u0027RapidDev/View Editor/Transform Functions\u0027"
                           },
                           "type": "expr"
                         }

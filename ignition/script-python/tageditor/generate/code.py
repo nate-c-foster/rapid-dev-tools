@@ -12,6 +12,40 @@ Todo:
 """
 
 
+registeredFunctions = [	
+{
+	'name':"UDT instances",
+	'description':"Generate all UDT instances under a root tag path",
+	'functionPath':"tageditor.generate.getUdtTags",
+	'kwargs':{"rootTagPath":"","typeId":"","recursive":""},
+	'dockPaths':{"rootTagPath":"Global Components/Functions/Docks/Tag Path Selector"},
+	'dropdownPaths':{"typeId": "Global Components/Functions/Dropdowns/UDT Type Id","recursive":"Global Components/Functions/Dropdowns/Boolean Value"},
+	'order':1,
+	'kwargsOrder':{u'recursive': 3, u'typeId': 2, u'rootTagPath': 1}
+	},
+	{
+	'name':"Atomic Tags",
+	'description':"Generate all atomic tags under a root tag path",
+	'functionPath':"tageditor.generate.getAtomicTags",
+	'kwargs':{"rootTagPath":"","recursive":""},
+	'dockPaths':{"rootTagPath":"Global Components/Functions/Docks/Tag Path Selector"},
+	'dropdownPaths':{"recursive":"Global Components/Functions/Dropdowns/Boolean Value"},
+	'order':2,
+	'kwargsOrder':{u'recursive': 2, u'rootTagPath': 1}
+	},
+	{
+	'name':"All Tags",
+	'description':"Generate all tags (atomic and udt instances) under a root tag path",
+	'functionPath':"tageditor.generate.getTags",
+	'kwargs':{"rootTagPath":"","recursive":""},
+	'dockPaths':{"rootTagPath":"Global Components/Functions/Docks/Tag Path Selector"},
+	'dropdownPaths':{"recursive":"Global Components/Functions/Dropdowns/Boolean Value"},
+	'order':3,
+	'kwargsOrder':{u'recursive': 2, u'rootTagPath': 1}
+	}
+]
+
+
 
 #*****************************************************************************************************
 # Author:         Nate Foster
