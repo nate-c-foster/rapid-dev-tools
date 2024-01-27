@@ -1,0 +1,202 @@
+{
+  "custom": {},
+  "params": {},
+  "permissions": {
+    "securityLevels": [],
+    "type": "AllOf"
+  },
+  "props": {
+    "defaultSize": {
+      "height": 1167,
+      "width": 1038
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Title"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "color": "var(--neutral-80)",
+                    "fontSize": "22px",
+                    "margin": "5px 20px"
+                  },
+                  "text": "Project Backup"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Description"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "color": "var(--neutral-70)",
+                    "fontSize": "15px",
+                    "margin": "5px 20px"
+                  },
+                  "text": "Performs a project export while also perserving the resources folder, README file, .git folder, etc"
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "basis": "100px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "justify": "flex-end"
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "SelectProject"
+                },
+                "position": {
+                  "basis": "320px"
+                },
+                "propConfig": {
+                  "props.params.options": {
+                    "binding": {
+                      "config": {
+                        "expression": "now(0)"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tprojectNames \u003d backup.util.getProjectNames()\n\t\n\treturn [{\u0027label\u0027:name, \u0027value\u0027:name} for name in projectNames]",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "label": "Project",
+                    "value": ""
+                  },
+                  "path": "Global Components/Forms/Label Dropdown Item",
+                  "style": {
+                    "height": "40px",
+                    "margin": "auto 20px"
+                  }
+                },
+                "type": "ia.display.view"
+              }
+            ],
+            "meta": {
+              "name": "Header"
+            },
+            "position": {
+              "basis": "100px",
+              "shrink": 0
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\t\n\timport os\n\timport time\n\t\n\tdateTime \u003d system.date.format(system.date.now(),\"yyyyMMddHHmmss\")\t\n\tinstallationPath \u003d settings.getValue(\u0027Global\u0027, \u0027installationPathIA\u0027)\n\t\n\tprojectName \u003d self.parent.parent.getChild(\"Header\").getChild(\"SelectProject\").props.params.value\n\tfileName \u003d projectName + \u0027_\u0027 + dateTime\n\t\n\ttempFolderPath \u003d settings.getValue(\u0027Global\u0027, \u0027serverTempSaveLocation\u0027) + \u0027/\u0027 + fileName\n\tprojectPath \u003d installationPath + \u0027/Ignition/data/projects/\u0027 + projectName\n\t\n\tif projectName and os.path.exists(projectPath):\n\t\tbackup.util.copyFolder(projectPath, tempFolderPath)\n\t\tbackup.util.zipTempDirectory(fileName)\n\t\tbackup.util.downloadTempFile(fileName + \u0027.zip\u0027)\n\t"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Download",
+                  "tooltip": {
+                    "enabled": true,
+                    "location": "bottom",
+                    "text": "Download the selected resources to file."
+                  }
+                },
+                "position": {
+                  "basis": "125px",
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "marginRight": "10px"
+                  },
+                  "text": "Download"
+                },
+                "type": "ia.input.button"
+              }
+            ],
+            "meta": {
+              "name": "ButtonContainer"
+            },
+            "position": {
+              "basis": "40px"
+            },
+            "props": {
+              "style": {
+                "margin": "20px 20px"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "Backup"
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "overflow": "visible"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "menuType": "modern",
+      "style": {
+        "padding": "20px"
+      },
+      "tabSize": {
+        "width": 250
+      },
+      "tabStyle": {
+        "active": {
+          "color": ""
+        },
+        "inactive": {
+          "fontSize": ""
+        }
+      },
+      "tabs": [
+        "Backup"
+      ]
+    },
+    "type": "ia.container.tab"
+  }
+}
