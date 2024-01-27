@@ -1,0 +1,945 @@
+{
+  "custom": {},
+  "params": {},
+  "permissions": {
+    "securityLevels": [],
+    "type": "AllOf"
+  },
+  "props": {
+    "defaultSize": {
+      "height": 1167,
+      "width": 1038
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Title"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "color": "var(--neutral-80)",
+                    "fontSize": "22px",
+                    "margin": "5px 20px"
+                  },
+                  "text": "Resources Backup"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Description"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "color": "var(--neutral-70)",
+                    "fontSize": "15px",
+                    "margin": "5px 20px"
+                  },
+                  "text": "Download resources as a zip file or add to a project folder."
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "basis": "100px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "justify": "flex-end"
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "SelectProject"
+                },
+                "position": {
+                  "basis": "320px"
+                },
+                "propConfig": {
+                  "props.params.options": {
+                    "binding": {
+                      "config": {
+                        "expression": "now(0)"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tprojectNames \u003d backup.util.getProjectNames()\n\t\n\treturn [{\u0027label\u0027:name, \u0027value\u0027:name} for name in projectNames]",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "label": "Project",
+                    "value": ""
+                  },
+                  "path": "Global Components/Forms/Label Dropdown Item",
+                  "style": {
+                    "height": "40px",
+                    "margin": "auto 20px"
+                  }
+                },
+                "type": "ia.display.view"
+              }
+            ],
+            "meta": {
+              "name": "Header"
+            },
+            "position": {
+              "basis": "100px",
+              "shrink": 0
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\t\n\timport os\n\timport time\n\t\n\tdateTime \u003d system.date.format(system.date.now(),\"yyyy-MM-dd-HHmmss\")\t\n\tbackupTypes \u003d self.parent.parent.getChild(\"OptionsContainer\").getChild(\"FlexRepeater\").props.instances\n\tinstallationPath \u003d settings.getValue(\u0027Global\u0027, \u0027installationPathIA\u0027)\n\t\n\tprojectName \u003d self.parent.parent.getChild(\"Header\").getChild(\"SelectProject\").props.params.value\n\t\n\tif projectName:\n\t\tdirName \u003d \u0027Resources_\u0027 + projectName + \u0027_\u0027 + dateTime\n\telse:\n\t\tdirName \u003d \u0027Resources\u0027 + \u0027_\u0027 + dateTime \n\t\t\n\tresourcesPath \u003d settings.getValue(\u0027Global\u0027, \u0027serverTempSaveLocation\u0027) + \u0027/\u0027 + dirName + \u0027/resources\u0027\n\t\n\tif not os.path.exists(resourcesPath):\n\t\tos.makedirs(resourcesPath)\n\t\n\tsomethingChecked \u003d False\n\tfor backupType in backupTypes: \n\t\t\n\t\t# ------------ Tags -------------------------------------------\t\t\n\t\tif backupType[\u0027type\u0027] \u003d\u003d \u0027tags\u0027:\n\t\t\n\t\t\toptions \u003d backupType[\u0027options\u0027]\n\t\t\n\t\t\tfor option in options:\n\t\t\t\tif option[\u0027value\u0027]:\n\t\t\t\t\tsomethingChecked \u003d True\n\t\t\t\t\ttagProvider \u003d option[\u0027label\u0027].split(\u0027]\u0027)[0][1:]\n\t\t\t\t\ttagLabel \u003d option[\u0027label\u0027][len(tagProvider)+2:].replace(\u0027/\u0027,\u0027-\u0027)\n\t\t\t\t\tfileName \u003d tagProvider + \u0027__\u0027 + tagLabel +   \".json\"\n\t\t\t\t\tsystem.tag.exportTags(resourcesPath + \u0027/tags/\u0027 + fileName, [option[\u0027label\u0027]], True)\n\n\t\t\n\t\t\n\t\t\n\t\t# ------------ Database Tables -------------------------------------------\t\t\n\t\tif backupType[\u0027type\u0027] \u003d\u003d \u0027tables\u0027:\n\t\t\n\t\t\t\n\t\t\toptions \u003d backupType[\u0027options\u0027]\n\t\t\t\n\t\t\tfor option in options:\n\t\t\t\tif option[\u0027value\u0027]:\n\t\t\t\t\tsomethingChecked \u003d True\n\t\t\t\t\tfullName \u003d option[\u0027label\u0027]\n\t\t\t\t\ttableName \u003d fullName.split(\u0027]\u0027)[-1]\n\t\t\t\t\tdbName \u003d fullName.split(\u0027]\u0027)[0][1:]\n\t\t\t\n\t\t\t\t\tfileName \u003d tableName +  \".csv\"\n\t\t\t\t\t\n\t\t\t\t\tdatabaseTables \u003d system.tag.readBlocking(self.session.custom.tagProvider + \"RapidDev/Backup Restore/Settings/databaseTables\")[0].value\n\t\t\t\t\tfor row in range(databaseTables.getRowCount()):\n\t\t\t\t\t\tif tableName \u003d\u003d databaseTables.getValueAt(row,\u0027Table\u0027) and dbName \u003d\u003d databaseTables.getValueAt(row,\u0027Database\u0027):\n\t\t\t\t\t\t\tdbType \u003d databaseTables.getValueAt(row,\u0027Translator\u0027)\n\t\t\t\t\t\t\tcsvDataset \u003d dbeditor.util.exportDBtable(dbType, dbName, tableName, download\u003dFalse)\n\t\t\t\t\t\t\tsystem.file.writeFile(resourcesPath + \u0027/tables/\u0027 + dbName + \u0027__\u0027 + fileName, csvDataset)\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t# ------------ Themes --------------------------------------------------------\n\t\tif backupType[\u0027type\u0027] \u003d\u003d \u0027themes\u0027:\t\t\n\n\t\t\tthemesPath \u003d installationPath + \u0027/Ignition/data/modules/com.inductiveautomation.perspective/themes\u0027\n\t\t\t\n\t\t\toptions \u003d backupType[\u0027options\u0027]\n\t\t\tfor option in options:\n\t\t\t\tif option[\u0027value\u0027]:\n\t\t\t\t\tsomethingChecked \u003d True\n\t\t\t\t\tfileName \u003d option[\u0027label\u0027] + \u0027.css\u0027\n\t\t\t\t\tfolderName \u003d option[\u0027label\u0027]\n\t\t\t\t\tbackup.util.copyFile(themesPath + \u0027/\u0027 + fileName, resourcesPath + \u0027/themes/\u0027 + fileName)\n\t\t\t\t\tbackup.util.copyFolder(themesPath + \u0027/\u0027 + folderName, resourcesPath + \u0027/themes/\u0027 + folderName)\n\t\t\n\t\t\n\t\t\n\t\t# ------------ Icons --------------------------------------------------------\n\t\tif backupType[\u0027type\u0027] \u003d\u003d \u0027icons\u0027:\t\t\n\n\t\t\ticonsPath \u003d installationPath + \u0027/Ignition/data/modules/com.inductiveautomation.perspective/icons\u0027\n\t\t\n\t\t\toptions \u003d backupType[\u0027options\u0027]\n\t\t\tfor option in options:\n\t\t\t\tif option[\u0027value\u0027]:\n\t\t\t\t\tsomethingChecked \u003d True\n\t\t\t\t\tfileName \u003d option[\u0027label\u0027] + \u0027.svg\u0027\t\t\n\t\t\t\t\tbackup.util.copyFile(iconsPath + \u0027/\u0027 + fileName, resourcesPath + \u0027/icons/\u0027 + fileName)\n\t\t\n\t\t\n\t\t\n\tif somethingChecked:\n\t\tbackup.util.zipTempDirectory(dirName)\n\t\tbackup.util.downloadTempFile(dirName + \u0027.zip\u0027)\n\t\t\n\t\tself.parent.parent.getChild(\"OptionsContainer\").updateWithAllOptions()\n\t\tself.parent.parent.getChild(\"OptionsContainer\").collapseAll()"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Download",
+                  "tooltip": {
+                    "enabled": true,
+                    "location": "bottom",
+                    "text": "Download the selected resources to file."
+                  }
+                },
+                "position": {
+                  "basis": "125px",
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "marginRight": "10px"
+                  },
+                  "text": "Download"
+                },
+                "type": "ia.input.button"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\t\n\timport os\n\t\n\tdateTime \u003d system.date.format(system.date.now(),\"yyyy-MM-dd-HHmmss\")\t\n\tbackupTypes \u003d self.parent.parent.getChild(\"OptionsContainer\").getChild(\"FlexRepeater\").props.instances\n\tprojectName \u003d self.parent.parent.getChild(\"Header\").getChild(\"SelectProject\").props.params.value\n\ttempSaveLocation \u003d settings.getValue(\u0027Global\u0027, \u0027serverTempSaveLocation\u0027)\n\t\n\tinstallationPath \u003d settings.getValue(\u0027Global\u0027,\u0027installationPathIA\u0027)\n\tresourcesPath \u003d installationPath + \u0027/Ignition/data/projects/\u0027 + projectName + \u0027/resources\u0027\n\t\n\t\n\tfor backupType in backupTypes: \n\t\t\n\t\t# ------------ Tags -------------------------------------------\t\t\n\t\tif backupType[\u0027type\u0027] \u003d\u003d \u0027tags\u0027:\n\t\t\n\t\t\toptions \u003d backupType[\u0027options\u0027]\n\t\t\n\t\t\n\t\t\tfor option in options:\n\t\t\t\tif option[\u0027value\u0027]:\n\t\t\t\t\ttagProvider \u003d option[\u0027label\u0027].split(\u0027]\u0027)[0][1:]\n\t\t\t\t\ttagLabel \u003d option[\u0027label\u0027][len(tagProvider)+2:].replace(\u0027/\u0027,\u0027-\u0027)\n\t\t\t\t\tfileName \u003d tagProvider + \u0027__\u0027 + tagLabel + \u0027.json\u0027\n\t\t\t\t\tsystem.tag.exportTags(resourcesPath + \u0027/tags/\u0027 + fileName, [ option[\u0027label\u0027] ], True)\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t# ------------ Database Tables -------------------------------------------\t\t\n\t\tif backupType[\u0027type\u0027] \u003d\u003d \u0027tables\u0027:\n\t\t\n\t\t\t\n\t\t\toptions \u003d backupType[\u0027options\u0027]\n\t\t\t\n\t\t\tfor option in options:\n\t\t\t\tif option[\u0027value\u0027]:\n\t\t\t\t\tfullName \u003d option[\u0027label\u0027]\n\t\t\t\t\ttableName \u003d fullName.split(\u0027]\u0027)[-1]\n\t\t\t\t\tdbName \u003d fullName.split(\u0027]\u0027)[0][1:]\n\t\t\t\t\t\n\t\t\t\t\tfileName \u003d tableName +  \".csv\"\n\t\t\t\t\t\n\t\t\t\t\tdatabaseTables \u003d system.tag.readBlocking(self.session.custom.tagProvider + \"RapidDev/Backup Restore/Settings/databaseTables\")[0].value\n\t\t\t\t\tfor row in range(databaseTables.getRowCount()) :\n\t\t\t\t\t\tif tableName \u003d\u003d databaseTables.getValueAt(row,\u0027Table\u0027) and dbName \u003d\u003d databaseTables.getValueAt(row,\u0027Database\u0027):\n\t\t\t\t\t\t\tdbType \u003d databaseTables.getValueAt(row,\u0027Translator\u0027)\n\t\t\t\t\t\t\tcsvDataset \u003d dbeditor.util.exportDBtable(dbType, dbName, tableName, download\u003dFalse)\n\t\t\t\t\t\t\tsystem.file.writeFile(resourcesPath + \u0027/tables/\u0027 + dbName + \u0027__\u0027 + fileName, csvDataset)\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t# ------------ Themes --------------------------------------------------------\n\t\tif backupType[\u0027type\u0027] \u003d\u003d \u0027themes\u0027:\t\t\n\n\t\t\tthemesPath \u003d installationPath + \u0027/Ignition/data/modules/com.inductiveautomation.perspective/themes\u0027\n\t\t\t\n\t\t\toptions \u003d backupType[\u0027options\u0027]\n\t\t\tfor option in options:\n\t\t\t\tif option[\u0027value\u0027]:\n\t\t\t\t\tfileName \u003d option[\u0027label\u0027] + \u0027.css\u0027\n\t\t\t\t\tfolderName \u003d option[\u0027label\u0027]\n\t\t\t\t\tbackup.util.copyFile(themesPath + \u0027/\u0027 + fileName, resourcesPath + \u0027/themes/\u0027 + fileName)\n\t\t\t\t\tbackup.util.copyFolder(themesPath + \u0027/\u0027 + folderName, resourcesPath + \u0027/themes/\u0027 + folderName)\n\n\t\t\n\t\t\n\t\t\n\t\t# ------------ Icons --------------------------------------------------------\t\t\t\t\n\t\tif backupType[\u0027type\u0027] \u003d\u003d \u0027icons\u0027:\t\t\n\n\t\t\ticonsPath \u003d installationPath + \u0027/Ignition/data/modules/com.inductiveautomation.perspective/icons\u0027\n\t\t\n\t\t\toptions \u003d backupType[\u0027options\u0027]\n\t\t\tfor option in options:\n\t\t\t\tif option[\u0027value\u0027]:\n\t\t\t\t\tfileName \u003d option[\u0027label\u0027] + \u0027.svg\u0027\t\t\n\t\t\t\t\tbackup.util.copyFile(iconsPath + \u0027/\u0027 + fileName, resourcesPath + \u0027/icons/\u0027 + fileName)\n\n\n\t\tself.parent.parent.getChild(\"OptionsContainer\").updateWithAllOptions()\n\t\tself.parent.parent.getChild(\"OptionsContainer\").collapseAll()\n\t\t"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Add",
+                  "tooltip": {
+                    "enabled": true,
+                    "location": "bottom",
+                    "text": "Add the selected resources to the project folder."
+                  }
+                },
+                "position": {
+                  "basis": "125px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "config": {
+                        "path": ".../Header/SelectProject.props.params.value"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value:\n\t\treturn True\n\telse:\n\t\treturn False",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "marginRight": "10px"
+                  },
+                  "text": "Add to Project"
+                },
+                "type": "ia.input.button"
+              }
+            ],
+            "meta": {
+              "name": "ButtonContainer"
+            },
+            "position": {
+              "basis": "40px"
+            },
+            "props": {
+              "style": {
+                "margin": "0px 20px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "custom": {
+                  "state": "collapsed"
+                },
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "config": {
+                        "script": "\n\tpath \u003d self.props.path\n\t\n\tif \u0027expand_more\u0027 in path:\n\t\tself.parent.parent.getChild(\"OptionsContainer\").expandAll()\n\t\t\n\telse:\n\t\tself.parent.parent.getChild(\"OptionsContainer\").collapseAll()"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Expand"
+                },
+                "position": {
+                  "basis": "25px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.path": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.state"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value \u003d\u003d \u0027collapsed\u0027:\n\t\treturn \u0027material/expand_more\u0027\n\telse:\n\t\treturn \u0027material/expand_less\u0027",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "color": "var(--enabled-Icon)",
+                  "style": {
+                    "cursor": "pointer"
+                  }
+                },
+                "type": "ia.display.icon"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tvalue \u003d self.props.selected\n\t\n\tinstances \u003d self.parent.parent.getChild(\"OptionsContainer\").getChild(\"FlexRepeater\").props.instances\n\t\n\tfor instance in instances:\n\t\tfor option in instance[\u0027options\u0027]:\n\t\t\toption[\u0027value\u0027] \u003d value"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Checkbox"
+                },
+                "position": {
+                  "basis": "25px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "",
+                  "uncheckedIcon": {
+                    "color": {
+                      "enabled": "var(--neutral-50)"
+                    }
+                  }
+                },
+                "type": "ia.input.checkbox"
+              }
+            ],
+            "meta": {
+              "name": "FlexContainer"
+            },
+            "position": {
+              "basis": "30px"
+            },
+            "props": {
+              "style": {
+                "margin": "0px 20px",
+                "marginTop": "20px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "FlexRepeater"
+                },
+                "position": {
+                  "grow": 1
+                },
+                "props": {
+                  "direction": "column",
+                  "elementPosition": {
+                    "basis": "auto",
+                    "grow": 0,
+                    "shrink": 0
+                  },
+                  "elementStyle": {
+                    "marginTop": "10px"
+                  },
+                  "instances": [
+                    {
+                      "options": [
+                        {
+                          "label": "[SCADA]RapidDev",
+                          "value": false,
+                          "viewPath": "Backup Restore/Components/Checkbox Option"
+                        },
+                        {
+                          "label": "[SCADA]",
+                          "value": false,
+                          "viewPath": "Backup Restore/Components/Checkbox Option"
+                        },
+                        {
+                          "label": "[SCADA]JBLM",
+                          "value": false,
+                          "viewPath": "Backup Restore/Components/Checkbox Option"
+                        }
+                      ],
+                      "type": "tags"
+                    },
+                    {
+                      "options": [
+                        {
+                          "label": "[SCADA]core.Location",
+                          "value": false,
+                          "viewPath": "Backup Restore/Components/Checkbox Option"
+                        },
+                        {
+                          "label": "[SCADA]core.LocationType",
+                          "value": false,
+                          "viewPath": "Backup Restore/Components/Checkbox Option"
+                        },
+                        {
+                          "label": "[SCADA]core.LocationTypeDefinition",
+                          "value": false,
+                          "viewPath": "Backup Restore/Components/Checkbox Option"
+                        },
+                        {
+                          "label": "[SCADA]dbo.UserTrendsConfig",
+                          "value": false,
+                          "viewPath": "Backup Restore/Components/Checkbox Option"
+                        }
+                      ],
+                      "type": "tables"
+                    },
+                    {
+                      "options": [
+                        {
+                          "label": "rapid-dev-dark",
+                          "value": false,
+                          "viewPath": "Backup Restore/Components/Checkbox Option"
+                        },
+                        {
+                          "label": "rapid-dev-light",
+                          "value": false,
+                          "viewPath": "Backup Restore/Components/Checkbox Option"
+                        },
+                        {
+                          "label": "scada-dark",
+                          "value": false,
+                          "viewPath": "Backup Restore/Components/Checkbox Option"
+                        },
+                        {
+                          "label": "scada-light",
+                          "value": false,
+                          "viewPath": "Backup Restore/Components/Checkbox Option"
+                        }
+                      ],
+                      "type": "themes"
+                    },
+                    {
+                      "options": [
+                        {
+                          "label": "rapid-dev",
+                          "value": false,
+                          "viewPath": "Backup Restore/Components/Checkbox Option"
+                        }
+                      ],
+                      "type": "icons"
+                    }
+                  ],
+                  "path": "Backup Restore/Components/Backup Type",
+                  "style": {
+                    "overflow": "visible"
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false
+                },
+                "type": "ia.display.flex-repeater"
+              }
+            ],
+            "events": {
+              "system": {
+                "onStartup": {
+                  "config": {
+                    "script": "\n\tself.updateWithAllOptions()"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "OptionsContainer"
+            },
+            "position": {
+              "basis": "495px",
+              "grow": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "margin": "5px 20px"
+              }
+            },
+            "scripts": {
+              "customMethods": [
+                {
+                  "name": "updateWithAllOptions",
+                  "params": [],
+                  "script": "\n\n\tinstances \u003d []\n\t\n\ttagProvider \u003d self.session.custom.tagProvider\n\t\n\tdefaultValue \u003d False\n\t\n\t# ----------------  Update with all project names ----------------------\n#\tprojectNames \u003d backup.util.getProjectNames()\n#\tprojectOptions \u003d []\n#\tfor name in projectNames:\n#\t\tprojectOptions.append({\u0027label\u0027:name, \u0027value\u0027:True, \u0027viewPath\u0027:\u0027Backup Restore/Components/Checkbox Option\u0027})\n#\t\t\n#\t\t\n#\tself.props.instances[1].options \u003d projectOptions\t\n\n\n\t# ----------------  Update with all root tag paths ----------------------\n\t#tagProviders \u003d backup.util.getTagProviders()\n\trootTagPaths \u003d system.tag.readBlocking(tagProvider + \"RapidDev/Backup Restore/Settings/rootTagPaths\")[0].value\n\n\ttagPathOptions \u003d []\n\tfor tagPath in rootTagPaths:\n\t\n\t\ttagPathOptions.append({\u0027label\u0027:tagPath, \u0027value\u0027:defaultValue, \u0027viewPath\u0027:\u0027Backup Restore/Components/Checkbox Option\u0027})\n\t\n\tinstances.append({\u0027type\u0027: \u0027tags\u0027, \u0027options\u0027: tagPathOptions})\n\t\t\n\n\t\n\t\n\t# ----------------  Update with database tables  ----------------------\n\t\n\tdatabaseTables \u003d system.tag.readBlocking(self.session.custom.tagProvider + \"RapidDev/Backup Restore/Settings/databaseTables\")[0].value\n\t\n\ttableOptions \u003d []\n\tfor row in range(databaseTables.getRowCount()):\n\t\tdatabase \u003d databaseTables.getValueAt(row,\u0027Database\u0027)\n\t\ttranslator \u003d databaseTables.getValueAt(row,\u0027Translator\u0027)\n\t\ttable \u003d databaseTables.getValueAt(row,\u0027Table\u0027)\n\t\ttableOptions.append({\u0027label\u0027:\u0027[\u0027 + database + \u0027]\u0027 + table, \u0027value\u0027:defaultValue, \u0027viewPath\u0027:\u0027Backup Restore/Components/Checkbox Option\u0027})\n\t\t\n\tinstances.append({\u0027type\u0027: \u0027tables\u0027, \u0027options\u0027: tableOptions})\n\t\n\t# ----------------  Update with all icons ----------------------\t\n#\tthemeNames \u003d backup.util.getThemeNames()\n\n\tthemes \u003d system.tag.readBlocking(self.session.custom.tagProvider + \"RapidDev/Backup Restore/Settings/themes\")[0].value\n\n\tthemeOptions \u003d []\n\tfor theme in themes:\n\t\tthemeOptions.append({\u0027label\u0027:theme, \u0027value\u0027:defaultValue, \u0027viewPath\u0027:\u0027Backup Restore/Components/Checkbox Option\u0027})\n\t\t\n\tinstances.append({\u0027type\u0027: \u0027themes\u0027, \u0027options\u0027: themeOptions})\n\t\n\t# ----------------  Update with all icons ----------------------\t\n\n\ticons \u003d system.tag.readBlocking(self.session.custom.tagProvider + \"RapidDev/Backup Restore/Settings/icons\")[0].value\n\n\ticonOptions \u003d []\n\tfor icon in icons:\n\t\ticonOptions.append({\u0027label\u0027:icon, \u0027value\u0027:defaultValue, \u0027viewPath\u0027:\u0027Backup Restore/Components/Checkbox Option\u0027})\n\t\t\n\tinstances.append({\u0027type\u0027: \u0027icons\u0027, \u0027options\u0027: iconOptions})\n\n\n\n\n\tself.getChild(\"FlexRepeater\").props.instances \u003d instances"
+                },
+                {
+                  "name": "expandAll",
+                  "params": [],
+                  "script": "\t# implement your method here\n\tinstances \u003d self.getChild(\"FlexRepeater\").props.instances\n\t\n\tfor instance in instances:\n\t\tinstance[\u0027expanded\u0027] \u003d True\t\n\t\tself.parent.getChild(\"FlexContainer\").getChild(\"Expand\").custom.state \u003d \u0027expanded\u0027"
+                },
+                {
+                  "name": "collapseAll",
+                  "params": [],
+                  "script": "\t# implement your method here\n\tinstances \u003d self.getChild(\"FlexRepeater\").props.instances\n\t\n\n\tfor instance in instances:\n\t\tinstance[\u0027expanded\u0027] \u003d False\n\t\tself.parent.getChild(\"FlexContainer\").getChild(\"Expand\").custom.state \u003d \u0027collapsed\u0027"
+                }
+              ],
+              "extensionFunctions": null,
+              "messageHandlers": []
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "Backup"
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "overflow": "visible"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Title"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "color": "var(--neutral-80)",
+                    "fontSize": "22px",
+                    "margin": "5px 20px"
+                  },
+                  "text": "Resources Restore"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Description"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "color": "var(--neutral-70)",
+                    "fontSize": "15px",
+                    "margin": "5px 20px"
+                  },
+                  "text": "Restore resources from zip file or from project folder."
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "basis": "100px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "justify": "flex-end"
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "SelectProject"
+                },
+                "position": {
+                  "basis": "320px"
+                },
+                "propConfig": {
+                  "props.params.options": {
+                    "binding": {
+                      "config": {
+                        "expression": "now(0)"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tprojectNames \u003d backup.util.getProjectNames()\n\t\n\treturn [{\u0027label\u0027:name, \u0027value\u0027:name} for name in projectNames]",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "expr"
+                    }
+                  },
+                  "props.params.value": {
+                    "onChange": {
+                      "enabled": null,
+                      "script": "\t\n\tprojectName \u003d currentValue.value\n\tinstallationPath \u003d settings.getValue(\u0027Global\u0027,\u0027installationPathIA\u0027)\n\tresourcesPath \u003d installationPath + \u0027/Ignition/data/projects/\u0027 + projectName + \u0027/resources\u0027\n\t\n\tresourceTypes \u003d [\u0027tags\u0027,\u0027tables\u0027,\u0027themes\u0027,\u0027icons\u0027]\n\t\n\t\n\tinstances \u003d []\n\tfor resourceType in resourceTypes:\n\t\tfileNames \u003d backup.util.getResourceNames(resourcesPath + \u0027/\u0027 + resourceType)\n\t\t\n\t\toptions \u003d []\n\t\tfor fileName in fileNames:\n\t\t\toptions.append({\u0027label\u0027:backup.util.convertFilenameToLabel(fileName, resourceType), \u0027value\u0027:False, \u0027fileName\u0027: fileName, \u0027viewPath\u0027: \u0027Backup Restore/Components/Checkbox Option\u0027})\n\t\t\n\t\tinstances.append({\u0027type\u0027: resourceType, \u0027options\u0027: options})\n\t\t\n\t\t\n\tself.parent.parent.getChild(\"OptionsContainer\").getChild(\"FlexRepeater\").props.instances \u003d instances\n\tself.parent.parent.getChild(\"OptionsContainer\").custom.resourcePath \u003d resourcesPath"
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "label": "Project",
+                    "value": ""
+                  },
+                  "path": "Global Components/Forms/Label Dropdown Item",
+                  "style": {
+                    "height": "40px",
+                    "margin": "auto 20px"
+                  }
+                },
+                "type": "ia.display.view"
+              }
+            ],
+            "meta": {
+              "name": "Header"
+            },
+            "position": {
+              "basis": "100px",
+              "shrink": 0
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "events": {
+                      "component": {
+                        "onFileReceived": {
+                          "config": {
+                            "script": "\t\n\timport time\n\t\n\tdateTime \u003d system.date.format(system.date.now(),\"yyyy-MM-dd-HHmmss\")\t\n\ttempLocation \u003d settings.getValue(\u0027Global\u0027,\u0027serverTempSaveLocation\u0027)\n\tfileName \u003d \u0027upload_\u0027 + dateTime + \u0027_\u0027 + event.file.name\n\tresourcesPath \u003d tempLocation + \u0027/\u0027 + fileName[:-len(\u0027.zip\u0027)] + \u0027/resources\u0027\n\t\n\t\n\t\n\t\n\tevent.file.copyTo(tempLocation + \u0027/\u0027 + fileName)\n\t\n\tbackup.util.unZipTempFile(fileName)\n\t\n\tresourceTypes \u003d [\u0027tags\u0027,\u0027tables\u0027,\u0027themes\u0027,\u0027icons\u0027]\n\t\n\tinstances \u003d []\n\tfor resourceType in resourceTypes:\n\t\tfileNames \u003d backup.util.getResourceNames(resourcesPath + \u0027/\u0027 + resourceType)\n\t\t\n\t\toptions \u003d []\n\t\tfor fileName in fileNames:\n\t\t\toptions.append({\u0027label\u0027:backup.util.convertFilenameToLabel(fileName, resourceType), \u0027value\u0027:False, \u0027fileName\u0027: fileName, \u0027viewPath\u0027: \u0027Backup Restore/Components/Checkbox Option\u0027})\n\t\t\n\t\tinstances.append({\u0027type\u0027: resourceType, \u0027options\u0027: options})\n\t\n\tself.parent.parent.parent.getChild(\"OptionsContainer\").getChild(\"FlexRepeater\").props.instances \u003d instances\n\tself.parent.parent.parent.getChild(\"OptionsContainer\").custom.resourcePath \u003d resourcesPath\n\t"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "FileUpload",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "Upload resources zip file."
+                      }
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 0
+                    },
+                    "props": {
+                      "fileSizeLimit": 20,
+                      "fileUploadIcon": {
+                        "color": "var(--neutral-10)"
+                      },
+                      "style": {
+                        "backgroundColor": "var(--callToAction)",
+                        "borderBottomLeftRadius": "5px",
+                        "borderBottomRightRadius": "5px",
+                        "borderTopLeftRadius": "5px",
+                        "borderTopRightRadius": "5px",
+                        "classes": "",
+                        "color": "var(--neutral-10)",
+                        "margin": "1px"
+                      },
+                      "supportedFileTypes": [
+                        "zip"
+                      ]
+                    },
+                    "type": "ia.input.fileupload"
+                  }
+                ],
+                "meta": {
+                  "name": "FlexContainer"
+                },
+                "position": {
+                  "basis": "125px",
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "cursor": "pointer"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\t\n\timport os\n\t\n\trestoreTypes \u003d self.parent.parent.getChild(\"OptionsContainer\").getChild(\"FlexRepeater\").props.instances\n\tprojectName \u003d self.parent.parent.getChild(\"Header\").getChild(\"SelectProject\").props.params.value\n\ttempSaveLocation \u003d settings.getValue(\u0027Global\u0027, \u0027serverTempSaveLocation\u0027)\n\t\n\tinstallationPath \u003d settings.getValue(\u0027Global\u0027,\u0027installationPathIA\u0027)\n\tresourcesPath \u003d self.parent.parent.getChild(\"OptionsContainer\").custom.resourcePath\n\t\n\tfor restoreType in restoreTypes: \n\t\t\n\t\t# ------------ Tags -------------------------------------------\t\t\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027tags\u0027:\n\n\t\t\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\t\t\n\t\t\tfor option in options:\n\t\t\t\tif option[\u0027value\u0027]:\n\t\t\t\t\ttagProvider \u003d option[\u0027label\u0027].split(\u0027]\u0027)[0][1:]\n\t\t\t\t\ttagPath \u003d option[\u0027label\u0027].split(\u0027]\u0027)[-1].replace(\u0027-\u0027,\u0027/\u0027)\n\t\t\t\t\tif \u0027/\u0027 in tagPath:\n\t\t\t\t\t\tparentPath \u003d \u0027/\u0027.join(tagPath.split(\u0027/\u0027)[:-1])\n\t\t\t\t\telse:\n\t\t\t\t\t\tparentPath \u003d \u0027\u0027\n\t\t\t\t\t\n\t\t\t\t\tsystem.tag.importTags(resourcesPath + \u0027/tags/\u0027 + option[\u0027fileName\u0027], \u0027[\u0027 + tagProvider + \u0027]\u0027 + parentPath)\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t# ------------ Database Tables -------------------------------------------\t\t\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027tables\u0027:\n\t\t\n\t\t\t\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\t\t\t\n\t\t\tfor option in options:\n\t\t\t\tif option[\u0027value\u0027]:\n\t\t\t\t\tfullName \u003d option[\u0027label\u0027]\n\t\t\t\t\ttableName \u003d fullName.split(\u0027]\u0027)[-1]\n\t\t\t\t\tdbName \u003d fullName.split(\u0027]\u0027)[0][1:]\n\n\t\t\t\t\tdatabaseTables \u003d system.tag.readBlocking(self.session.custom.tagProvider + \"RapidDev/Backup Restore/Settings/databaseTables\")[0].value\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\tfor row in range(databaseTables.getRowCount()):\n\t\t\t\t\t\tif tableName \u003d\u003d databaseTables.getValueAt(row,\u0027Table\u0027) and dbName \u003d\u003d databaseTables.getValueAt(row,\u0027Database\u0027):\n\t\t\t\t\t\t\tdbType \u003d databaseTables.getValueAt(row,\u0027Translator\u0027)\n\t\t\t\t\t\n\t\t\t\t\t\t\ttry:\n\t\t\t\t\t\t\t\tqueryPath \u003d \u0027General/\u0027 + dbType + \u0027/getPrimaryKey\u0027\n\t\t\t\t\t\t\t\tprimaryKey \u003d system.db.runNamedQuery(queryPath, {\u0027database\u0027: dbName, \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\u0027tableName\u0027:tableName.split(\u0027.\u0027)[-1], \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\u0027tableSchema\u0027: tableName.split(\u0027.\u0027)[0] }).getValueAt(0,0)\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tdata_string \u003d system.file.readFileAsString(resourcesPath + \u0027/tables/\u0027 + option[\u0027fileName\u0027])\n\t\t\t\t\t\t\t\tdataset \u003d system.dataset.fromCSV(data_string)\n\t\t\t\t\t\t\t\tdbeditor.util.importDSintoDBtable(dataset, dbName, tableName, primaryKey, deleteExtra\u003dTrue)\n\t\t\t\t\t\t\texcept:\n\t\t\t\t\t\t\t\tprint \u0027Failed to restore table: \u0027, tableName\n\t\t\t\t\t\t\t\t\n\t\t\n\t\t\n\t\t\n\t\t# ------------ Themes --------------------------------------------------------\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027themes\u0027:\t\t\n\n\t\t\tthemesPath \u003d installationPath + \u0027/Ignition/data/modules/com.inductiveautomation.perspective/themes\u0027\n\t\t\t\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\t\t\tfor option in options:\n\t\t\t\tif option[\u0027value\u0027]:\n\t\t\t\t\tfileName \u003d option[\u0027label\u0027] + \u0027.css\u0027\n\t\t\t\t\tfolderName \u003d option[\u0027label\u0027]\n\t\t\t\t\tbackup.util.copyFile(resourcesPath + \u0027/themes/\u0027 + fileName, themesPath + \u0027/\u0027 + fileName)\n\t\t\t\t\tbackup.util.copyFolder(resourcesPath + \u0027/themes/\u0027 + folderName, themesPath + \u0027/\u0027 + folderName)\n\n\t\t\n\t\t\n\t\t\n\t\t# ------------ Icons --------------------------------------------------------\t\t\t\t\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027icons\u0027:\t\t\n\n\t\t\ticonsPath \u003d installationPath + \u0027/Ignition/data/modules/com.inductiveautomation.perspective/icons\u0027\n\t\t\t\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\n\t\t\tfor option in options:\n\t\t\t\tif option[\u0027value\u0027]:\n\t\t\t\t\tprint \u0027copying from \u0027, resourcesPath + \u0027/icons/\u0027 + option[\u0027fileName\u0027]\n\t\t\t\t\tprint \u0027to \u0027, iconsPath + \u0027/\u0027 + option[\u0027fileName\u0027]\n\t\t\t\t\tbackup.util.copyFile(resourcesPath + \u0027/icons/\u0027 + option[\u0027fileName\u0027],  iconsPath + \u0027/\u0027 + option[\u0027fileName\u0027])\n\n\tself.parent.parent.getChild(\"OptionsContainer\").resetOptions()\n\tself.parent.parent.getChild(\"OptionsContainer\").collapseAll()\n\tself.parent.parent.getChild(\"OptionsContainer\").custom.resourcePath \u003d \u0027\u0027"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Restore",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Update Ignition with the selected resources."
+                  }
+                },
+                "position": {
+                  "basis": "125px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "config": {
+                        "path": ".../OptionsContainer.custom.resourcePath"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value:\n\t\treturn True\n\telse:\n\t\treturn False",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "marginLeft": "10px",
+                    "marginRight": "10px"
+                  },
+                  "text": "Restore"
+                },
+                "type": "ia.input.button"
+              }
+            ],
+            "meta": {
+              "name": "ButtonContainer"
+            },
+            "position": {
+              "basis": "40px"
+            },
+            "props": {
+              "style": {
+                "margin": "0px 20px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "custom": {
+                  "state": "collapsed"
+                },
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "config": {
+                        "script": "\tpath \u003d self.props.path\n\t\n\tif \u0027expand_more\u0027 in path:\n\t\tself.parent.parent.getChild(\"OptionsContainer\").expandAll()\n\t\t\n\telse:\n\t\tself.parent.parent.getChild(\"OptionsContainer\").collapseAll()"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Expand"
+                },
+                "position": {
+                  "basis": "25px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.path": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.state"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value \u003d\u003d \u0027collapsed\u0027:\n\t\treturn \u0027material/expand_more\u0027\n\telse:\n\t\treturn \u0027material/expand_less\u0027",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "color": "var(--enabled-Icon)",
+                  "style": {
+                    "cursor": "pointer"
+                  }
+                },
+                "type": "ia.display.icon"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tvalue \u003d self.props.selected\n\t\n\tinstances \u003d self.parent.parent.getChild(\"OptionsContainer\").getChild(\"FlexRepeater\").props.instances\n\t\n\tfor instance in instances:\n\t\tfor option in instance[\u0027options\u0027]:\n\t\t\toption[\u0027value\u0027] \u003d value"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Checkbox"
+                },
+                "position": {
+                  "basis": "25px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "",
+                  "uncheckedIcon": {
+                    "color": {
+                      "enabled": "var(--neutral-50)"
+                    }
+                  }
+                },
+                "type": "ia.input.checkbox"
+              }
+            ],
+            "meta": {
+              "name": "FlexContainer"
+            },
+            "position": {
+              "basis": "30px"
+            },
+            "props": {
+              "style": {
+                "margin": "0px 20px",
+                "marginTop": "20px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "FlexRepeater"
+                },
+                "position": {
+                  "grow": 1
+                },
+                "props": {
+                  "direction": "column",
+                  "elementPosition": {
+                    "basis": "auto",
+                    "grow": 0,
+                    "shrink": 0
+                  },
+                  "elementStyle": {
+                    "marginTop": "10px"
+                  },
+                  "instances": [
+                    {
+                      "expanded": false,
+                      "options": [],
+                      "type": "tags"
+                    },
+                    {
+                      "expanded": false,
+                      "options": [],
+                      "type": "tables"
+                    },
+                    {
+                      "expanded": false,
+                      "options": [],
+                      "type": "themes"
+                    },
+                    {
+                      "expanded": false,
+                      "options": [],
+                      "type": "icons"
+                    }
+                  ],
+                  "path": "Backup Restore/Components/Backup Type",
+                  "style": {
+                    "overflow": "visible"
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false
+                },
+                "type": "ia.display.flex-repeater"
+              }
+            ],
+            "custom": {
+              "resourcePath": ""
+            },
+            "events": {
+              "system": {
+                "onStartup": {
+                  "config": {
+                    "script": "\tself.resetOptions()"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "OptionsContainer"
+            },
+            "position": {
+              "basis": "495px",
+              "grow": 1
+            },
+            "propConfig": {
+              "custom.resourcePath": {
+                "persistent": true
+              }
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "margin": "5px 20px"
+              }
+            },
+            "scripts": {
+              "customMethods": [
+                {
+                  "name": "expandAll",
+                  "params": [],
+                  "script": "\t# implement your method here\n\tinstances \u003d self.getChild(\"FlexRepeater\").props.instances\n\t\n\tfor instance in instances:\n\t\tinstance[\u0027expanded\u0027] \u003d True\t\n\t\tself.parent.getChild(\"FlexContainer\").getChild(\"Expand\").custom.state \u003d \u0027expanded\u0027"
+                },
+                {
+                  "name": "collapseAll",
+                  "params": [],
+                  "script": "\t# implement your method here\n\tinstances \u003d self.getChild(\"FlexRepeater\").props.instances\n\t\n\n\tfor instance in instances:\n\t\tinstance[\u0027expanded\u0027] \u003d False\n\t\tself.parent.getChild(\"FlexContainer\").getChild(\"Expand\").custom.state \u003d \u0027collapsed\u0027"
+                },
+                {
+                  "name": "resetOptions",
+                  "params": [],
+                  "script": "\t# implement your method here\n\t\n\t\n\tdefaultOptions \u003d [\n\t  {\n\t    \"expanded\": False,\n\t    \"options\": [],\n\t    \"type\": \"tags\"\n\t  },\n\t  {\n\t    \"expanded\": False,\n\t    \"options\": [],\n\t    \"type\": \"tables\"\n\t  },\n\t  {\n\t    \"expanded\": False,\n\t    \"options\": [],\n\t    \"type\": \"themes\"\n\t  },\n\t  {\n\t    \"expanded\": False,\n\t    \"options\": [],\n\t    \"type\": \"icons\"\n\t  }\n\t]\n\t\n\tself.getChild(\"FlexRepeater\").props.instances \u003d defaultOptions"
+                }
+              ],
+              "extensionFunctions": null,
+              "messageHandlers": []
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "Restore"
+        },
+        "position": {
+          "tabIndex": 1
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "overflow": "visible"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "menuType": "modern",
+      "style": {
+        "padding": "20px"
+      },
+      "tabSize": {
+        "width": 250
+      },
+      "tabStyle": {
+        "active": {
+          "color": ""
+        },
+        "inactive": {
+          "fontSize": ""
+        }
+      },
+      "tabs": [
+        "Backup",
+        "Restore"
+      ]
+    },
+    "type": "ia.container.tab"
+  }
+}
