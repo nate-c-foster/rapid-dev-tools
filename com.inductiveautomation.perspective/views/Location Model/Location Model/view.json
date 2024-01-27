@@ -58,6 +58,7 @@
                               "name": "Icon_Update",
                               "tooltip": {
                                 "enabled": true,
+                                "location": "bottom",
                                 "text": "Update model"
                               }
                             },
@@ -121,6 +122,7 @@
                               "name": "Icon_Add",
                               "tooltip": {
                                 "enabled": true,
+                                "location": "bottom",
                                 "text": "Add location"
                               }
                             },
@@ -196,6 +198,7 @@
                               "name": "Icon_Edit",
                               "tooltip": {
                                 "enabled": true,
+                                "location": "bottom",
                                 "text": "Add location"
                               }
                             },
@@ -270,6 +273,7 @@
                               "name": "Icon_Up",
                               "tooltip": {
                                 "enabled": true,
+                                "location": "bottom",
                                 "text": "Order up"
                               }
                             },
@@ -345,6 +349,7 @@
                               "name": "Icon_Down",
                               "tooltip": {
                                 "enabled": true,
+                                "location": "bottom",
                                 "text": "Order down"
                               }
                             },
@@ -420,6 +425,7 @@
                               "name": "Icon_Move",
                               "tooltip": {
                                 "enabled": true,
+                                "location": "bottom",
                                 "text": "Move"
                               }
                             },
@@ -495,6 +501,7 @@
                               "name": "Icon_Delete",
                               "tooltip": {
                                 "enabled": true,
+                                "location": "bottom",
                                 "text": "Remove location"
                               }
                             },
@@ -549,6 +556,70 @@
                               "path": "material/delete_outline",
                               "style": {
                                 "marginRight": "5px",
+                                "padding": "2px"
+                              }
+                            },
+                            "type": "ia.display.icon"
+                          },
+                          {
+                            "custom": {
+                              "enabled": true
+                            },
+                            "events": {
+                              "dom": {
+                                "onClick": {
+                                  "config": {
+                                    "script": "\t\n\t\n\tviews \u003d location.bulk.getNewViewsForModel()\n\n\tif views:\n\t\tvieweditor.util.generateViewImport(views)"
+                                  },
+                                  "scope": "G",
+                                  "type": "script"
+                                }
+                              }
+                            },
+                            "meta": {
+                              "name": "Icon_View_Import",
+                              "tooltip": {
+                                "enabled": true,
+                                "location": "bottom",
+                                "text": "Create View Import"
+                              }
+                            },
+                            "position": {
+                              "basis": "25px"
+                            },
+                            "propConfig": {
+                              "props.color": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027var(--enabled-Icon)\u0027\n\telse:\n\t\treturn \u0027var(--disabled-Icon)\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              },
+                              "props.style.cursor": {
+                                "binding": {
+                                  "config": {
+                                    "path": "this.custom.enabled"
+                                  },
+                                  "transforms": [
+                                    {
+                                      "code": "\tif value:\n\t\treturn \u0027pointer\u0027\n\telse:\n\t\treturn \u0027auto\u0027",
+                                      "type": "script"
+                                    }
+                                  ],
+                                  "type": "property"
+                                }
+                              }
+                            },
+                            "props": {
+                              "path": "material/tv",
+                              "style": {
                                 "padding": "2px"
                               }
                             },
@@ -789,7 +860,8 @@
                       }
                     ],
                     "meta": {
-                      "name": "Tag Does Not Exist"
+                      "name": "Tag Does Not Exist",
+                      "visible": false
                     },
                     "position": {
                       "basis": "200px",
@@ -807,7 +879,7 @@
                           },
                           "transforms": [
                             {
-                              "code": "\ttabelsExist \u003d value[\u0027tabelsExits\u0027]\n\tmodelTagExists \u003d value[\u0027modelTagExists\u0027]\n\t\n\tif tabelsExist and not modelTagExists:\n\t\treturn True\n\telse:\n\t\treturn False",
+                              "code": "\ttabelsExist \u003d value[\u0027tabelsExits\u0027]\n\tmodelTagExists \u003d value[\u0027modelTagExists\u0027]\n\t\n\tif tabelsExist and not modelTagExists:\n\t\tself.meta.visible \u003d True\n\t\treturn True\n\telse:\n\t\tself.meta.visible \u003d False\n\t\treturn False",
                               "type": "script"
                             }
                           ],
@@ -870,7 +942,8 @@
                       }
                     ],
                     "meta": {
-                      "name": "Tabels Do Not Exist"
+                      "name": "Tabels Do Not Exist",
+                      "visible": false
                     },
                     "position": {
                       "basis": "200px",
@@ -884,7 +957,7 @@
                           },
                           "transforms": [
                             {
-                              "code": "\tif value:\n\t\treturn False\n\telse:\n\t\treturn True",
+                              "code": "\tif value:\n\t\tself.meta.visible \u003d False\n\t\treturn False\n\telse:\n\t\tself.meta.visible \u003d True\n\t\treturn True",
                               "type": "script"
                             }
                           ],
@@ -1152,7 +1225,7 @@
             },
             "props": {
               "split": {
-                "position": "20%"
+                "position": "22%"
               }
             },
             "type": "ia.container.split"

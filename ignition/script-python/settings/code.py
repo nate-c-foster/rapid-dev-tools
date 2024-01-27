@@ -1,12 +1,6 @@
 
 
 
-
-
-
-
-
-
 def getValue(category, setting):
 	"""Get a setting value.
 	

@@ -21,7 +21,7 @@ def bulkCreateViews(jsonData):
 	Creates multiple views and downloads a view import.
 	
 	Args:
-		jsonData (dict): A dictionary with keys {'ViewPath','TemplatePath', 'Parameters'}
+		jsonData (list of dict): A list of dicts with keys {'ViewPath','TemplatePath', 'Parameters'}
 	"""
 
 
@@ -256,3 +256,11 @@ def renameView(path, newName):
 		views.append(view)
 		
 	return views
+	
+	
+	
+	
+
+	
+	
+	

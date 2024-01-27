@@ -5,7 +5,6 @@ import os
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Sept 2022
 #*****************************************************************************************************	
 def createLocation(locationName, locationTypeID, parentLocationID, locationTypeDefinitionID, shortName='', modifiedBy = 'Uknown'):
@@ -63,7 +62,6 @@ def createLocation(locationName, locationTypeID, parentLocationID, locationTypeD
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Feb 2023
 #*****************************************************************************************************	
 def createLocationTag(locationDetails):
@@ -95,7 +93,6 @@ def createLocationTag(locationDetails):
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Sept 2022
 #*****************************************************************************************************		
 def getNewViewsForLocation(locationDetails):
@@ -110,60 +107,45 @@ def getNewViewsForLocation(locationDetails):
 
 	newViews = []
 	
-	ignitionViewRootPath = vieweditor.util.getIgnitionViewRootPath()
-		
 	viewPath = locationDetails['viewPath']
 	templatePath = locationDetails['viewTemplatePath']
-			
-		
-	ignitionViewDirPath = ignitionViewRootPath + '/' + viewPath
-	ignitionTemplateDirPath = ignitionViewRootPath + '/' + templatePath
-			
-
-	for partialViewPath in vieweditor.util.getSubViewDirPaths(ignitionTemplateDirPath):
-			
-		ignitionViewPath = ignitionViewDirPath + partialViewPath
-		ignitionTemplatePath = ignitionTemplateDirPath + partialViewPath
-		viewExists = os.path.exists(ignitionViewPath)
-				
-		if not viewExists:
-
-			# read template JSON
-			try:
-				viewJSONStr = system.file.readFileAsString(ignitionTemplatePath + '/view.json')
-			except:
-				raise Exception("Couldn't read path: " + ignitionTemplatePath + '/view.json')
-				
-
-			try:
-				resourceJSONStr = system.file.readFileAsString(ignitionTemplatePath + '/resource.json')
-			except:
-				raise Exception("Couldn't read path: " + ignitionTemplatePath + '/resource.json')
-						
-			
-			
-					
-			newView = {		"viewPath": ignitionViewPath.split("com.inductiveautomation.perspective/views/")[-1],
-							"viewJSON": viewJSONStr,
-							"resourceJSON": resourceJSONStr
-						}
-								
+	locationID = locationDetails['locationID']
+	rootTagPath = locationDetails['tagPath']
+	parameters = {"LocationID": locationID, "rootTagPath": rootTagPath}
 	
-								
-			# ------------------   Update view params with location details --------------
-			rootTagPath = locationDetails['tagPath']
-			locationID = locationDetails['locationID']
-			params = {"LocationID": locationID, "rootTagPath": rootTagPath}	
-			newView = vieweditor.transform.updateViewParams(params)(newView)			
-			newViews.append(newView)
-			
-	return newViews
+	return vieweditor.bulk.createView(viewPath , templatePath, parameters)
 
 
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
+# Date:           Sept 2022
+#*****************************************************************************************************	
+def getNewViewsForModel():
+	"""Gets all new views for the model.
+	
+	Returns:
+		Returns a list of views that currently do not exist for the model
+	"""
+	newViews = []
+	modelDS = system.tag.readBlocking(settings.getValue("Location Model", "modelTagPath"))[0].value
+
+	for row in range(modelDS.getRowCount()):
+		locationID = modelDS.getValueAt(row,"locationID")
+		locationDetails = location.model.getLocationDetails(locationID, modelDS)
+		locationTypeID = locationDetails['locationTypeID']
+
+		# if not a component
+		if locationTypeID != 7:
+			newViews = newViews + getNewViewsForLocation(locationDetails)
+
+	return newViews
+
+
+
+
+#*****************************************************************************************************
+# Author:         Nate Foster
 # Date:           Dec 2022
 #*****************************************************************************************************	
 def bulkCreateLocations(jsonData):
@@ -225,7 +207,6 @@ def bulkCreateLocations(jsonData):
 #*****************************************************************************************************
 #
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 # Description: Edit multiple locations.
 # 
@@ -254,7 +235,6 @@ def bulkEditLocations(jsonData):
 #*****************************************************************************************************
 #
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Nov 2022
 # Description: Move multiple locations.
 # 
@@ -296,7 +276,6 @@ def bulkMoveLocations(jsonData):
 #*****************************************************************************************************
 #
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Nov 2022
 # Description: Move location.
 # 
@@ -369,7 +348,6 @@ def moveLocation(source, destination):
 #*****************************************************************************************************
 #
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Nov 2022
 # Description: Move multiple locations.
 # 
