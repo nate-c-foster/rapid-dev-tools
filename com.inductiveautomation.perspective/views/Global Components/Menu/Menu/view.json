@@ -21,15 +21,17 @@
           "props.instances": {
             "binding": {
               "config": {
-                "expression": "now(0)"
+                "fallbackDelay": 2.5,
+                "mode": "expression",
+                "tagPath": "{session.custom.settingsRootPath} + \u0027/RapidDev/Global/Settings/menu\u0027"
               },
               "transforms": [
                 {
-                  "code": "\tmenuDS \u003d settings.getValue(\u0027Global\u0027,\u0027menu\u0027)\n\t\n\tinstances \u003d []\n\tfor row in range(menuDS.getRowCount()):\n\t\tinstances.append({\t\u0027name\u0027: menuDS.getValueAt(row, \u0027name\u0027), \n\t\t\t\t\t\t\t\u0027pageURL\u0027: menuDS.getValueAt(row, \u0027pageURL\u0027),\n\t\t\t\t\t\t\t\u0027icon\u0027: menuDS.getValueAt(row, \u0027icon\u0027),\n\t\t\t\t\t\t\t\u0027order\u0027: menuDS.getValueAt(row, \u0027order\u0027) })\n\t\t\t\t\t\t\t\t\n\treturn sorted(instances, key\u003dlambda x: x[\u0027order\u0027])\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t",
+                  "code": "\t\n\tmenuDS \u003d value\n\t\n\tinstances \u003d []\n\tfor row in range(menuDS.getRowCount()):\n\t\tinstances.append({\t\u0027name\u0027: menuDS.getValueAt(row, \u0027name\u0027), \n\t\t\t\t\t\t\t\u0027pageURL\u0027: menuDS.getValueAt(row, \u0027pageURL\u0027),\n\t\t\t\t\t\t\t\u0027icon\u0027: menuDS.getValueAt(row, \u0027icon\u0027),\n\t\t\t\t\t\t\t\u0027order\u0027: menuDS.getValueAt(row, \u0027order\u0027) })\n\t\t\t\t\t\t\t\t\n\treturn sorted(instances, key\u003dlambda x: x[\u0027order\u0027])",
                   "type": "script"
                 }
               ],
-              "type": "expr"
+              "type": "tag"
             }
           }
         },
@@ -70,6 +72,7 @@
               "name": "Icon_Settings",
               "tooltip": {
                 "enabled": true,
+                "location": "center-right",
                 "text": "Configuration"
               }
             },
@@ -152,6 +155,7 @@
               "name": "Icon_Logo",
               "tooltip": {
                 "enabled": true,
+                "location": "center-right",
                 "text": "Login"
               }
             },

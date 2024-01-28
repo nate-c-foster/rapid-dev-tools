@@ -19,6 +19,8 @@ def updateModelTag():
 	dbType = settings.getValue('Location Model', 'modelDBType')
 	dbName = settings.getValue('Location Model', 'modelDBName')
 	queryPath = "Location Model/" + dbType + "/getModel"
+	print 'queryPath: ', queryPath
+	print 'params: ', {'database':dbName}
 	model = system.db.runNamedQuery(queryPath, {'database':dbName})
 
 	headers = [	
