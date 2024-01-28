@@ -16,9 +16,9 @@
     "enabled": true,
     "cacheAmount": 1,
     "cacheEnabled": false,
-    "database": "",
+    "database": "{}",
     "fallbackEnabled": false,
-    "lastModificationSignature": "de3609d5114a12a84128fadf0ac5b85eee98cbb04e528d0c5f838eb527bbf6a1",
+    "lastModificationSignature": "ebf3cd36be2dc88e7a25df0eb5af3386a74f9f82849748ecaabe4d7cd538c862",
     "permissions": [
       {
         "zone": "",
@@ -27,7 +27,14 @@
     ],
     "lastModification": {
       "actor": "nfoster",
-      "timestamp": "2024-01-24T12:12:15Z"
-    }
+      "timestamp": "2024-01-28T18:10:23Z"
+    },
+    "parameters": [
+      {
+        "type": "Database",
+        "identifier": "database",
+        "sqlType": 7
+      }
+    ]
   }
 }

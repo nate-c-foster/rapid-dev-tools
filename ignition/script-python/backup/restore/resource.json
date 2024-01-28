@@ -4,13 +4,14 @@
   "restricted": false,
   "overridable": true,
   "files": [
-    "data.bin"
+    "code.py"
   ],
   "attributes": {
     "lastModification": {
       "actor": "nfoster",
-      "timestamp": "2024-01-28T15:39:01Z"
+      "timestamp": "2024-01-28T17:10:14Z"
     },
-    "lastModificationSignature": "0f000e852097d35145a85f1c7663797752c3968af392ded9953d9295795fdb0a"
+    "hintScope": 2,
+    "lastModificationSignature": "959216b7b8795684cbeac431545108d7d9bba772950e5a492cd638908ec425c4"
   }
 }

@@ -31,7 +31,8 @@
         "meta": {
           "name": "Icon",
           "tooltip": {
-            "enabled": true
+            "enabled": true,
+            "location": "center-right"
           }
         },
         "position": {

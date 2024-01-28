@@ -55,14 +55,7 @@
         },
         "props": {
           "style": {
-            "backgroundColor": "var(--neutral-20)",
-            "borderColor": "var(--neutral-30)",
-            "borderStyle": "solid",
-            "borderWidth": 1,
-            "color": "var(--blue-85)",
-            "fontSize": "14px",
-            "marginRight": "5px",
-            "padding": "2px 8px"
+            "classes": "RapidDev/Form/Label"
           }
         },
         "type": "ia.display.label"

@@ -1441,40 +1441,6 @@
           "direction": "column"
         },
         "type": "ia.container.flex"
-      },
-      {
-        "meta": {
-          "name": "KPI Editor"
-        },
-        "position": {
-          "tabIndex": 2
-        },
-        "props": {
-          "style": {
-            "color": "var(--neutral-70)",
-            "fontSize": "20px",
-            "textAlign": "center"
-          },
-          "text": "Coming Soon!"
-        },
-        "type": "ia.display.label"
-      },
-      {
-        "meta": {
-          "name": "Doc Generator"
-        },
-        "position": {
-          "tabIndex": 3
-        },
-        "props": {
-          "style": {
-            "color": "var(--neutral-70)",
-            "fontSize": "20px",
-            "textAlign": "center"
-          },
-          "text": "Coming Soon!"
-        },
-        "type": "ia.display.label"
       }
     ],
     "meta": {
@@ -1518,9 +1484,7 @@
       },
       "tabs": [
         "Model Editor",
-        "Bulk Editor",
-        "KPI Editor",
-        "Doc Generator"
+        "Bulk Editor"
       ]
     },
     "type": "ia.container.tab"

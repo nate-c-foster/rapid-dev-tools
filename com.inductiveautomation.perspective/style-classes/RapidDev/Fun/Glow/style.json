@@ -1,0 +1,14 @@
+{
+  "base": {
+    "animation": {
+      "duration": "4s",
+      "keyframes": {
+        "0%": {},
+        "100%": {
+          "stroke": "white",
+          "strokeWidth": "4px"
+        }
+      }
+    }
+  }
+}
