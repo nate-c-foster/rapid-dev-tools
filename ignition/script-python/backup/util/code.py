@@ -42,11 +42,11 @@ def zipTempDirectory(directoryName):
 # Company:        A.W. Schultz
 # Date:           March 2023
 #*****************************************************************************************************	
-def unZipTempFile(fileName):
+def unZipTempFile(fileName, tempLocation=""):
 	"""unzip temporary file.
 	"""
-
-	tempLocation = settings.getValue('Global','serverTempSaveLocation')
+	if not tempLocation:
+		tempLocation = settings.getValue('Global','serverTempSaveLocation')
 	path = tempLocation + '/' + fileName
 
 

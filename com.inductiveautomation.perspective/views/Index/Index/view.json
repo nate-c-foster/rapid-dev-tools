@@ -1,7 +1,11 @@
 {
   "custom": {},
   "params": {},
-  "props": {},
+  "props": {
+    "defaultSize": {
+      "height": 1196
+    }
+  },
   "root": {
     "children": [
       {
@@ -183,7 +187,7 @@
                   "style": {
                     "color": "#190F0F"
                   },
-                  "text": "Update the following settings and click install:"
+                  "text": "Update the following settings and import resources zip file."
                 },
                 "type": "ia.display.label"
               },
@@ -207,7 +211,12 @@
                   },
                   {
                     "meta": {
-                      "name": "TextField"
+                      "name": "TextField",
+                      "tooltip": {
+                        "enabled": true,
+                        "location": "bottom",
+                        "text": "Location of Inductive Automation folder."
+                      }
                     },
                     "position": {
                       "basis": "500px"
@@ -248,6 +257,58 @@
                       "style": {
                         "classes": "RapidDev/Form/Label"
                       },
+                      "text": "Temporary Path"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "TextField",
+                      "tooltip": {
+                        "enabled": true,
+                        "location": "bottom",
+                        "text": "A folder path to unpack resources zip."
+                      }
+                    },
+                    "position": {
+                      "basis": "500px"
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "RapidDev/Form/TextField"
+                      },
+                      "text": "C:/RapidDevTemp"
+                    },
+                    "type": "ia.input.text-field"
+                  }
+                ],
+                "meta": {
+                  "name": "Temp Path"
+                },
+                "position": {
+                  "basis": "30px"
+                },
+                "props": {
+                  "style": {
+                    "marginTop": "5px"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "position": {
+                      "basis": "150px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "RapidDev/Form/Label"
+                      },
                       "text": "Tag Path"
                     },
                     "type": "ia.display.label"
@@ -258,7 +319,7 @@
                       "tooltip": {
                         "enabled": true,
                         "location": "bottom",
-                        "text": "Can only change in \u0027settings\u0027 script file."
+                        "text": "This is where RapidDev tags will be imported. Can only change in \u0027settings\u0027 script file."
                       }
                     },
                     "position": {
@@ -303,11 +364,75 @@
                 "type": "ia.container.flex"
               },
               {
+                "children": [
+                  {
+                    "custom": {
+                      "resourceFileContents": []
+                    },
+                    "events": {
+                      "component": {
+                        "onFileReceived": {
+                          "config": {
+                            "script": "\t\n\timport time\n\n\t\n\tdateTime \u003d system.date.format(system.date.now(),\"yyyy-MM-dd-HHmmss\")\t\n\ttempLocation \u003d self.parent.parent.getChild(\"Temp Path\").getChild(\"TextField\").props.text\n\tfileName \u003d \u0027upload_\u0027 + dateTime + \u0027_\u0027 + event.file.name\n\tresourcesPath \u003d tempLocation + \u0027/\u0027 + fileName[:-len(\u0027.zip\u0027)] + \u0027/resources\u0027\n\t\n\tevent.file.copyTo(tempLocation + \u0027/\u0027 + fileName)\n\tbackup.util.unZipTempFile(fileName, tempLocation\u003dtempLocation)\n\n\tresourceTypes \u003d [\u0027tags\u0027,\u0027themes\u0027,\u0027icons\u0027]\n\t\n\tinstances \u003d []\n\tfor resourceType in resourceTypes:\n\t\tfileNames \u003d backup.util.getResourceNames(resourcesPath + \u0027/\u0027 + resourceType)\n\t\t\n\t\toptions \u003d []\n\t\tfor fileName in fileNames:\n\t\t\toptions.append({\u0027label\u0027:backup.util.convertFilenameToLabel(fileName, resourceType), \u0027fileName\u0027: fileName})\n\t\t\n\t\tinstances.append({\u0027type\u0027: resourceType, \u0027options\u0027: options})\n\n\n\tself.custom.resourceFileContents \u003d instances\n\tself.parent.parent.getChild(\"Button\").props.enabled \u003d True"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "FileUpload",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "Upload resources zip file."
+                      }
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 0
+                    },
+                    "props": {
+                      "fileSizeLimit": 50,
+                      "fileUploadIcon": {
+                        "path": ""
+                      },
+                      "maxUploads": 1,
+                      "style": {
+                        "borderBottomLeftRadius": "5px",
+                        "borderBottomRightRadius": "5px",
+                        "borderTopLeftRadius": "5px",
+                        "borderTopRightRadius": "5px",
+                        "classes": "",
+                        "margin": "1px"
+                      },
+                      "supportedFileTypes": [
+                        "zip"
+                      ]
+                    },
+                    "type": "ia.input.fileupload"
+                  }
+                ],
+                "meta": {
+                  "name": "File Upload"
+                },
+                "position": {
+                  "basis": "195px",
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "cursor": "pointer",
+                    "marginTop": "10px"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
                 "events": {
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\t\n\timport os\n\timport time\n\t\n\tinstallationPath \u003d self.parent.getChild(\"Ignition Path\").getChild(\"TextField\").props.text\n\tprojectName \u003d system.project.getProjectName()\n\tresourcesPath \u003d installationPath + \u0027/Ignition/data/projects/\u0027 + projectName + \u0027/resources\u0027\n\t\n\t\n\tif not self.parent.custom.tagsExist:\n\t\n\t\tfileNames \u003d [f for f in os.listdir(resourcesPath + \u0027/tags\u0027)]\n\t\t\n\t\t# grab any file name that has RapidDev in it\n\t\ttagFileName \u003d \u0027\u0027\n\t\tfor fileName in fileNames:\n\t\t\tif \u0027RapidDev\u0027 in fileName:\n\t\t\t\ttagFileName \u003d fileName\n\t\t\t\t\n\t\t# create RapidDev tag\n\t\tif tagFileName:\n\t\t\tbackup.restore.restoreTags(resourcesPath, fileName)\n\n\n\tif not self.parent.custom.themesExist:\n\t\tbackup.restore.restoreThemes(installationPath, resourcesPath, \u0027rapid-dev-dark\u0027)\n\t\tbackup.restore.restoreThemes(installationPath, resourcesPath, \u0027rapid-dev-light\u0027)\n\t\n\t\n\tif not self.parent.custom.iconsExist:\n\t\tbackup.restore.restoreIcons(installationPath, resourcesPath, \u0027rapid-dev.svg\u0027)\n\n\n\n\t# update settings installationPathIA from user imput\n\tif installationPath:\n\t\ttagPath \u003d settings.ROOT_PATH + \u0027/RapidDev/Global/Settings/installationPathIA\u0027\n\t\tif system.tag.exists(tagPath):\n\t\t\tsystem.tag.writeBlocking(tagPath, installationPath)\n\t\n\t\n\t# if version \u003e 8.1.28 update immediately\n\ttry:\n\t\tsystem.project.requestScan()\n\texcept:\n\t\tpass\n\t\t\n\t\t\n\n\t# flash startup banner - I think I was drunk when I did this.\n\tself.parent.position.display \u003d False\n\tself.parent.parent.getChild(\"Startup\").position.display \u003d True\n\ttime.sleep(4)\n\n\n\t# navigate to the first page\n\tmenuDS \u003d settings.getValue(\"Global\", \"menu\")\n\n\tfor row in range(menuDS.getRowCount()):\n\t\torder \u003d menuDS.getValueAt(row,\"order\")\n\t\tif row \u003d\u003d 0:\n\t\t\tminOrder \u003d order\n\t\t\trootRow \u003d row\n\t\telif order \u003c minOrder:\n\t\t\tminOrder \u003d order\n\t\t\trootRow \u003d row\n\t\n\trootURL \u003d menuDS.getValueAt(rootRow, \"pageURL\")\n\t\n\tsystem.perspective.navigate(rootURL[1:])\n\t\n\n"
+                        "script": "\t\n\timport os\n\timport time\n\t\n\tinstallationPath \u003d self.parent.getChild(\"Ignition Path\").getChild(\"TextField\").props.text\n\tprojectName \u003d system.project.getProjectName()\n\tresourcesPath \u003d installationPath + \u0027/Ignition/data/projects/\u0027 + projectName + \u0027/resources\u0027\n\trestoreTypes \u003d self.parent.getChild(\"File Upload\").getChild(\"FileUpload\").custom.resourceFileContents\n\n\n\tfor restoreType in restoreTypes: \n\t\t\n\t\t# ------------ Tags -------------------------------------------\t\t\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027tags\u0027 and not self.parent.custom.tagsExist:\n\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\t\t\n\t\t\tfor option in options:\n\t\t\t\tif \u0027RapidDev\u0027 in option[\u0027fileName\u0027]:\n\t\t\t\t\tbackup.restore.restoreTags(resourcesPath, option[\u0027fileName\u0027])\n\n\n\t\t# ------------ Themes --------------------------------------------------------\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027themes\u0027 and not self.parent.custom.themesExist:\t\t\n\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\t\t\tfor option in options:\n\t\t\t\tif \u0027rapid-dev\u0027 in option[\u0027label\u0027]:\n\t\t\t\t\tbackup.restore.restoreThemes(installationPath, resourcesPath, option[\u0027label\u0027])\n\n\t\t\n\t\t\n\t\t# ------------ Icons --------------------------------------------------------\t\t\t\t\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027icons\u0027 and not self.parent.custom.iconsExist:\t\t\n\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\n\t\t\tfor option in options:\n\t\t\t\tif \u0027rapid-dev\u0027 in option[\u0027fileName\u0027]:\n\t\t\t\t\tbackup.restore.restoreIcons(installationPath, resourcesPath, option[\u0027fileName\u0027])\n\n\n\n\n\t# update settings installationPathIA from user imput\n\tif installationPath:\n\t\ttagPath \u003d settings.ROOT_PATH + \u0027/RapidDev/Global/Settings/installationPathIA\u0027\n\t\tif system.tag.exists(tagPath):\n\t\t\tsystem.tag.writeBlocking(tagPath, installationPath)\n\t\n\t\n\t# if version \u003e 8.1.28 update immediately\n\ttry:\n\t\tsystem.project.requestScan()\n\texcept:\n\t\tpass\n\t\t\n\t\t\n\n\t# flash startup banner - I think I was drunk when I did this.\n\tself.parent.position.display \u003d False\n\tself.parent.parent.getChild(\"Startup\").position.display \u003d True\n\ttime.sleep(4)\n\n\n\t# navigate to the first page\n\tmenuDS \u003d settings.getValue(\"Global\", \"menu\")\n\n\tfor row in range(menuDS.getRowCount()):\n\t\torder \u003d menuDS.getValueAt(row,\"order\")\n\t\tif row \u003d\u003d 0:\n\t\t\tminOrder \u003d order\n\t\t\trootRow \u003d row\n\t\telif order \u003c minOrder:\n\t\t\tminOrder \u003d order\n\t\t\trootRow \u003d row\n\t\n\trootURL \u003d menuDS.getValueAt(rootRow, \"pageURL\")\n\t\n\tsystem.perspective.navigate(rootURL[1:])\n\n"
                       },
                       "scope": "G",
                       "type": "script"
@@ -322,6 +447,7 @@
                   "shrink": 0
                 },
                 "props": {
+                  "enabled": false,
                   "style": {
                     "marginTop": "10px"
                   },
@@ -381,7 +507,7 @@
                       "name": "he-man-opt"
                     },
                     "position": {
-                      "basis": "62px"
+                      "basis": "85px"
                     },
                     "props": {
                       "elements": [
@@ -400,7 +526,10 @@
                           "type": "path"
                         }
                       ],
-                      "viewBox": "0 30 29.104 120.23"
+                      "style": {
+                        "overflow": "visible"
+                      },
+                      "viewBox": "-3 30 35 120.23"
                     },
                     "type": "ia.shapes.svg"
                   },
@@ -440,7 +569,7 @@
               "name": "Startup"
             },
             "position": {
-              "basis": "298px",
+              "basis": "509px",
               "display": false
             },
             "props": {
