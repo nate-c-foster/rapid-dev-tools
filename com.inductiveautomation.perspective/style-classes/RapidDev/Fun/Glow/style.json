@@ -1,9 +1,11 @@
 {
   "base": {
     "animation": {
-      "duration": "4s",
+      "duration": "3s",
       "keyframes": {
-        "0%": {},
+        "0%": {
+          "stroke": "white"
+        },
         "100%": {
           "stroke": "white",
           "strokeWidth": "4px"
