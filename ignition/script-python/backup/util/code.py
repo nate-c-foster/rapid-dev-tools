@@ -178,14 +178,6 @@ def exportTags(fileName, tagPath):
 	
 
 
-
-
-
-
-
-
-
-
 #*****************************************************************************************************
 # Author:         Nate Foster
 # Company:        A.W. Schultz

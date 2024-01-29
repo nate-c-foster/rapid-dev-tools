@@ -29,22 +29,10 @@
       },
       {
         "meta": {
-          "name": "Projects"
-        },
-        "position": {
-          "tabIndex": 1
-        },
-        "props": {
-          "path": "Backup Restore/Components/Projects"
-        },
-        "type": "ia.display.view"
-      },
-      {
-        "meta": {
           "name": "Gateway"
         },
         "position": {
-          "tabIndex": 2
+          "tabIndex": 1
         },
         "props": {
           "path": "Backup Restore/Components/Gateway"
@@ -73,7 +61,6 @@
       },
       "tabs": [
         "Resources",
-        "Projects",
         "Gateway"
       ]
     },
