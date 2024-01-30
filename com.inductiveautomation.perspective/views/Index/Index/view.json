@@ -1,6 +1,15 @@
 {
   "custom": {},
   "params": {},
+  "permissions": {
+    "securityLevels": [
+      {
+        "children": [],
+        "name": "Authenticated"
+      }
+    ],
+    "type": "AllOf"
+  },
   "props": {
     "defaultSize": {
       "height": 1196
@@ -98,10 +107,10 @@
                     "props": {
                       "style": {
                         "color": "#150808",
-                        "fontSize": 14,
+                        "fontSize": 16,
                         "fontWeight": "bold"
                       },
-                      "text": "- tag folder not found. "
+                      "text": "- RapidDev Tags"
                     },
                     "type": "ia.display.label"
                   },
@@ -125,10 +134,10 @@
                     "props": {
                       "style": {
                         "color": "#150808",
-                        "fontSize": 14,
+                        "fontSize": 16,
                         "fontWeight": "bold"
                       },
-                      "text": "- themes not found"
+                      "text": "- RapidDev Themes"
                     },
                     "type": "ia.display.label"
                   },
@@ -152,10 +161,10 @@
                     "props": {
                       "style": {
                         "color": "#452727",
-                        "fontSize": 14,
+                        "fontSize": 16,
                         "fontWeight": "bolder"
                       },
-                      "text": "- icons not found "
+                      "text": "- RapidDev Icons "
                     },
                     "type": "ia.display.label"
                   }
@@ -170,8 +179,7 @@
                   "direction": "column",
                   "style": {
                     "marginBottom": "10px",
-                    "marginLeft": "20px",
-                    "marginTop": "10px"
+                    "marginLeft": "20px"
                   }
                 },
                 "type": "ia.container.flex"
@@ -185,9 +193,10 @@
                 },
                 "props": {
                   "style": {
-                    "color": "#190F0F"
+                    "color": "#190F0F",
+                    "marginTop": "5px"
                   },
-                  "text": "Update the following settings and import resources zip file."
+                  "text": "Confirm the following settings:"
                 },
                 "type": "ia.display.label"
               },
@@ -364,6 +373,22 @@
                 "type": "ia.container.flex"
               },
               {
+                "meta": {
+                  "name": "Install Message 2"
+                },
+                "position": {
+                  "basis": "37px"
+                },
+                "props": {
+                  "style": {
+                    "color": "#190F0F",
+                    "marginTop": "25px"
+                  },
+                  "text": "Import Resources zip file here:"
+                },
+                "type": "ia.display.label"
+              },
+              {
                 "children": [
                   {
                     "custom": {
@@ -417,7 +442,7 @@
                   "name": "File Upload"
                 },
                 "position": {
-                  "basis": "195px",
+                  "basis": "176px",
                   "shrink": 0
                 },
                 "props": {
@@ -433,7 +458,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\t\n\timport os\n\timport time\n\t\n\tinstallationPath \u003d self.parent.getChild(\"Ignition Path\").getChild(\"TextField\").props.text\n\tprojectName \u003d system.project.getProjectName()\n\trestoreTypes \u003d self.parent.getChild(\"File Upload\").getChild(\"FileUpload\").custom.resourceFileContents\n\ttempPath \u003d self.parent.getChild(\"Temp Path\").getChild(\"TextField\").props.text\n\tresourcesPath \u003d self.parent.getChild(\"File Upload\").getChild(\"FileUpload\").custom.resourcesPath\n\n\tfor restoreType in restoreTypes: \n\t\t\n\t\t# ------------ Tags -------------------------------------------\t\t\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027tags\u0027 and not self.parent.custom.tagsExist:\n\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\t\t\n\t\t\tfor option in options:\n\t\t\t\tif \u0027RapidDev\u0027 in option[\u0027fileName\u0027]:\n\t\t\t\t\tbackup.restore.restoreTags(resourcesPath, option[\u0027fileName\u0027])\n\n\n\t\t# ------------ Themes --------------------------------------------------------\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027themes\u0027 and not self.parent.custom.themesExist:\t\t\n\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\t\t\tfor option in options:\n\t\t\t\tif \u0027rapid-dev\u0027 in option[\u0027label\u0027]:\n\t\t\t\t\tbackup.restore.restoreThemes(installationPath, resourcesPath, option[\u0027label\u0027])\n\n\t\t\n\t\t\n\t\t# ------------ Icons --------------------------------------------------------\t\t\t\t\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027icons\u0027 and not self.parent.custom.iconsExist:\t\t\n\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\n\t\t\tfor option in options:\n\t\t\t\tif \u0027rapid-dev\u0027 in option[\u0027fileName\u0027]:\n\t\t\t\t\tbackup.restore.restoreIcons(installationPath, resourcesPath, option[\u0027fileName\u0027])\n\n\n\n\n\t# update settings installationPathIA from user imput\n\tif installationPath:\n\t\ttagPath \u003d settings.ROOT_PATH + \u0027/RapidDev/Global/Settings/installationPathIA\u0027\n\t\tif system.tag.exists(tagPath):\n\t\t\tsystem.tag.writeBlocking(tagPath, installationPath)\n\tif tempPath:\n\t\ttagPath \u003d settings.ROOT_PATH + \u0027/RapidDev/Global/Settings/serverTempSaveLocation\u0027\n\t\tif system.tag.exists(tagPath):\n\t\t\tsystem.tag.writeBlocking(tagPath, tempPath)\n\t\n\t\n\t# if version \u003e 8.1.28 update immediately\n\ttry:\n\t\tsystem.project.requestScan()\n\texcept:\n\t\tpass\n\t\t\n\t\t\n\n\t# flash startup banner - I think I was drunk when I did this.\n\tself.parent.position.display \u003d False\n\tself.parent.parent.getChild(\"Startup\").position.display \u003d True\n\ttime.sleep(4)\n\n\n\t# navigate to the first page\n\tmenuDS \u003d settings.getValue(\"Global\", \"menu\")\n\n\tfor row in range(menuDS.getRowCount()):\n\t\torder \u003d menuDS.getValueAt(row,\"order\")\n\t\tif row \u003d\u003d 0:\n\t\t\tminOrder \u003d order\n\t\t\trootRow \u003d row\n\t\telif order \u003c minOrder:\n\t\t\tminOrder \u003d order\n\t\t\trootRow \u003d row\n\t\n\trootURL \u003d menuDS.getValueAt(rootRow, \"pageURL\")\n\t\n\tsystem.perspective.navigate(rootURL[1:])\n\n"
+                        "script": "\t\n\timport os\n\timport time\n\t\n\tinstallationPath \u003d self.parent.getChild(\"Ignition Path\").getChild(\"TextField\").props.text\n\tprojectName \u003d system.project.getProjectName()\n\trestoreTypes \u003d self.parent.getChild(\"File Upload\").getChild(\"FileUpload\").custom.resourceFileContents\n\ttempPath \u003d self.parent.getChild(\"Temp Path\").getChild(\"TextField\").props.text\n\tresourcesPath \u003d self.parent.getChild(\"File Upload\").getChild(\"FileUpload\").custom.resourcesPath\n\n\tfor restoreType in restoreTypes: \n\t\t\n\t\t# ------------ Tags -------------------------------------------\t\t\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027tags\u0027 and not self.parent.custom.tagsExist:\n\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\t\t\n\t\t\tfor option in options:\n\t\t\t\tif \u0027RapidDev\u0027 in option[\u0027fileName\u0027]:\n\t\t\t\t\tbackup.restore.restoreTags(resourcesPath, option[\u0027fileName\u0027])\n\n\n\t\t# ------------ Themes --------------------------------------------------------\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027themes\u0027 and not self.parent.custom.themesExist:\t\t\n\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\t\t\tfor option in options:\n\t\t\t\tif \u0027rapid-dev\u0027 in option[\u0027label\u0027]:\n\t\t\t\t\tbackup.restore.restoreThemes(installationPath, resourcesPath, option[\u0027label\u0027])\n\n\t\t\n\t\t\n\t\t# ------------ Icons --------------------------------------------------------\t\t\t\t\n\t\tif restoreType[\u0027type\u0027] \u003d\u003d \u0027icons\u0027 and not self.parent.custom.iconsExist:\t\t\n\n\t\t\toptions \u003d restoreType[\u0027options\u0027]\n\n\t\t\tfor option in options:\n\t\t\t\tif \u0027rapid-dev\u0027 in option[\u0027fileName\u0027]:\n\t\t\t\t\tbackup.restore.restoreIcons(installationPath, resourcesPath, option[\u0027fileName\u0027])\n\n\n\n\n\t# update settings installationPathIA from user imput\n\tif installationPath:\n\t\ttagPath \u003d settings.ROOT_PATH + \u0027/RapidDev/Global/Settings/installationPathIA\u0027\n\t\tif system.tag.exists(tagPath):\n\t\t\tsystem.tag.writeBlocking(tagPath, installationPath)\n\tif tempPath:\n\t\ttagPath \u003d settings.ROOT_PATH + \u0027/RapidDev/Global/Settings/serverTempSaveLocation\u0027\n\t\tif system.tag.exists(tagPath):\n\t\t\tsystem.tag.writeBlocking(tagPath, tempPath)\n\t\n\t\n\t# if version \u003e 8.1.28 update immediately\n\ttry:\n\t\tsystem.project.requestScan()\n\texcept:\n\t\tpass\n\n\n\n\n\t# ---------  check tags -------------\n\ttagsExist \u003d backup.restore.tagsExist()\n\tself.parent.custom.tagsExist \u003d tagsExist\n\t\n\t# --------- check themes -------------\n\tthemesExist \u003d backup.restore.themesExist()\n\tself.parent.custom.themesExist \u003d themesExist\n\t\n\t# ---------- check icons -------------\n\ticonsExist \u003d backup.restore.iconsExist()\n\tself.parent.custom.iconsExist \u003d iconsExist\n\n\n\tif tagsExist and themesExist and iconsExist:\n\n\t\t# flash startup banner - I think I was drunk when I did this.\n\t\tself.parent.position.display \u003d False\n\t\tself.parent.parent.getChild(\"Startup\").position.display \u003d True\n\t\ttime.sleep(3)\n\t\n\t\n\t\t# navigate to the first page\n\t\tmenuDS \u003d settings.getValue(\"Global\", \"menu\")\n\t\n\t\tfor row in range(menuDS.getRowCount()):\n\t\t\torder \u003d menuDS.getValueAt(row,\"order\")\n\t\t\tif row \u003d\u003d 0:\n\t\t\t\tminOrder \u003d order\n\t\t\t\trootRow \u003d row\n\t\t\telif order \u003c minOrder:\n\t\t\t\tminOrder \u003d order\n\t\t\t\trootRow \u003d row\n\t\t\n\t\trootURL \u003d menuDS.getValueAt(rootRow, \"pageURL\")\n\t\t\n\t\tsystem.perspective.navigate(rootURL[1:])\n\t\t\n\telse:\n\t\t# fault popup check log\n\t\tpass\n\n"
                       },
                       "scope": "G",
                       "type": "script"
@@ -458,9 +483,9 @@
               }
             ],
             "custom": {
-              "iconsExist": false,
-              "tagsExist": false,
-              "themesExist": false
+              "iconsExist": true,
+              "tagsExist": true,
+              "themesExist": true
             },
             "meta": {
               "name": "Install Resources"
@@ -471,7 +496,7 @@
             "props": {
               "direction": "column",
               "style": {
-                "backgroundColor": "#F5C4C4",
+                "backgroundColor": "#F5C4C4A6",
                 "borderBottomLeftRadius": 5,
                 "borderBottomRightRadius": 5,
                 "borderTopLeftRadius": 5,
@@ -612,7 +637,7 @@
       "system": {
         "onStartup": {
           "config": {
-            "script": "\t\n\timport os\n\n\n\t# ---------  check tags -------------\n\ttagsExist \u003d system.tag.exists(settings.ROOT_PATH + \u0027/RapidDev\u0027)\n\tself.getChild(\"FlexContainer\").getChild(\"Install Resources\").custom.tagsExist \u003d tagsExist\n\t\n\t\n\t\n\t\n\t# --------- check themes -------------\n\tif tagsExist:\n\t\tinstallationPathIA \u003d settings.getValue(\"Global\", \"installationPathIA\")\n\telse:\n\t\tinstallationPathIA \u003d \"C:/Program Files/Inductive Automation\"\n\t\t\n\tthemesFolderPath \u003d installationPathIA + backup.restore.THEMES_RELATIVE_PATH\n\tdarkThemePath \u003d themesFolderPath + \u0027/rapid-dev-dark\u0027\n\tlightThemePath \u003d themesFolderPath + \u0027/rapid-dev-light\u0027\n\t\n\tif os.path.isfile(darkThemePath + \u0027.css\u0027) and os.path.isdir(darkThemePath) and os.path.isfile(lightThemePath + \u0027.css\u0027) and os.path.isdir(lightThemePath):\n\t\tthemesExist \u003d True\n\telse:\n\t\tthemesExist \u003d False\n\n\tself.getChild(\"FlexContainer\").getChild(\"Install Resources\").custom.themesExist \u003d themesExist\n\t\n\t\n\t\n\t\n\t# ---------- check icons -------------\n\tif tagsExist:\n\t\tinstallationPathIA \u003d settings.getValue(\"Global\", \"installationPathIA\")\n\telse:\n\t\tinstallationPathIA \u003d \"C:/Program Files/Inductive Automation\"\n\n\ticonsFolderPath \u003d installationPathIA + backup.restore.ICONS_RELATIVE_PATH\n\ticonsPath \u003d iconsFolderPath + \u0027/rapid-dev.svg\u0027\n\t\n\tif os.path.isfile(iconsPath):\n\t\ticonsExist \u003d True\n\telse:\n\t\ticonsExist \u003d False\n\t\t\n\tself.getChild(\"FlexContainer\").getChild(\"Install Resources\").custom.iconsExist \u003d iconsExist\n\t\n\t\n\t\n\t\n\t\n\t# navigate to the first page\n\tif tagsExist and themesExist and iconsExist:\n\t\n\t\tmenuDS \u003d settings.getValue(\"Global\", \"menu\")\n\t\n\t\tfor row in range(menuDS.getRowCount()):\n\t\t\torder \u003d menuDS.getValueAt(row,\"order\")\n\t\t\tif row \u003d\u003d 0:\n\t\t\t\tminOrder \u003d order\n\t\t\t\trootRow \u003d row\n\t\t\telif order \u003c minOrder:\n\t\t\t\tminOrder \u003d order\n\t\t\t\trootRow \u003d row\n\t\t\n\t\trootURL \u003d menuDS.getValueAt(rootRow, \"pageURL\")\n\t\t\n\t\tsystem.perspective.navigate(rootURL[1:])\n\t\t\n\t\t\n\t\t\n\t# promp user to install the missing resources\n\telse:\n\t\t\n\t\tself.getChild(\"FlexContainer\").meta.visible \u003d True\n\t"
+            "script": "\t\n\n\t# ---------  check tags -------------\n\ttagsExist \u003d backup.restore.tagsExist()\n\tself.getChild(\"FlexContainer\").getChild(\"Install Resources\").custom.tagsExist \u003d tagsExist\n\t\n\t# --------- check themes -------------\n\tthemesExist \u003d backup.restore.themesExist()\n\tself.getChild(\"FlexContainer\").getChild(\"Install Resources\").custom.themesExist \u003d themesExist\n\t\n\t# ---------- check icons -------------\n\ticonsExist \u003d backup.restore.iconsExist()\n\tself.getChild(\"FlexContainer\").getChild(\"Install Resources\").custom.iconsExist \u003d iconsExist\n\t\n\t\n\t# navigate to the first page\n\tif tagsExist and themesExist and iconsExist:\n\t\n\t\tmenuDS \u003d settings.getValue(\"Global\", \"menu\")\n\t\n\t\tfor row in range(menuDS.getRowCount()):\n\t\t\torder \u003d menuDS.getValueAt(row,\"order\")\n\t\t\tif row \u003d\u003d 0:\n\t\t\t\tminOrder \u003d order\n\t\t\t\trootRow \u003d row\n\t\t\telif order \u003c minOrder:\n\t\t\t\tminOrder \u003d order\n\t\t\t\trootRow \u003d row\n\t\t\n\t\trootURL \u003d menuDS.getValueAt(rootRow, \"pageURL\")\n\t\t\n\t\tsystem.perspective.navigate(rootURL[1:])\n\t\t\n\t\t\n\t# promp user to install the missing resources\n\telse:\n\t\t\n\t\tself.getChild(\"FlexContainer\").meta.visible \u003d True\n\t"
           },
           "scope": "G",
           "type": "script"

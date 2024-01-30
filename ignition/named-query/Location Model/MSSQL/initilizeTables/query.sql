@@ -1,6 +1,17 @@
 
 IF ( :version = 'Water_1.0' )
+
+
+
 BEGIN
+
+
+	-- ****************** core Schema ******************
+	IF (NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'core'))
+	
+	BEGIN
+		EXEC('CREATE SCHEMA [core] AUTHORIZATION [dbo]');
+	END
 
 	-- ******************    Location      ****************** 
 	IF (NOT EXISTS (SELECT * 
