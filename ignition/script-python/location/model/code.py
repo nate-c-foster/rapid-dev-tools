@@ -423,6 +423,26 @@ def getLocationID(locationPath):
 
 				
 	return locationID
+	
+
+def isProcess(locationDetails):
+	locationTypeID = locationDetails['locationTypeID']
+
+	if locationTypeID == 6:
+		return True
+	else:
+		return False
+
+
+def isComponent(locationDetails):
+	locationTypeID = locationDetails['locationTypeID']
+
+	if locationTypeID == 7:
+		return True
+	else:
+		return False
+	
+
 
 
 

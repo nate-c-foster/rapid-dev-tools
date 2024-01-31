@@ -36,8 +36,13 @@ def createLocation(locationName, locationTypeID, parentLocationID, locationTypeD
 		'database':dbName
 	}
 	
-	query = 'Location Model/' + dbType + '/addLocation'
-	system.db.runNamedQuery(query,params)	
+	if parentLocationID:
+		query = 'Location Model/' + dbType + '/addLocation'
+		system.db.runNamedQuery(query,params)	
+	else:
+		del params['ParentLocationID']
+		query = 'Location Model/' + dbType + '/addLocationToRoot'
+		system.db.runNamedQuery(query,params)	
 	
 	location.model.updateModelTag()
 
@@ -46,7 +51,7 @@ def createLocation(locationName, locationTypeID, parentLocationID, locationTypeD
 	modelTagPath = settings.getValue('Location Model', 'modelTagPath')
 	modelDS = system.tag.readBlocking(modelTagPath)[0].value
 	for row in range(modelDS.getRowCount()):
-		if modelDS.getValueAt(row,"parentID") == parentLocationID and modelDS.getValueAt(row,"locationName") == locationName:	
+		if (not modelDS.getValueAt(row,"parentID") or modelDS.getValueAt(row,"parentID") == parentLocationID) and modelDS.getValueAt(row,"locationName") == locationName:	
 			columnNames = modelDS.getColumnNames()
 			locationDetails = { columnName : modelDS.getValueAt(row,columnName) for columnName in columnNames }	
 		
@@ -69,25 +74,67 @@ def createLocationTag(locationDetails):
 
 	udtPath = locationDetails['udtPath']
 	tagPath = locationDetails['tagPath']
-	parentPath = '/'.join(tagPath.split('/')[:-1])
 	name = locationDetails['locationName']
-
-
-	# ---- create location folder -------
-	folder={
-			'tagType': 	'Folder',
-			'name':		name,
-			'tags':		[]
-		}
-	folderResults = system.tag.configure(basePath=parentPath, tags=folder, collisionPolicy = 'm')
 	
-	# --- create location UDT instance -------
-	tag={
-			"name": name,         
-			"typeId" : udtPath,
-			"tagType" : 'UdtInstance',
-		}
-	tagResults = system.tag.configure(basePath=tagPath, tags=tag, collisionPolicy = 'm')
+	if '/' in tagPath:
+		parentPath = '/'.join(tagPath.split('/')[:-1])
+		
+	# must be a root tag, hence [tagProvider] is the parent path
+	else:
+		parentPath = tageditor.util.getProvider(tagPath)
+
+
+	if not system.tag.exists(tagPath):
+		# ---- create location folder -------
+		folder={
+				'tagType': 	'Folder',
+				'name':		name,
+				'tags':		[]
+			}
+		folderResults = system.tag.configure(basePath=parentPath, tags=folder, collisionPolicy = 'm')
+	
+	
+	if not system.tag.exists(tagPath + '/' + name):
+		# --- create location UDT instance -------
+		tag={
+				"name": name,         
+				"typeId" : udtPath,
+				"tagType" : 'UdtInstance',
+			}
+		tagResults = system.tag.configure(basePath=tagPath, tags=tag, collisionPolicy = 'm')
+		
+		
+	if location.model.isProcess(locationDetails) and not system.tag.exists(tagPath + '/Alarming'):
+		# ---- create Alarming folder -------
+		folder={
+				'tagType': 	'Folder',
+				'name':		'Alarming',
+				'tags':		[]
+			}
+		folderResults = system.tag.configure(basePath=tagPath, tags=folder, collisionPolicy = 'm')
+
+
+
+
+#*****************************************************************************************************
+# Author:         Nate Foster
+# Date:           Jan 2024
+#*****************************************************************************************************	
+def createLocationTagsFromModel():
+
+	modelDS = system.tag.readBlocking(settings.getValue("Location Model", "modelTagPath"))[0].value
+
+	for row in range(modelDS.getRowCount()):
+		locationID = modelDS.getValueAt(row,"locationID")
+		locationDetails = location.model.getLocationDetails(locationID, modelDS)
+		locationTypeID = locationDetails['locationTypeID']
+
+		if not location.model.isComponent(locationDetails):
+			createLocationTag(locationDetails)
+
+
+
+
 
 
 
@@ -121,7 +168,7 @@ def getNewViewsForLocation(locationDetails):
 # Author:         Nate Foster
 # Date:           Sept 2022
 #*****************************************************************************************************	
-def getNewViewsForModel():
+def getNewViewsFromModel():
 	"""Gets all new views for the model.
 	
 	Returns:
@@ -135,8 +182,7 @@ def getNewViewsForModel():
 		locationDetails = location.model.getLocationDetails(locationID, modelDS)
 		locationTypeID = locationDetails['locationTypeID']
 
-		# if not a component
-		if locationTypeID != 7:
+		if not location.model.isComponent(locationDetails):
 			newViews = newViews + getNewViewsForLocation(locationDetails)
 
 	return newViews

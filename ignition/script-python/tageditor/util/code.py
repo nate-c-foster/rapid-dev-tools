@@ -22,6 +22,8 @@ def sortTagConfigObj(tagConfigObj):
 
 	
 
+def getProvider(tagPath):
+	return tagPath.split(']')[0] + ']'
 
 
 

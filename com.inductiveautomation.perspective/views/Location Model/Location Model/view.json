@@ -59,7 +59,7 @@
                               "tooltip": {
                                 "enabled": true,
                                 "location": "bottom",
-                                "text": "Update model"
+                                "text": "Update model from DB"
                               }
                             },
                             "position": {
@@ -111,7 +111,7 @@
                               "dom": {
                                 "onClick": {
                                   "config": {
-                                    "script": "\t\n\t\n\tif self.custom.enabled:\n\t\n\t\tlocationData \u003d self.parent.parent.parent.getChild(\"Tree\").props.selectionData\n\t\t\n\t\tif locationData:\n\t\t\tparams \u003d {\u0027ParentLocationID\u0027: locationData[0][\u0027value\u0027][\u0027locationID\u0027]}\n\t\t\tlocationName \u003d locationData[0][\u0027value\u0027][\u0027locationName\u0027]\n\t\telse:\n\t\t\tparams \u003d {\u0027ParentLocationID\u0027: None}\n\t\t\tlocationName \u003d \u0027root of tree\u0027\n\t\t\t\n\t\t\n\t\tsystem.perspective.openPopup(\u0027AddLocationPopup\u0027, \u0027Location Model/Components/Popups/AddLocationPopup\u0027, params, title\u003d\u0027Add Location to \u0027 + locationName)\n"
+                                    "script": "\t\n\t\n\tif self.custom.enabled:\n\t\n\t\tlocationData \u003d self.parent.parent.parent.getChild(\"Tree\").props.selectionData\n\t\t\n\t\tif locationData:\n\t\t\tparams \u003d {\u0027ParentLocationID\u0027: locationData[0][\u0027value\u0027][\u0027locationID\u0027]}\n\t\t\tlocationName \u003d locationData[0][\u0027value\u0027][\u0027locationName\u0027]\n\t\telse:\n\t\t\tparams \u003d {\u0027ParentLocationID\u0027: None}\n\t\t\tlocationName \u003d \u0027Root\u0027\n\t\t\t\n\t\t\n\t\tsystem.perspective.openPopup(\u0027AddLocationPopup\u0027, \u0027Location Model/Components/Popups/AddLocationPopup\u0027, params, title\u003d\u0027Add Location to \u0027 + locationName)\n"
                                   },
                                   "scope": "G",
                                   "type": "script"
@@ -199,7 +199,7 @@
                               "tooltip": {
                                 "enabled": true,
                                 "location": "bottom",
-                                "text": "Add location"
+                                "text": "Edit location"
                               }
                             },
                             "position": {
@@ -569,7 +569,7 @@
                               "dom": {
                                 "onClick": {
                                   "config": {
-                                    "script": "\t\n\t\n\tviews \u003d location.bulk.getNewViewsForModel()\n\n\tif views:\n\t\tvieweditor.util.generateViewImport(views)"
+                                    "script": "\t\n\t# create tags that do not exist\n\tlocation.bulk.createLocationTagsFromModel()\n\t\n\t# create views that do not exist\n\tviews \u003d location.bulk.getNewViewsFromModel()\n\n\tif views:\n\t\tvieweditor.util.generateViewImport(views)"
                                   },
                                   "scope": "G",
                                   "type": "script"
@@ -577,11 +577,11 @@
                               }
                             },
                             "meta": {
-                              "name": "Icon_View_Import",
+                              "name": "Update_SCADA",
                               "tooltip": {
                                 "enabled": true,
                                 "location": "bottom",
-                                "text": "Create View Import"
+                                "text": "Update tags and views from model"
                               }
                             },
                             "position": {
@@ -618,7 +618,7 @@
                               }
                             },
                             "props": {
-                              "path": "material/tv",
+                              "path": "material/system_update_alt",
                               "style": {
                                 "padding": "2px"
                               }
@@ -687,8 +687,7 @@
                       "name": "Tree"
                     },
                     "position": {
-                      "basis": "200px",
-                      "grow": 1
+                      "shrink": 0
                     },
                     "propConfig": {
                       "custom.modelTagExists": {
@@ -767,50 +766,58 @@
                           }
                         }
                       },
-                      "selection": [
-                        "1"
-                      ],
-                      "selectionData": [
-                        {
-                          "itemPath": "1",
-                          "value": {
-                            "childrenCount": 2,
-                            "childrenIDs": "2,3",
-                            "description": "",
-                            "icon": "material/apartment",
-                            "lastModifiedBy": "nfoster",
-                            "lastModifiedOn": {
-                              "$": [
-                                "ts",
-                                0,
-                                1706310752458
-                              ],
-                              "$ts": 1706305046457
-                            },
-                            "locationID": 5,
-                            "locationIDPath": "5",
-                            "locationName": "New Root",
-                            "locationPath": "New Root",
-                            "locationType": "Enterprise",
-                            "locationTypeDefinition": "Enterprise",
-                            "locationTypeDefinitionID": 1,
-                            "locationTypeID": 1,
-                            "orderNumber": 2,
-                            "parentID": null,
-                            "shortName": "",
-                            "tagPath": "[SCADA]New Root",
-                            "treePath": "0",
-                            "udtPath": "[SCADA]_types_/Location Types/Enterprise",
-                            "viewPath": "SCADA/New Root",
-                            "viewTemplatePath": "Templates/Types/Enterprise Metrics"
-                          }
-                        }
-                      ],
                       "style": {
-                        "color": "var(--neutral-70)"
+                        "color": "var(--neutral-70)",
+                        "marginTop": "10px"
                       }
                     },
                     "type": "ia.display.tree"
+                  },
+                  {
+                    "meta": {
+                      "name": "Model Empty",
+                      "visible": false
+                    },
+                    "position": {
+                      "basis": "32px"
+                    },
+                    "propConfig": {
+                      "position.display": {
+                        "binding": {
+                          "config": {
+                            "struct": {
+                              "modelDS": "tag({session.custom.modelTagPath})",
+                              "tabelsExist": "{/root.custom.tablesExist}"
+                            },
+                            "waitOnAll": true
+                          },
+                          "transforms": [
+                            {
+                              "code": "\tif value[\u0027tabelsExist\u0027] and value[\u0027modelDS\u0027].getRowCount() \u003d\u003d 0:\n\t\tself.meta.visible \u003d True\n\t\treturn True\n\telse:\n\t\tself.meta.visible \u003d False\n\t\treturn False",
+                              "type": "script"
+                            }
+                          ],
+                          "type": "expr-struct"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "borderBottomLeftRadius": "5px",
+                        "borderBottomRightRadius": "5px",
+                        "borderColor": "var(--neutral-30)",
+                        "borderStyle": "solid",
+                        "borderTopLeftRadius": "5px",
+                        "borderTopRightRadius": "5px",
+                        "borderWidth": "1px",
+                        "color": "var(--neutral-60)",
+                        "margin": "20px 5px",
+                        "padding": "30px 5px",
+                        "textAlign": "center"
+                      },
+                      "text": "Model is Empty. Add a Location."
+                    },
+                    "type": "ia.display.label"
                   },
                   {
                     "children": [

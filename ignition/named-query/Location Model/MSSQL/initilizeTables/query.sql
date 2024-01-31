@@ -44,9 +44,9 @@ BEGIN
 		 );
 
 
-		INSERT INTO core.Location (ParentLocationID, Name, Description, isActive, LastModifiedBy, LastModifiedOn, LocationTypeID, LocationTypeDefinitionID, orderNumber)
-		VALUES
-		(NULL, N'State', N'Example Root Location', 1, N'Project Initializer', getDate(), 2, 2, 1);
+--		INSERT INTO core.Location (ParentLocationID, Name, Description, isActive, LastModifiedBy, LastModifiedOn, LocationTypeID, LocationTypeDefinitionID, orderNumber)
+--		VALUES
+--		(NULL, N'State', N'Example Root Location', 1, N'Project Initializer', getDate(), 2, 2, 1);
 
 	END
 
