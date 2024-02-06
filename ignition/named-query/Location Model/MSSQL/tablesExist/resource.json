@@ -18,7 +18,7 @@
     "cacheEnabled": false,
     "database": "{}",
     "fallbackEnabled": false,
-    "lastModificationSignature": "9266699a2fa8d1b9f6ccea84954235c2e7b222036c9d42a1748e4e51bb9ed461",
+    "lastModificationSignature": "056581c9ac48c3e4595eef79eaf96a82907590ad6d6460b5cc445aad213cc4e1",
     "permissions": [
       {
         "zone": "",
@@ -26,8 +26,8 @@
       }
     ],
     "lastModification": {
-      "actor": "nfoster",
-      "timestamp": "2024-01-26T20:21:06Z"
+      "actor": "external",
+      "timestamp": "2024-02-06T20:13:24Z"
     },
     "parameters": [
       {
