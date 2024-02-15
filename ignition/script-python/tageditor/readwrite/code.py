@@ -46,7 +46,6 @@ registeredFunctions = [
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************	
 def suffixPath(suffixPath, value, readOnly=False):
@@ -95,7 +94,6 @@ def suffixPath(suffixPath, value, readOnly=False):
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************	
 def writePropertyValue(property, value, readOnly=False):
@@ -141,7 +139,6 @@ def writePropertyValue(property, value, readOnly=False):
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************	
 def writeParameterValue(typeId, parameter, value, readOnly=False):

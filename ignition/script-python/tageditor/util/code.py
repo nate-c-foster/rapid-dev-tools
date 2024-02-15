@@ -30,7 +30,6 @@ def getProvider(tagPath):
 #*****************************************************************************************************
 #
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 # Description: 
 #

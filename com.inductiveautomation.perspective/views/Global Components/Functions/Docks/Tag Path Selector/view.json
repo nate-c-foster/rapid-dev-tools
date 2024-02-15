@@ -113,15 +113,11 @@
           "props.root.path": {
             "binding": {
               "config": {
-                "expression": "now(0)"
+                "fallbackDelay": 2.5,
+                "mode": "expression",
+                "tagPath": "{session.custom.settingsRootPath} + \u0027/\u0027   + \"RapidDev/Tag Editor/Settings/rootTagPath\""
               },
-              "transforms": [
-                {
-                  "code": "\treturn settings.getValue(\u0027Tag Editor\u0027,\u0027rootTagPath\u0027)",
-                  "type": "script"
-                }
-              ],
-              "type": "expr"
+              "type": "tag"
             }
           }
         },

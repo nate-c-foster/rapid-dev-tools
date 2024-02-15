@@ -39,7 +39,17 @@ registeredFunctions = [
 	'kwargs':{"keyPath":""},
 	'dockPaths':{},
 	'dropdownPaths':{},
-	'order':4,
+	'order':5,
+	'kwargsOrder':{u'keyPath': 1}
+	},
+	{
+	'name':"Remove Config Value",
+	'description':"Deletes configs item at a given key path. Useful for disabling UDT overrides.",
+	'functionPath':"tageditor.transform.removeConfigItem",
+	'kwargs':{"keyPath":""},
+	'dockPaths':{},
+	'dropdownPaths':{},
+	'order':6,
 	'kwargsOrder':{u'keyPath': 1}
 	}
 ]
@@ -74,7 +84,6 @@ def _getComponent(jsonObj, keypath):
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************	
 def updateConfigValue(keyPath, value):
@@ -126,7 +135,6 @@ def updateConfigValue(keyPath, value):
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************	
 def insertConfigValue(keyPath, value):
@@ -172,7 +180,6 @@ def insertConfigValue(keyPath, value):
 	
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************	
 def removeConfigItem(keyPath):
@@ -209,7 +216,6 @@ def removeConfigItem(keyPath):
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************	
 def getConfigValue(keyPath):

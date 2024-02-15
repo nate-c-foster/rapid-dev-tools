@@ -113,7 +113,8 @@ def createLocationTag(locationDetails):
 			}
 		folderResults = system.tag.configure(basePath=tagPath, tags=folder, collisionPolicy = 'm')
 
-	if location.model.isProcess(locationDetails) and not system.tag.exists(tagPath + '/Control'):
+
+	if location.model.isProcess(locationDetails) and not system.tag.exists(tagPath + '/Control'):
 		# ---- create Alarming folder -------
 		folder={
 				'tagType': 	'Folder',

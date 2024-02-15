@@ -19,74 +19,74 @@ registeredFunctions = [
 	'name':"Tag Path",
 	'description':"Filter by tag path, uses Python regex.",
 	'functionPath':"tageditor.filter.tagPathFilter",
-	'kwargs':{"pathFilter":""},
+	'kwargs':{"pathFilter":"","negate":""},
 	'dockPaths':{},
-	'dropdownPaths':{},
+	'dropdownPaths':{"negate":"Global Components/Functions/Dropdowns/Boolean Value"},
 	'order':1,
-	'kwargsOrder':{u'pathFilter': 1}
+	'kwargsOrder':{u'pathFilter': 1, 'negate':2}
 	},
 	{
 	'name':"Tag Property Value",
 	'description':"Filter by value given a tag property. Uses tag read and Python regex.",
 	'functionPath':"tageditor.filter.tagReadPropertyFilter",
-	'kwargs':{"property":"","valueFilter":""},
+	'kwargs':{"property":"","valueFilter":"","negate":""},
 	'dockPaths':{},
-	'dropdownPaths':{"property": "Global Components/Functions/Dropdowns/Tag Property", "valueFilter": "Global Components/Functions/Dropdowns/Tag Property Values"},
+	'dropdownPaths':{"property": "Global Components/Functions/Dropdowns/Tag Property", "valueFilter": "Global Components/Functions/Dropdowns/Tag Property Values","negate":"Global Components/Functions/Dropdowns/Boolean Value"},
 	'order':2,
-	'kwargsOrder':{u'valueFilter': 2, u'property': 1}
+	'kwargsOrder':{u'valueFilter': 2, u'property': 1, 'negate':3}
 	},
 	{
 	'name':"Tag Parameter",
 	'description':"Filter by value of a tag parameter. Uses tag read and Python regex.",
 	'functionPath':"tageditor.filter.tagParameterFilter",
-	'kwargs':{"typeId":"","parameter":"","valueFilter":""},
+	'kwargs':{"typeId":"","parameter":"","valueFilter":"","negate":""},
 	'dockPaths':{},
-	'dropdownPaths':{"typeId":"Global Components/Functions/Dropdowns/Parameter UDT Type Select","parameter":"Global Components/Functions/Dropdowns/Parameter Name Select","readOnly":"Global Components/Functions/Dropdowns/Boolean Value"},
+	'dropdownPaths':{"typeId":"Global Components/Functions/Dropdowns/Parameter UDT Type Select","parameter":"Global Components/Functions/Dropdowns/Parameter Name Select","readOnly":"Global Components/Functions/Dropdowns/Boolean Value","negate":"Global Components/Functions/Dropdowns/Boolean Value"},
 	'order':3,
-	'kwargsOrder':{u'valueFilter': 3, u'parameter': 2, u'typeId': 1}
+	'kwargsOrder':{u'valueFilter': 3, u'parameter': 2, u'typeId': 1, 'negate':4}
 	},
 	{
 	'name':"Path Suffix",
 	'description':"Filter by value given a tag suffix. Uses tag read and Python regex.",
 	'functionPath':"tageditor.filter.tagReadSuffixFilter",
-	'kwargs':{"suffixPath":"","valueFilter":""},
+	'kwargs':{"suffixPath":"","valueFilter":"","negate":""},
 	'dockPaths':{},
-	'dropdownPaths':{},
+	'dropdownPaths':{"negate":"Global Components/Functions/Dropdowns/Boolean Value"},
 	'order':4,
-	'kwargsOrder':{u'valueFilter': 2, u'suffixPath': 1}
+	'kwargsOrder':{u'valueFilter': 2, u'suffixPath': 1, 'negate':3}
 	},
 	{
 	'name':"Tag Config Value",
 	'description':"Filters tag config value at a given key path, uses Python regex.",
 	'functionPath':"tageditor.filter.keyPathValueFilter",
-	'kwargs':{"keyPath":"","valueFilter":""},
+	'kwargs':{"keyPath":"","valueFilter":"","negate":""},
 	'dockPaths':{},
-	'dropdownPaths':{},
+	'dropdownPaths':{"negate":"Global Components/Functions/Dropdowns/Boolean Value"},
 	'order':5,
-	'kwargsOrder':{u'valueFilter': 2, u'keyPath': 1}
+	'kwargsOrder':{u'valueFilter': 2, u'keyPath': 1, 'negate':3}
 	},
 	{
 	'name':"Parent UDT",
 	'description':"Filter by parent UDT. Useful for atomic tags.",
 	'functionPath':"tageditor.filter.ancestorUdtFilter",
-	'kwargs':{"typeId":""},
+	'kwargs':{"typeId":"","negate":""},
 	'dockPaths':{},
-	'dropdownPaths':{"typeId": "Global Components/Functions/Dropdowns/UDT Type Id"},
+	'dropdownPaths':{"typeId": "Global Components/Functions/Dropdowns/UDT Type Id","negate":"Global Components/Functions/Dropdowns/Boolean Value"},
 	'order':6,
-	'kwargsOrder':{u'typeId': 1}
+	'kwargsOrder':{u'typeId': 1, 'negate':2}
 	}
 ]
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************		
-def tagPathFilter(pathFilter):
+def tagPathFilter(pathFilter, negate=False):
 	"""Tag path filter. Uses Python regex.
 	
 	Args:
 		pathFilter (str): Path filter
+		negate (bool): Negate the filter
 		
 	Returns:
 		A tag filter function. (tag -> bool)
@@ -98,22 +98,27 @@ def tagPathFilter(pathFilter):
 			return True
 		else:
 			return False
-	
-	return tagFilter
+			
+			
+	if negate:
+		return lambda tag: not tagFilter(tag)
+	else:
+		return tagFilter
+
 	
 
 
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************		
-def tagReadSuffixFilter(suffixPath, valueFilter):
+def tagReadSuffixFilter(suffixPath, valueFilter, negate=False):
 	"""Filter by value given a tag suffix. Uses tag read and Python regex.
 	
 	Args:
 		valueFilter (str): Value Filter
+		negate (bool): Negate the filter
 		
 	Returns:
 		A tag filter function. (tag -> bool)
@@ -163,42 +168,45 @@ def tagReadSuffixFilter(suffixPath, valueFilter):
 		else:
 			return False
 	
-	return tagFilter
+	if negate:
+		return lambda tag: not tagFilter(tag)
+	else:
+		return tagFilter
 	
 
 
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************		
-def tagParameterFilter(typeId, parameter, valueFilter):
+def tagParameterFilter(typeId, parameter, valueFilter, negate=False):
 	""""Filter by value given a tag property. Uses tag read and Python regex.
 		
 	Args:
 		typeId (str): UDT type ID
 		parameter (str): Tag parameter
 		valueFilter (str): Value filter
+		negate (bool): Negate the filter
 		
 	Returns:
 		A tag filter function. (tag -> bool)
 	"""
-	return tagReadSuffixFilter('/Parameters.' + parameter, valueFilter)
+	return tagReadSuffixFilter('/Parameters.' + parameter, valueFilter, negate)
 
 
 
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************		
-def tagReadPropertyFilter(property, valueFilter):
+def tagReadPropertyFilter(property, valueFilter, negate=False):
 	"""Filter by value given a tag property. Uses tag read and Python regex.
 	
 	Args:
 		valueFilter (str): Value Filter
+		negate (bool): Negate the filter
 		
 	Returns:
 		A tag filter function. (tag -> bool)
@@ -252,7 +260,10 @@ def tagReadPropertyFilter(property, valueFilter):
 			return False
 
 	
-	return tagFilter
+	if negate:
+		return lambda tag: not tagFilter(tag)
+	else:
+		return tagFilter
 	
 	
 	
@@ -260,14 +271,14 @@ def tagReadPropertyFilter(property, valueFilter):
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************		
-def ancestorUdtFilter(typeId):
+def ancestorUdtFilter(typeId, negate=False):
 	"""Filter by parent UDT. Useful for atomic tags.
 	
 	Args:
 		typeId (str): UDT Type ID
+		negate (bool): Negate the filter
 		
 	Returns:
 		A tag filter function. (tag -> bool)
@@ -292,7 +303,10 @@ def ancestorUdtFilter(typeId):
 				
 		return False
 	
-	return tagFilter
+	if negate:
+		return lambda tag: not tagFilter(tag)
+	else:
+		return tagFilter
 
 
 
@@ -305,14 +319,14 @@ def ancestorUdtFilter(typeId):
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************		
-def keyPathValueFilter(keyPath, valueFilter):
+def keyPathValueFilter(keyPath, valueFilter, negate=False):
 	"""Filters tag config value at a given key path, uses Python regex.
 	
 	Args:
 		valueFilter (str): Value filter
+		negate (bool): Negate the filter
 		
 	Returns:
 		A tag filter function. (tag -> bool)
@@ -334,5 +348,8 @@ def keyPathValueFilter(keyPath, valueFilter):
 		else:
 			return False
 	
-	return tagFilter
+	if negate:
+		return lambda tag: not tagFilter(tag)
+	else:
+		return tagFilter
 	

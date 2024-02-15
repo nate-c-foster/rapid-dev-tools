@@ -49,7 +49,6 @@ registeredFunctions = [
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************		
 def getTags(rootTagPath, recursive=False):
@@ -84,7 +83,6 @@ def getTags(rootTagPath, recursive=False):
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************		
 def getAtomicTags(rootTagPath, recursive=False):
@@ -119,7 +117,6 @@ def getAtomicTags(rootTagPath, recursive=False):
 	
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Jan 2023
 #*****************************************************************************************************		
 def getUdtTags(rootTagPath, typeId = "", recursive=False):
@@ -140,13 +137,6 @@ def getUdtTags(rootTagPath, typeId = "", recursive=False):
 	
 		results = system.tag.browse(rootTagPath, {'recursive':recursive, 'tagType': 'UdtInstance'})
 		
-#		if rootTagPath:
-#			if typeId:
-#				results = system.tag.browse(rootTagPath, {'recursive':True, 'tagType': 'UdtInstance', 'typeId':typeId})
-#			else:
-#				results = system.tag.browse(rootTagPath, {'recursive':True, 'tagType': 'UdtInstance'})
-#		else:
-#			return []
 		
 		# include root tag
 		tagType = str(system.tag.readBlocking(rootTagPath + '.tagType')[0].value)

@@ -3,7 +3,6 @@
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Feb 2023
 #*****************************************************************************************************	
 def bulkCreateTags(jsonData):
@@ -60,7 +59,6 @@ def createTag(parentPath, name, udtType, parameters):
 
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Feb 2023
 #*****************************************************************************************************	
 def bulkMoveTags(jsonData):
@@ -84,7 +82,6 @@ def bulkMoveTags(jsonData):
 #*****************************************************************************************************
 #
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Nov 2022
 # Description: Moves tag and updates historian.
 # 
@@ -111,7 +108,6 @@ def moveTag(source, destination, moveHistorian=True):
 #*****************************************************************************************************
 #
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Nov 2022
 # Description: Helper function for moveTag().
 # 
@@ -154,7 +150,6 @@ def moveHist(source, destination):
 			
 #*****************************************************************************************************
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Feb 2023
 #*****************************************************************************************************	
 def bulkRenameTags(jsonData):
@@ -180,7 +175,6 @@ def bulkRenameTags(jsonData):
 #*****************************************************************************************************
 #
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Nov 2022
 # Description: Renames folder or tag, and updates historian.
 # 
@@ -212,7 +206,6 @@ def renameTag(path, newName, renameHistorian=True):
 #*****************************************************************************************************
 #
 # Author:         Nate Foster
-# Company:        A.W. Schultz
 # Date:           Nov 2022
 # Description: Helper function for renameTag()
 # 
