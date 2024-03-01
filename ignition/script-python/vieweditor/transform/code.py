@@ -68,16 +68,21 @@ registeredFunctions = [
 # -------------  Lambda helper functions -------------------------------------------
 
 def _updateComponent(jsonObj, keyPath, value):
-	return util.json.updateValueAtKeypath(jsonObj, keyPath.split('.'), system.util.jsonDecode(value))
+	return util.json.updateValueAtKeypath(jsonObj, splitKeyPath(keyPath), system.util.jsonDecode(value))
 
 def _insertComponent(jsonObj, keyPath, value):
-	return util.json.insertValueAtKeypath(jsonObj, keyPath.split('.'), system.util.jsonDecode(value))
+	return util.json.insertValueAtKeypath(jsonObj, splitKeyPath(keyPath), system.util.jsonDecode(value))
 
 def _getComponent(jsonObj, keyPath):
-	return util.json.getValueAtKeypath(jsonObj, keyPath.split('.'))
+	return util.json.getValueAtKeypath(jsonObj, splitKeyPath(keyPath))
 
 
-
+# sometimes there are dots in the key name so use $ for dots in this case
+def splitKeyPath(keyPath):
+	keys = keyPath.split('.')
+	modifiedKeys = map(lambda x : x.replace('$','.'), keys)
+	return modifiedKeys
+	
 
 
 

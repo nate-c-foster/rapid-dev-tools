@@ -20,7 +20,7 @@
     "cacheEnabled": false,
     "database": "{}",
     "fallbackEnabled": false,
-    "lastModificationSignature": "4cf819b302026ff16e21634324b5f0060e4df93d3fde1de903ed06165e0c8adb",
+    "lastModificationSignature": "5940c38e22261bf79ca389158824a851aaff97bf2021683a2166a067c3405d29",
     "permissions": [
       {
         "zone": "",
@@ -28,8 +28,8 @@
       }
     ],
     "lastModification": {
-      "actor": "external",
-      "timestamp": "2024-02-06T20:13:24Z"
+      "actor": "nate.foster",
+      "timestamp": "2024-02-27T17:26:01Z"
     },
     "parameters": [
       {
@@ -71,6 +71,11 @@
         "type": "Parameter",
         "identifier": "ShortName",
         "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "ScadaView",
+        "sqlType": 6
       }
     ]
   }

@@ -4,8 +4,8 @@
   "restricted": false,
   "overridable": true,
   "files": [
-    "view.json",
-    "thumbnail.png"
+    "thumbnail.png",
+    "view.json"
   ],
   "attributes": {
     "lastModification": {

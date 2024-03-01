@@ -44,6 +44,7 @@ def updateModelTag():
 				"locationTypeDefinitionID",
 				"udtPath",
 				"viewTemplatePath",
+				"scadaView",
 				"lastModifiedBy",
 				"lastModifiedOn"
 				]
@@ -97,7 +98,8 @@ def updateModelTag():
 						model.getValueAt(row,"locationTypeDefinition"),
 						model.getValueAt(row,"LocationTypeDefinitionID"),						
 						model.getValueAt(row,"UDTPath"),
-						model.getValueAt(row,"IgnitionTemplatePath"),										
+						model.getValueAt(row,"IgnitionTemplatePath"),	
+						model.getValueAt(row, "ScadaView"),									
 						model.getValueAt(row,"LastModifiedBy"),
 						model.getValueAt(row,"LastModifiedOn")
 					]
@@ -147,7 +149,14 @@ def updateModelTree(modelDS, expanded=True, filterFunction=lambda x : True, tran
 		except:
 			return []
 
-		name = locationDetails['locationName']
+		locationName = locationDetails['locationName']
+		shortName = locationDetails['shortName']
+		if shortName:
+			name = shortName
+		else:
+			name = locationName
+		
+		
 		items = []
 		keepMe = False # Keep this subtree if true. Used for filtering.
 		
