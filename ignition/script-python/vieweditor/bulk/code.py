@@ -7,7 +7,8 @@ import re
 
 def getIgnitionViewRootPath():
 	installationPathIA = settings.getValue('Global','installationPathIA')
-	return installationPathIA + '/Ignition/data/projects/SCADA/com.inductiveautomation.perspective/views'
+	projectName = settings.getValue('View Editor', 'projectName')
+	return installationPathIA + '/Ignition/data/projects/' + projectName + '/com.inductiveautomation.perspective/views'
 	
 	
 #*****************************************************************************************************

@@ -5,6 +5,7 @@
       "borderTopStyle": "solid",
       "borderTopWidth": "0px",
       "color": "var(--neutral-70)",
+      "fontSize": "13px",
       "padding": "0px 3px"
     }
   }

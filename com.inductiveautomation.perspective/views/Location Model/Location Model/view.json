@@ -569,7 +569,7 @@
                               "dom": {
                                 "onClick": {
                                   "config": {
-                                    "script": "\t\n\t# create tags that do not exist\n\tlocation.bulk.createLocationTagsFromModel()\n\t\n\t# create views that do not exist\n\tviews \u003d location.bulk.getNewViewsFromModel()\n\n\tif views:\n\t\tvieweditor.util.generateViewImport(views)"
+                                    "script": "\t\n\t# create tags that do not exist\n\tlocation.bulk.createLocationTagsFromModel()\n\t\n\t# create views that do not exist\n\tviews \u003d location.bulk.getNewViewsFromModel()\n\t\n\tif views:\n\t\tvieweditor.util.generateViewImport(views)"
                                   },
                                   "scope": "G",
                                   "type": "script"
@@ -1190,6 +1190,7 @@
                             },
                             "position": {
                               "basis": "200px",
+                              "display": false,
                               "grow": 1
                             },
                             "props": {
@@ -1246,7 +1247,7 @@
             },
             "props": {
               "split": {
-                "position": "22%"
+                "position": "25%"
               }
             },
             "type": "ia.container.split"

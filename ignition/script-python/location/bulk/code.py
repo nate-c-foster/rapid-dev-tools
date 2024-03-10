@@ -160,8 +160,6 @@ def getNewViewsForLocation(locationDetails):
 		Returns a list of views that currently do not exist for a location
 	"""
 
-	newViews = []
-	
 	viewPath = locationDetails['viewPath']
 	templatePath = locationDetails['viewTemplatePath']
 	locationID = locationDetails['locationID']

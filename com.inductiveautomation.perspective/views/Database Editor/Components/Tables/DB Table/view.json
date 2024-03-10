@@ -912,7 +912,8 @@
             }
           },
           "headerStyle": {
-            "color": "var(--blue-85)"
+            "color": "var(--blue-85)",
+            "fontSize": "13px"
           },
           "pager": {
             "initialOption": 100,
