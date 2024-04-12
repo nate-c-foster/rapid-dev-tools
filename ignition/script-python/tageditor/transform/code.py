@@ -117,7 +117,7 @@ def updateConfigValue(keyPath, value):
 			
 		if valueIsLambda:
 			lambdaValue = f(tag)
-			tag['updatedValues'].append(value)
+			tag['updatedValues'].append(lambdaValue)
 			util.json.updateValueAtKeypath(tagConfig, keyPath.split('.'), lambdaValue)
 		else:
 			tag['updatedValues'].append(value)
