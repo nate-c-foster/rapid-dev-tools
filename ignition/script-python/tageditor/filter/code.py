@@ -56,15 +56,38 @@ registeredFunctions = [
 	'kwargsOrder':{u'valueFilter': 2, u'suffixPath': 1, 'negate':3}
 	},
 	{
+	'name':"Tag Exists",
+	'description':"Filter by tag existance given a tag suffix.",
+	'functionPath':"tageditor.filter.tagExistsFilter",
+	'kwargs':{"suffixPath":"","negate":""},
+	'dockPaths':{},
+	'dropdownPaths':{"negate":"Global Components/Functions/Dropdowns/Boolean Value"},
+	'order':5,
+	'kwargsOrder':{u'suffixPath': 1, 'negate':2}
+	},
+	
+	
+	{
 	'name':"Tag Config Value",
 	'description':"Filters tag config value at a given key path, uses Python regex.",
 	'functionPath':"tageditor.filter.keyPathValueFilter",
 	'kwargs':{"keyPath":"","valueFilter":"","negate":""},
 	'dockPaths':{},
 	'dropdownPaths':{"negate":"Global Components/Functions/Dropdowns/Boolean Value"},
-	'order':5,
+	'order':6,
 	'kwargsOrder':{u'valueFilter': 2, u'keyPath': 1, 'negate':3}
 	},
+	{
+	'name':"Filter by UDT type",
+	'description':"Filter by UDT type.",
+	'functionPath':"tageditor.filter.UdtTypeFilter",
+	'kwargs':{"typeId":"","negate":""},
+	'dockPaths':{},
+	'dropdownPaths':{"typeId": "Global Components/Functions/Dropdowns/UDT Type Id","negate":"Global Components/Functions/Dropdowns/Boolean Value"},
+	'order':7,
+	'kwargsOrder':{u'typeId': 1, 'negate':2}
+	},
+	
 	{
 	'name':"Parent UDT",
 	'description':"Filter by parent UDT. Useful for atomic tags.",
@@ -72,7 +95,7 @@ registeredFunctions = [
 	'kwargs':{"typeId":"","negate":""},
 	'dockPaths':{},
 	'dropdownPaths':{"typeId": "Global Components/Functions/Dropdowns/UDT Type Id","negate":"Global Components/Functions/Dropdowns/Boolean Value"},
-	'order':6,
+	'order':8,
 	'kwargsOrder':{u'typeId': 1, 'negate':2}
 	}
 ]
@@ -175,6 +198,36 @@ def tagReadSuffixFilter(suffixPath, valueFilter, negate=False):
 	
 
 
+#*****************************************************************************************************
+# Author:         Nate Foster
+# Date:           June 2024
+#*****************************************************************************************************		
+def tagExistsFilter(suffixPath, negate=False):
+	"""Filter by tag existance given a tag suffix.
+	
+	Args:
+		suffixPath (str): Value Filter
+		negate (bool): Negate the filter
+		
+	Returns:
+		A tag filter function. (tag -> bool)
+	"""
+	exists = False
+
+	def tagFilter(tag):
+		
+		try:
+			exists = system.tag.exists(str(tag['tagPath']) + suffixPath)
+		except:
+			return False
+			
+		return exists
+
+	if negate:
+		return lambda tag: not tagFilter(tag)
+	else:
+		return tagFilter
+
 
 #*****************************************************************************************************
 # Author:         Nate Foster
@@ -267,7 +320,41 @@ def tagReadPropertyFilter(property, valueFilter, negate=False):
 	
 	
 	
+#*****************************************************************************************************
+# Author:         Nate Foster
+# Date:           Jan 2023
+#*****************************************************************************************************		
+def UdtTypeFilter(typeId, negate=False):
+	"""Filter by UDT type.
 	
+	Args:
+		typeId (str): UDT Type ID
+		negate (bool): Negate the filter
+		
+	Returns:
+		A tag filter function. (tag -> bool)
+	"""
+
+	def tagFilter(tag):
+
+		path = str(tag['tagPath'])
+		
+		try:
+			udtType = system.tag.readBlocking(path + ".typeId")[0].value
+			if typeId == udtType:
+				return True
+			
+		except:
+			return False
+				
+		return False
+	
+	if negate:
+		return lambda tag: not tagFilter(tag)
+	else:
+		return tagFilter
+		
+		
 
 #*****************************************************************************************************
 # Author:         Nate Foster
