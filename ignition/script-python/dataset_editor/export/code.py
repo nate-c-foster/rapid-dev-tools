@@ -1,6 +1,7 @@
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook as Workbook
 import org.apache.poi.xssf.usermodel.XSSFColor as XSSFColor
+import org.apache.poi.xssf.usermodel.XSSFFont as XSSFFont
 import org.apache.poi.ss.usermodel.FillPatternType as FillPatternType
 import java.io.FileOutputStream as FileOutputStream
 import java.io.File as File
@@ -25,13 +26,14 @@ def toExcelWithFormating(dataset, formatDataset, filePath):
 	
 	# create workbook
 	workbook = Workbook()
-	sheet = workbook.createSheet('test-sheet') #XSSFSheet
-	row = sheet.createRow(0) #XSSFRow
-	cell = row.createCell(0) #XSSFCell
-	cell.setCellValue('A')
-	
-	
-	
+
+	# Header Style
+	headerStyle = workbook.createCellStyle()
+	headerFont = workbook.createFont()
+	headerFont.setBold(True)
+	headerStyle.setFont(headerFont)
+
+	# Good Style
 	goodStyle = workbook.createCellStyle()
 	goodFillColor = XSSFColor(Color(198, 239, 206))
 	goodStyle.setFillForegroundColor(goodFillColor)
@@ -40,11 +42,8 @@ def toExcelWithFormating(dataset, formatDataset, filePath):
 	goodFontColor = XSSFColor(Color(0, 97, 0))
 	goodFont.setColor(goodFontColor)
 	goodStyle.setFont(goodFont)
-	cell2 = row.createCell(1)
-	cell2.setCellValue("B")
-	cell2.setCellStyle(goodStyle)
 	
-	
+	# Bad Style
 	badStyle = workbook.createCellStyle()
 	badFillColor = XSSFColor(Color(255, 199, 206))
 	badStyle.setFillForegroundColor(badFillColor)
@@ -53,11 +52,8 @@ def toExcelWithFormating(dataset, formatDataset, filePath):
 	badFontColor = XSSFColor(Color(156, 0, 6))
 	badFont.setColor(badFontColor)
 	badStyle.setFont(badFont)
-	cell3 = row.createCell(2)
-	cell3.setCellValue("C")
-	cell3.setCellStyle(badStyle)
 	
-	
+	# Warning Style
 	warningStyle = workbook.createCellStyle()
 	warningFillColor = XSSFColor(Color(255, 235, 156))
 	warningStyle.setFillForegroundColor(warningFillColor)
@@ -66,12 +62,47 @@ def toExcelWithFormating(dataset, formatDataset, filePath):
 	warningFontColor = XSSFColor(Color(156, 101, 0))
 	warningFont.setColor(warningFontColor)
 	warningStyle.setFont(warningFont)
-	cell3 = row.createCell(3)
-	cell3.setCellValue("D")
-	cell3.setCellStyle(warningStyle)
+	
+
+	sheet = workbook.createSheet('test-sheet')
 	
 	
 
+	headers = system.dataset.getColumnHeaders(dataset)
+
+	# header
+	row = sheet.createRow(0)
+	for columnIndex in range(len(headers)):
+		cell = row.createCell(columnIndex) 
+		cell.setCellValue(headers[columnIndex])
+		cell.setCellStyle(headerStyle)
+	
+	# conditional data
+	for rowIndex in range(dataset.getRowCount()):
+		row = sheet.createRow(rowIndex + 1) # add 1 to skip header row
+		for columnIndex in range(len(headers)):
+			cell = row.createCell(columnIndex) 
+			cell.setCellValue(dataset.getValueAt(rowIndex, columnIndex))
+			
+			try:
+				format = formatDataset.getValueAt(rowIndex, columnIndex)
+			except:
+				format = ''
+				
+			if format == 'Good':
+				cell.setCellStyle(goodStyle)
+			elif format == 'Bad':
+				cell.setCellStyle(badStyle)
+			elif format == 'Warning':
+				cell.setCellStyle(warningStyle)
+			else:
+				pass
+		
+	
+	# autosize the columns
+	for columnIndex in range(len(headers)):
+		sheet.autoSizeColumn(columnIndex)
+	
 	# write to file
 	out = None
 	try:

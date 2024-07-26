@@ -19,7 +19,10 @@ def csvToMap(filePath, keyName, valueName):
 		
 	dictMap
 	
-	
+
+def datasetToListOfDict(dataset):
+
+	listOfDict = []
 	
 	
 	
