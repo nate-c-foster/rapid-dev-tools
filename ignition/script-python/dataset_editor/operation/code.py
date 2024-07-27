@@ -20,6 +20,9 @@ def innerJoin(dataset1, dataset2, joinPredicate, columns1, columns2):
 				
 	return filterColumns(system.dataset.toDataSet(allHeaders, data), selectHeaders)
 	
+	
+	
+	
 def leftOuterJoint(dataset1, dataset2, joinPredicate, columns1, columns2):
 	selectHeaders = ['left_' + columnName for columnName in columns1] + ['right_' + columnName for columnName in columns2]
 	data = []
@@ -54,6 +57,26 @@ def union(dataset1, dataset2):
 
 	
 	
+def datsetMap(dataset, transform, outputHeaders=[]):
+
+	pyds = system.dataset.toPyDataSet(dataset)
+	
+	dataDict = []
+	for row in pyds:
+		dataDict.append(transform(row))
+		
+	if not outputHeaders and len(dataDict) > 0:
+		headers = dataDict[0].keys()
+	else:
+		headers = outputHeaders
+		
+	data = []
+	for row in dataDict:
+		data.append([row[key] for key in headers])
+		
+	return system.dataset.toDataSet(headers, data)
+		
+	
 def columnMap(dataset, columnName, transform):
 	pass
 	
@@ -70,11 +93,16 @@ def filterRows(dataset, predicate):
 	pass
 
 
+
+
 def renameColumns(dataset, columnNames):
 	
 	pyds = system.dataset.toPyDataSet(dataset)
 	data = [list(row) for row in pyds]
 	return system.dataset.toDataSet(columnNames, data)
+
+
+
 
 
 def formatDataset(dataset, conditional, formatDataset=None):

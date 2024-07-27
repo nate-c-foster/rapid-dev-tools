@@ -27,6 +27,128 @@ def getProvider(tagPath):
 
 
 
+
+
+
+
+
+
+#*****************************************************************************************************
+# Author:         Nate Foster
+# Date:           May 2023
+#*****************************************************************************************************	
+def getComponentName(tagPath):
+	"""Get componet name from tag path
+	
+	Args:
+		tagPath (str): tagPath of UDT instance
+	
+	Returns:
+		component name
+	"""
+
+	if system.tag.exists(tagPath + '/Parameters.componentName') and system.tag.readBlocking(tagPath + '/Parameters.componentName')[0].value:
+		return system.tag.readBlocking(tagPath + '/Parameters.componentName')[0].value
+
+	elif system.tag.exists(tagPath + '/General/CommonName') and system.tag.readBlocking(tagPath + '/General/CommonName')[0].value:
+		return system.tag.readBlocking(tagPath + '/General/CommonName')[0].value
+		
+	else:
+		return system.tag.readBlocking(tagPath + '.name')[0].value
+
+
+
+#*****************************************************************************************************
+# Author:         Nate Foster
+# Date:           May 2023
+#*****************************************************************************************************	
+def getLocationName(tagPath):
+	"""Get location name from tag path
+	
+	Args:
+		tagPath (str): tagPath of UDT instance
+	
+	Returns:
+		location name
+	"""
+
+	if system.tag.exists(tagPath + '/Parameters.locationName') and system.tag.readBlocking(tagPath + '/Parameters.locationName')[0].value:
+		return system.tag.readBlocking(tagPath + '/Parameters.locationName')[0].value
+
+	elif system.tag.exists(tagPath + '/General/LocationName') and system.tag.readBlocking(tagPath + '/General/LocationName')[0].value:
+		return system.tag.readBlocking(tagPath + '/General/LocationName')[0].value
+		
+	else:
+		return tagPath.split('/')[-2]
+
+
+
+
+#*****************************************************************************************************
+# Author:         Nate Foster
+# Date:           May 2023
+#*****************************************************************************************************	
+def getType(tagPath):
+	"""Get UDT type ID.
+	
+	Args:
+		tagPath (str): tagPath of UDT instance
+	
+	Returns:
+		Type ID with "[SCADA]_type_/" removed.
+	"""
+	
+	
+	typeId = system.tag.readBlocking(tagPath + '.typeId')[0].value
+	return _stripPrefix(typeId) if typeId else ''
+
+
+
+
+#*****************************************************************************************************
+# Author:         Nate Foster
+# Date:           May 2023
+#*****************************************************************************************************							
+def getParentType(tagPath):
+	"""Get parent UDT type ID if inherited.
+	
+	Args:
+		tagPath (str): tagPath of UDT instance
+	
+	Returns:
+		Type ID with "[SCADA]_type_/" removed.
+	"""
+
+	tagProvider = settings.getValue('Tag Editor', 'tagProvider')
+	typePrefix = tagProvider + '_types_/'
+	
+	
+	parentTypeId = getType(typePrefix + getType(tagPath))
+	return _stripPrefix(parentTypeId) if parentTypeId else ''
+	
+	
+
+def _stripPrefix(typeId):
+
+	tagProvider = settings.getValue('Tag Editor', 'tagProvider')
+	typePrefix = tagProvider + '_types_/'
+
+	if typeId.startswith(typePrefix):
+		return typeId[len(typePrefix):]
+	else:
+		return typeId
+
+
+
+
+
+
+
+
+
+
+
+
 #*****************************************************************************************************
 #
 # Author:         Nate Foster

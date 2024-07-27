@@ -26,23 +26,3 @@ def datasetToListOfDict(dataset):
 	
 	
 	
-def getTagProperties(tagPath):
-
-	valueSource = system.tag.readBlocking(tagPath +'.valueSource')[0].value
-	valueQuality = system.tag.readBlocking(tagPath +'.quality')[0].value
-	value = system.tag.readBlocking(tagPath)[0].value
-	
-	if valueSource == 'opc':
-		valueProperty = system.tag.readBlocking(tagPath + '.opcItemPath')[0].value
-	elif valueSource == 'memory':
-		valueProperty = system.tag.readBlocking(tagPath + '.value')[0].value
-	elif valueSource == 'reference':
-		valueProperty = system.tag.readBlocking(tagPath + '.sourceTagPath')[0].value
-	elif valueSource == 'derived':
-		valueProperty = system.tag.readBlocking(tagPath + '.sourceTagPath')[0].value
-	elif valueSource == 'expression':
-		valueProperty = system.tag.readBlocking(tagPath + '.expression')[0].value
-	else:
-		valueProperty = 'BAD_VALUE_SOURCE'
-		
-	return (valueSource, valueProperty, valueQuality, value)

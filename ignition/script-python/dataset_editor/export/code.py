@@ -22,7 +22,11 @@ def toExcel(dataset, filePath):
 	system.file.writeFile(filePath, spreadsheet)
 	
 	
-def toExcelWithFormating(dataset, formatDataset, filePath):
+	
+	
+
+def toExcelWithFormating(sheetsData, filePath):
+	# sheetsData: {'dataset', 'formatDataset', 'sheetName'}
 	
 	# create workbook
 	workbook = Workbook()
@@ -63,45 +67,50 @@ def toExcelWithFormating(dataset, formatDataset, filePath):
 	warningFont.setColor(warningFontColor)
 	warningStyle.setFont(warningFont)
 	
+	for sheetData in sheetsData:
+		dataset = sheetData['dataset']
+		formatDataset = sheetData['formatDataset']
+		sheetName = sheetData['sheetName']
 
-	sheet = workbook.createSheet('test-sheet')
-	
-	
-
-	headers = system.dataset.getColumnHeaders(dataset)
-
-	# header
-	row = sheet.createRow(0)
-	for columnIndex in range(len(headers)):
-		cell = row.createCell(columnIndex) 
-		cell.setCellValue(headers[columnIndex])
-		cell.setCellStyle(headerStyle)
-	
-	# conditional data
-	for rowIndex in range(dataset.getRowCount()):
-		row = sheet.createRow(rowIndex + 1) # add 1 to skip header row
-		for columnIndex in range(len(headers)):
-			cell = row.createCell(columnIndex) 
-			cell.setCellValue(dataset.getValueAt(rowIndex, columnIndex))
-			
-			try:
-				format = formatDataset.getValueAt(rowIndex, columnIndex)
-			except:
-				format = ''
-				
-			if format == 'Good':
-				cell.setCellStyle(goodStyle)
-			elif format == 'Bad':
-				cell.setCellStyle(badStyle)
-			elif format == 'Warning':
-				cell.setCellStyle(warningStyle)
-			else:
-				pass
+		sheet = workbook.createSheet(sheetName)
+		
 		
 	
-	# autosize the columns
-	for columnIndex in range(len(headers)):
-		sheet.autoSizeColumn(columnIndex)
+		headers = system.dataset.getColumnHeaders(dataset)
+	
+		# header
+		row = sheet.createRow(0)
+		for columnIndex in range(len(headers)):
+			cell = row.createCell(columnIndex) 
+			cell.setCellValue(headers[columnIndex])
+			cell.setCellStyle(headerStyle)
+		
+		# conditional data
+		for rowIndex in range(dataset.getRowCount()):
+			row = sheet.createRow(rowIndex + 1) # add 1 to skip header row
+			for columnIndex in range(len(headers)):
+				cell = row.createCell(columnIndex) 
+				cell.setCellValue(dataset.getValueAt(rowIndex, columnIndex))
+				
+				try:
+					format = formatDataset.getValueAt(rowIndex, columnIndex)
+				except:
+					format = ''
+					
+				if format == 'Good':
+					cell.setCellStyle(goodStyle)
+				elif format == 'Bad':
+					cell.setCellStyle(badStyle)
+				elif format == 'Warning':
+					cell.setCellStyle(warningStyle)
+				else:
+					pass
+		
+		# autosize the columns
+		for columnIndex in range(len(headers)):
+			sheet.autoSizeColumn(columnIndex)
+			
+			
 	
 	# write to file
 	out = None
