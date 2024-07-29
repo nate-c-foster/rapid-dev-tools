@@ -36,6 +36,8 @@ def toExcelWithFormating(sheetsData, filePath):
 	headerFont = workbook.createFont()
 	headerFont.setBold(True)
 	headerStyle.setFont(headerFont)
+	
+
 
 	# Good Style
 	goodStyle = workbook.createCellStyle()
@@ -66,6 +68,30 @@ def toExcelWithFormating(sheetsData, filePath):
 	warningFontColor = XSSFColor(Color(156, 101, 0))
 	warningFont.setColor(warningFontColor)
 	warningStyle.setFont(warningFont)
+	
+	# OPC Style [purple]
+	opcStyle = workbook.createCellStyle()
+	opcFillColor = XSSFColor(Color(220, 190, 255))
+	opcStyle.setFillForegroundColor(opcFillColor)
+	opcStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
+	opcFont = workbook.createFont()
+	opcFontColor = XSSFColor(Color(0, 0, 0))
+	opcFont.setColor(opcFontColor)
+	opcStyle.setFont(opcFont)
+	
+	# Memory Style [blue]
+	memoryStyle = workbook.createCellStyle()
+	memoryFillColor = XSSFColor(Color(190, 190, 255))
+	memoryStyle.setFillForegroundColor(memoryFillColor)
+	memoryStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
+	memoryFont = workbook.createFont()
+	memoryFontColor = XSSFColor(Color(0, 0, 0))
+	memoryFont.setColor(memoryFontColor)
+	memoryStyle.setFont(memoryFont)
+	
+	
+	
+	
 	
 	for sheetData in sheetsData:
 		dataset = sheetData['dataset']
@@ -103,6 +129,10 @@ def toExcelWithFormating(sheetsData, filePath):
 					cell.setCellStyle(badStyle)
 				elif format == 'Warning':
 					cell.setCellStyle(warningStyle)
+				elif format == 'OPC':
+					cell.setCellStyle(opcStyle)
+				elif format == 'Memory':
+					cell.setCellStyle(memoryStyle)
 				else:
 					pass
 		
@@ -121,8 +151,3 @@ def toExcelWithFormating(sheetsData, filePath):
 	except:
 		out.close
 
-
-def toExcelSheets(datasets, sheetNames, filePath):
-
-	spreadsheet = system.dataset.toExcel(showHeaders=True, dataset=datasets, nullsEmpty=True, sheetNames=sheetNames)
-	system.file.writeFile(filePath, spreadsheet)
