@@ -47,7 +47,7 @@ def fromStandardCSVs(folderPath, addFileNameColumn=False):
 				fileName = fileName.split('.')[0]
 				dsRight = system.dataset.addColumn(dsRight, 0, [fileName for row in range(dsRight.getRowCount())], 'FileName', str)
 			
-			ds = dataset_editor.operation.union(ds, dsRight)
+			ds = dataset.operation.union(ds, dsRight)
 			
 	return ds
 

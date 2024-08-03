@@ -16,6 +16,10 @@
       "title": "",
       "viewPath": "Location Model/Location Model"
     },
+    "/reports": {
+      "title": "",
+      "viewPath": "Reports/Reports"
+    },
     "/settings": {
       "title": "",
       "viewPath": "Settings/Settings"

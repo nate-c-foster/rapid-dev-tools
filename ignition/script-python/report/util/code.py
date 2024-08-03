@@ -59,7 +59,7 @@ def parseIconicsForKepwareTags(reportFilePath):
 #inputFilePath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/TagReport/iconics_kepware_join_csv.csv'
 #outputFilePath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/TagReport/iconics_to_ignition_csv.csv'
 #
-#dataset = dataset_editor.generate.fromStandardCSV(inputFilePath)
+#dataset = dataset.generate.fromStandardCSV(inputFilePath)
 #
 #
 #def transform(row):
@@ -81,8 +81,8 @@ def parseIconicsForKepwareTags(reportFilePath):
 #				'OpcPath': 'ns=1;s=[' + row['left_Device'] + ']' + address if address else ''
 #				}
 #
-#ds = dataset_editor.operation.datsetMap(dataset, transform, ['KepwarePath','DeviceName','DevicePath','Address','OpcPath'])
-#dataset_editor.export.toCSV(ds, outputFilePath)
+#ds = dataset.operation.datsetMap(dataset, transform, ['KepwarePath','DeviceName','DevicePath','Address','OpcPath'])
+#dataset.export.toCSV(ds, outputFilePath)
 
 
 

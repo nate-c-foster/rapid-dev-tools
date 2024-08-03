@@ -4,13 +4,14 @@
   "restricted": false,
   "overridable": true,
   "files": [
-    "config.json"
+    "view.json",
+    "thumbnail.png"
   ],
   "attributes": {
     "lastModification": {
       "actor": "nate.foster",
-      "timestamp": "2024-08-02T11:47:51Z"
+      "timestamp": "2024-08-02T11:47:38Z"
     },
-    "lastModificationSignature": "cdd73677926ac21946070c7e3692c20a69b03f35782a94724930c291f1fc7848"
+    "lastModificationSignature": "c6f7b6ed2b8e6e8fe89df2af751242ad831d8539dc71b9ca85ccb69fccc6dd95"
   }
 }

@@ -17,11 +17,11 @@ registeredFunctions = [
 	'name':"UDT instances",
 	'description':"Generate all UDT instances under a root tag path",
 	'functionPath':"tageditor.generate.getUdtTags",
-	'kwargs':{"rootTagPath":"","typeId":"","recursive":""},
+	'kwargs':{"rootTagPath":"","typeId":"","recursive":"", "inheritance":""},
 	'dockPaths':{"rootTagPath":"Global Components/Functions/Docks/Tag Path Selector"},
-	'dropdownPaths':{"typeId": "Global Components/Functions/Dropdowns/UDT Type Id","recursive":"Global Components/Functions/Dropdowns/Boolean Value"},
+	'dropdownPaths':{"typeId": "Global Components/Functions/Dropdowns/UDT Type Id","recursive":"Global Components/Functions/Dropdowns/Boolean Value","inheritance":"Global Components/Functions/Dropdowns/Boolean Value"},
 	'order':1,
-	'kwargsOrder':{u'recursive': 3, u'typeId': 2, u'rootTagPath': 1}
+	'kwargsOrder':{u'recursive': 3, u'typeId': 2, u'rootTagPath': 1, "inheritance":4}
 	},
 	{
 	'name':"Atomic Tags",
@@ -119,7 +119,7 @@ def getAtomicTags(rootTagPath, recursive=False):
 # Author:         Nate Foster
 # Date:           Jan 2023
 #*****************************************************************************************************		
-def getUdtTags(rootTagPath, typeId = "", recursive=False):
+def getUdtTags(rootTagPath, typeId = "", recursive=False, inheritance=False):
 	"""Generate all udt instances under a given root tag path.
 	
 	Args:
@@ -149,8 +149,12 @@ def getUdtTags(rootTagPath, typeId = "", recursive=False):
 			tagType = str(result['tagType'])
 			tagPath = str(result['fullPath'])
 			if tagType == 'UdtInstance':
-				if not typeId or typeId in str(result['typeId']):
-					tags.append({'tagPath':tagPath, 'tagType':tagType, 'tagConfig':""})
+				if inheritance:
+					if typeId in tageditor.util.getType(tagPath) or typeId in tageditor.util.getParentType(tagPath):
+						tags.append({'tagPath':tagPath, 'tagType':tagType, 'tagConfig':""})
+				else:
+					if not typeId or typeId in str(result['typeId']):
+						tags.append({'tagPath':tagPath, 'tagType':tagType, 'tagConfig':""})
 				
 	except:
 		print 'Error: getUdtTags()'

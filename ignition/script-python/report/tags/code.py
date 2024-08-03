@@ -6,26 +6,26 @@ import java.text.DecimalFormat as DecimalFormat
 
 
 #iconicsToKepwarePath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/TagReport/iconics_to_kepware_csv.csv'
-#commissioningReportPath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/TagReport/Commissioning_Tag_Report.xlsx'
+#commissioningReportPath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/TagReport/Tag_Report.xlsx'
 #rootTagPath = '[SCADA]Ventura'
 #
-#existingTagDS = dataset_editor.generate.fromStandardCSV(iconicsToKepwarePath)
+#existingTagDS = dataset.generate.fromStandardCSV(iconicsToKepwarePath)
 #
 ## tag coverage
-#tagCoverageReport = test_suite.tags.tagConverageReport(existingTagDS, rootTagPath)
-#tagCoverageFormatDS = test_suite.tags.tagCoverageAnalysis(tagCoverageReport)
+#tagCoverageReport = report.tags.tagConverageReport(existingTagDS, rootTagPath)
+#tagCoverageFormatDS = report.tags.tagCoverageAnalysis(tagCoverageReport)
 #
 ## atomic tag report
-#atomicTagReport = test_suite.tags.atomicTagsReport(rootTagPath)
-#atomicTagFormatDS = test_suite.tags.atomicTagsAnalysis(atomicTagReport)
+#atomicTagReport = report.tags.atomicTagsReport(rootTagPath)
+#atomicTagFormatDS = report.tags.atomicTagsAnalysis(atomicTagReport)
 #
 ## udt instances
-#udtInstancesReport = test_suite.tags.udtInstancesReport(rootTagPath)
-#udtInstancesFormatDS = test_suite.tags.udtInstancesAnalysis(udtInstancesReport)
+#udtInstancesReport = report.tags.udtInstancesReport(rootTagPath)
+#udtInstancesFormatDS = report.tags.udtInstancesAnalysis(udtInstancesReport)
 #
 ## analog input report
-#analogInputReport = test_suite.tags.analogInputReport(rootTagPath)
-#analogInputFormatDS = test_suite.tags.analogInputAnalysis(analogInputReport)
+#analogInputReport = report.tags.analogInputReport(rootTagPath)
+#analogInputFormatDS = report.tags.analogInputAnalysis(analogInputReport)
 #
 #
 #
@@ -37,7 +37,7 @@ import java.text.DecimalFormat as DecimalFormat
 #				{'dataset':analogInputReport, 'formatDataset': analogInputFormatDS, 'sheetName': 'Analog Input Report'}
 #]
 #
-#dataset_editor.export.toExcelWithFormating(sheetsData, commissioningReportPath)
+#dataset.export.toExcelWithFormating(sheetsData, commissioningReportPath)
 
 
 
@@ -94,10 +94,14 @@ def tagCoverageAnalysis(reportDS):
 	print 'Starting Coverage Analysis'
 
 
-
 	def checkOpcExists(row):
 		format = {}
-		if row['OpcPath']:
+		ignitionPath = row['IgnitionPath']
+		if ignitionPath:
+			enabled = system.tag.readBlocking(ignitionPath + '.enabled')[0].value
+		else:
+			enabled = False
+		if row['OpcPath'] and row['IgnitionPath'] and enabled:
 			format['OpcPath'] = 'Good' 
 			format['IgnitionPath'] = 'Good'
 		else:
@@ -107,9 +111,7 @@ def tagCoverageAnalysis(reportDS):
 			
 		return format
 
-
-
-	formatDataset = dataset_editor.operation.formatDataset(reportDS, conditional=checkOpcExists, formatDataset=None)
+	formatDataset = dataset.operation.formatDataset(reportDS, conditional=checkOpcExists, formatDataset=None)
 	
 	
 	return formatDataset
@@ -224,7 +226,7 @@ def udtInstancesAnalysis(reportDS):
 		return format
 		
 
-	formatDataset = dataset_editor.operation.formatDataset(reportDS, conditional=checkParams, formatDataset=None)
+	formatDataset = dataset.operation.formatDataset(reportDS, conditional=checkParams, formatDataset=None)
 	
 	return formatDataset
 	
@@ -396,7 +398,7 @@ def analogInputAnalysis(reportDS):
 
 
 
-	formatDataset = dataset_editor.operation.formatDataset(reportDS, conditional=checkValueSource, formatDataset=None)
+	formatDataset = dataset.operation.formatDataset(reportDS, conditional=checkValueSource, formatDataset=None)
 	
 	
 	return formatDataset
@@ -429,7 +431,7 @@ def atomicTagsReport(rootTagPath):
 			
 			if not '/General/' in tagPath and not '/Alarming/' in tagPath:
 
-				valueSource, valueProperty, valueQuality, value = test_suite.util.getTagProperties(tagPath)
+				valueSource, valueProperty, valueQuality, value = report.util.getTagProperties(tagPath)
 		
 				data.append([	tagPath,
 								str(dataType),
@@ -460,24 +462,15 @@ def atomicTagsAnalysis(reportDS):
 		if row['ValueQuality'] == 'Good':
 			return {'ValueQuality':'Good'}
 		else:
-			return {'ValueQuality': 'Bad'}
+			return {'TagPath': 'Bad', 'ValueQuality': 'Bad'}
 
 
-	formatDataset = dataset_editor.operation.formatDataset(reportDS, conditional=checkQuality, formatDataset=None)
+	formatDataset = dataset.operation.formatDataset(reportDS, conditional=checkQuality, formatDataset=None)
 	
 	
 	return formatDataset
 
 
-#filePath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/TagReport/test_atomic.xlsx'
-#
-#rootTagPath = '[SCADA]Ventura/Booster Stations/Dos Vientos Booster/Pump 1'
-#reportDS = test_suite.tags.atomicTagsReport(rootTagPath)
-#formatDS = test_suite.tags.atomicTagsAnalysis(reportDS)
-#
-#sheetsData = [{'dataset':reportDS, 'formatDataset':formatDS, 'sheetName':'AtomicTags'}]
-#
-#dataset_editor.export.toExcelWithFormating(sheetsData, filePath)
 
 
 
@@ -490,15 +483,6 @@ def atomicTagsAnalysis(reportDS):
 
 
 
-def udtConfigReport(rootPath):
-	# ?
-	pass
-
-
-
-def udtConfigAnalysis(reportDS):
-	# ?
-	pass
 
 
 
