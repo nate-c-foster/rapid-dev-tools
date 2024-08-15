@@ -6,8 +6,10 @@ import com.inductiveautomation.ignition.common.model.values.QualityCode as Quali
 # -----------  delays  ------------------------------------------------
 
 
-#rootPath = '[SCADA]Ventura/Booster Stations/Dewey Booster'
-#
+#rootPath = '[SCADA]Ventura'
+#rootPath = '[SCADA]_types_/User Defined/GE Booth'
+#rootPath = '[SCADA]_types_/User Defined/Ventura MicoLogix'
+
 #results = system.tag.browse(rootPath, {'recursive':True, 'tagType':'UdtInstance', 'typeId':'Components/Alarm'})
 #
 #
@@ -18,11 +20,10 @@ import com.inductiveautomation.ignition.common.model.values.QualityCode as Quali
 #	
 #	valueSource = system.tag.readBlocking(tagPath + '/Delay.valueSource')[0].value
 #	enabled = system.tag.readBlocking(tagPath + '.enabled')[0].value
-#	if enabled:
+#	if enabled: # and valueSource == 'opc':
 #	
 #		delayValue = system.tag.readBlocking(tagPath + '/Alarm/Alarms/Alarm.TimeOnDelaySeconds')[0].value
 #		delayConfig = system.tag.getConfiguration(tagPath + '/Alarm', False)
-#		
 #		
 #		#if not delay:
 #		print tagPath
@@ -30,11 +31,13 @@ import com.inductiveautomation.ignition.common.model.values.QualityCode as Quali
 #		print delayConfig[0]['alarms'][0]['timeOnDelaySeconds']
 	
 	
+		#delayConfig[0]['alarms'][0]['timeOnDelaySeconds'] = {'bindType':'Tag', 'value':'[.]Delay'}
+	
+		#system.tag.configure(tagPath, delayConfig[0], "o")
+	
 #		config = system.tag.getConfiguration(tagPath + '/Alarm', recursive=False)
 #		if type(config[0]['alarms'][0]['timeOnDelaySeconds']) == float:
 #			print tagPath
-
-
 
 
 

@@ -1,5 +1,5 @@
 
-ROOT_PATH = '[SCADA]Ventura Configuration'
+ROOT_PATH = '[SCADA]Configuration'
 
 
 
