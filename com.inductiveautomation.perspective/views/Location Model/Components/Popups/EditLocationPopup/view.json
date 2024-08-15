@@ -202,6 +202,17 @@
             "type": "ia.display.label"
           },
           {
+            "events": {
+              "system": {
+                "onStartup": {
+                  "config": {
+                    "script": "\tself.props.value \u003d self.view.getChild(\"root\").custom.locationDetails.locationTypeDefinitionID"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
             "meta": {
               "name": "LocationTypeDefinition"
             },
@@ -231,8 +242,14 @@
               "props.value": {
                 "binding": {
                   "config": {
-                    "path": "/root.custom.locationDetails.locationTypeDefinitionID"
+                    "path": "this.props.options"
                   },
+                  "transforms": [
+                    {
+                      "code": "\treturn value.getValueAt(0,0)",
+                      "type": "script"
+                    }
+                  ],
                   "type": "property"
                 }
               }
@@ -418,7 +435,7 @@
               "component": {
                 "onActionPerformed": {
                   "config": {
-                    "script": "\t\n\tlocationID \u003d self.view.params.LocationID\n\tcurrentName \u003d self.view.getChild(\"root\").custom.locationDetails.locationName\n\tcurrentPath \u003d self.view.getChild(\"root\").custom.locationDetails.tagPath\t\n\tlocationName \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"LocationName\").props.text\n\tlocationTypeID \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"LocationType\").props.value\n\tlocationTypeDefinitionID \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"LocationTypeDefinition\").props.value\n\tshortName \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"ShortName\").props.text\n\tscadaView \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Scada View\").props.selected\n\tmodelDBName \u003d self.session.custom.modelDBName\n\t\n\tlocationName \u003d locationName.strip()\n\tname \u003d currentName\n\t\n\trenameLocation \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Rename Location\").props.selected\n\t\n\tif renameLocation:\n\t\tname \u003d locationName\n\n\tparams \u003d {\n\t\u0027LocationID\u0027: locationID,\n\t\u0027LocationTypeID\u0027: locationTypeID,\n\t\u0027Name\u0027: name,\n\t\u0027Description\u0027: None,\n\t\u0027LastModifiedBy\u0027: self.session.props.auth.user.userName,\n\t\u0027LocationTypeDefinitionID\u0027: locationTypeDefinitionID,\n\t\u0027ShortName\u0027:shortName,\n\t\u0027ScadaView\u0027: scadaView,\n\t\u0027database\u0027:modelDBName\n\t}\t\n\t\n\t\n\tmodelDBType \u003d self.session.custom.modelDBType\n\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/editLocation\u0027\n\tsystem.db.runNamedQuery(query,params)\t\n\tlocation.model.updateModelTag()\t\n\n\trenameTag \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Rename Tag\").props.selected\n\trenameHist \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Rename Hist\").props.selected\n\trenameView \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Rename View\").props.selected\n\tnewViews \u003d []\n\n\tif locationName !\u003d currentName:\n\n\t\tif renameTag:\n\t\t\ttagPath \u003d self.view.getChild(\"root\").custom.locationDetails.tagPath\n\t\t\ttageditor.bulk.renameTag(tagPath, locationName, renameHist)\n\t\t\t\n\t\tif renameView:\n\t\t\tviewPath \u003d self.view.getChild(\"root\").custom.locationDetails.viewPath\n\t\t\tnewViews \u003d vieweditor.bulk.renameView(viewPath, locationName)\n\t\t\tif newViews:\n\t\t\t\tvieweditor.util.generateViewImport(newViews)\t\t\t\n\t\t\t\n\t\t\t\n\tsystem.perspective.sendMessage(\u0027UpdateLocationDetails\u0027, {})\n\t\n\tsystem.perspective.closePopup(\u0027EditLocationPopup\u0027)"
+                    "script": "\t\n\tlocationID \u003d self.view.params.LocationID\n\tcurrentName \u003d self.view.getChild(\"root\").custom.locationDetails.locationName\n\tcurrentPath \u003d self.view.getChild(\"root\").custom.locationDetails.tagPath\t\n\tcurrentTypeID \u003d self.view.getChild(\"root\").custom.locationDetails.locationTypeID\n\tcurrentTypeDefinitionID \u003d self.view.getChild(\"root\").custom.locationDetails.locationTypeDefinitionID\n\t\n\tlocationName \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"LocationName\").props.text\n\tlocationTypeID \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"LocationType\").props.value\n\tlocationTypeDefinitionID \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"LocationTypeDefinition\").props.value\n\tshortName \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"ShortName\").props.text\n\tscadaView \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Scada View\").props.selected\n\tmodelDBName \u003d self.session.custom.modelDBName\n\t\n\tlocationName \u003d locationName.strip()\n\tname \u003d currentName\n\t\n\trenameLocation \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Rename Location\").props.selected\n\t\n\tif renameLocation:\n\t\tname \u003d locationName\n\n\tparams \u003d {\n\t\u0027LocationID\u0027: locationID,\n\t\u0027LocationTypeID\u0027: locationTypeID,\n\t\u0027Name\u0027: name,\n\t\u0027Description\u0027: None,\n\t\u0027LastModifiedBy\u0027: self.session.props.auth.user.userName,\n\t\u0027LocationTypeDefinitionID\u0027: locationTypeDefinitionID,\n\t\u0027ShortName\u0027:shortName,\n\t\u0027ScadaView\u0027: scadaView,\n\t\u0027database\u0027:modelDBName\n\t}\t\n\t\n\t\n\tmodelDBType \u003d self.session.custom.modelDBType\n\tquery \u003d \u0027Location Model/\u0027 + modelDBType + \u0027/editLocation\u0027\n\tsystem.db.runNamedQuery(query,params)\t\n\tlocation.model.updateModelTag()\t\n\n\trenameTag \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Rename Tag\").props.selected\n\trenameHist \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Rename Hist\").props.selected\n\trenameView \u003d self.parent.parent.getChild(\"FlexContainer_Inner\").getChild(\"Rename View\").props.selected\n\tnewViews \u003d []\n\n\tif locationName !\u003d currentName:\n\n\t\tif renameTag:\n\t\t\ttagPath \u003d self.view.getChild(\"root\").custom.locationDetails.tagPath\n\t\t\ttageditor.bulk.renameTag(tagPath, locationName, renameHist)\n\t\t\t\n\t\tif renameView:\n\t\t\tviewPath \u003d self.view.getChild(\"root\").custom.locationDetails.viewPath\n\t\t\tnewViews \u003d vieweditor.bulk.renameView(viewPath, locationName)\n\t\t\tif newViews:\n\t\t\t\tvieweditor.util.generateViewImport(newViews)\t\t\t\n\t\t\t\n\n\tif locationTypeID !\u003d currentTypeID or locationTypeDefinitionID !\u003d currentTypeDefinitionID:\n\t\n\t\t# use locationTypeDefinitionID to look up UDT\n\t\t\n\t\tdbType \u003d self.session.custom.modelDBType\n\t\tdbName \u003d self.session.custom.modelDBName\n\t\ttableName \u003d \u0027core.LocationTypeDefinition\u0027\n\t\tlookupValue \u003d int(locationTypeDefinitionID)\n\t\tlookupType \u003d int\n\t\tnoMatchValue \u003d \u0027\u0027\n\t\tlookupColumn \u003d \u0027LocationTypeDefinitionID\u0027\n\t\tresultColumns \u003d [\u0027UDTPath\u0027]\n\t\t\n\t\tudtPath \u003d dbeditor.operations.lookup(dbType, dbName, tableName, lookupValue, lookupType, noMatchValue, lookupColumn, resultColumns)[\u0027UDTPath\u0027]\n\t\t\n\t\tif udtPath:\n\t\t\n\t\t\tconfiguration \u003d system.tag.getConfiguration(currentPath + \u0027/\u0027 + locationName, recursive\u003dTrue)\n\t\t\tconfiguration[0][\u0027typeId\u0027] \u003d udtPath\n\t\t\tsystem.tag.configure(currentPath, configuration)\n\n\n\n\n\n\tsystem.perspective.sendMessage(\u0027UpdateLocationDetails\u0027, {})\n\t\n\tsystem.perspective.closePopup(\u0027EditLocationPopup\u0027)"
                   },
                   "scope": "G",
                   "type": "script"

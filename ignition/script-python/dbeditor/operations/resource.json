@@ -1,0 +1,17 @@
+{
+  "scope": "A",
+  "version": 1,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "code.py"
+  ],
+  "attributes": {
+    "lastModification": {
+      "actor": "nate.foster",
+      "timestamp": "2024-08-15T12:09:50Z"
+    },
+    "hintScope": 2,
+    "lastModificationSignature": "da87104f70307fd68b68bf7f01740bc3f7a972984ee5f876a71a85237ff9ec3c"
+  }
+}
