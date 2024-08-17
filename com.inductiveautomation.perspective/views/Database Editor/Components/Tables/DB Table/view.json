@@ -657,7 +657,7 @@
                   "component": {
                     "onFileReceived": {
                       "config": {
-                        "script": "\t\n\tdata_string \u003d event.file.getString()\n\n\tdata \u003d system.dataset.fromCSV(data_string)\n\t\n\tdatabase \u003d self.view.params.dbName\n\ttableName \u003d self.view.params.tableName\n\tprimaryKey \u003d self.view.params.primaryKey\n\tdeleteExtra \u003d True\n\t\n\tdbeditor.util.importDSintoDBtable(data, database, tableName, primaryKey, deleteExtra)\n\t\n\tself.parent.parent.parent.getChild(\"Table\").refreshBinding(\u0027props.data\u0027)\n"
+                        "script": "\t\n\tdata_string \u003d event.file.getString()\n\n\tdata \u003d system.dataset.fromCSV(data_string)\n\t\n\tdatabase \u003d self.view.params.dbName\n\tdbType \u003d self.view.params.dbType\n\ttableName \u003d self.view.params.tableName\n\tprimaryKey \u003d self.view.params.primaryKey\n\tdeleteExtra \u003d True\n\t\n\tdbeditor.util.importDSintoDBtable(data, dbType, database, tableName, primaryKey, deleteExtra)\n\t\n\tself.parent.parent.parent.getChild(\"Table\").refreshBinding(\u0027props.data\u0027)\n"
                       },
                       "scope": "G",
                       "type": "script"

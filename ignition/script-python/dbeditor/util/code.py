@@ -13,7 +13,7 @@
 # 	deleteExtra		(bool)			flag to delete extra rows not in the dataset
 #  
 #*****************************************************************************************************		
-def importDSintoDBtable(dataset, database, tableName, primaryKey, deleteExtra=True):
+def importDSintoDBtable(dataset, dbType, database, tableName, primaryKey, deleteExtra=True):
 
 	jsonData =	util.json.convertDsToJsonObj(dataset)
 
@@ -93,15 +93,18 @@ def importDSintoDBtable(dataset, database, tableName, primaryKey, deleteExtra=Tr
 			columnsString = columnsString[:-1] + ')'
 			valuesString = valuesString[:-1] + ')'
 		
-			# need statement1 to insert with a given primary key.
-			statement1 = "SET IDENTITY_INSERT " + tableName + " ON; "
-			statement2 = "INSERT INTO " + tableName +  " " + columnsString + " VALUES " + valuesString + "; "
-			statement3 = "SET IDENTITY_INSERT " + tableName + " OFF; "
+			if dbType == 'MSSQL':
+				# need statement1 to insert with a given primary key.
+				statement1 = "SET IDENTITY_INSERT " + tableName + " ON; "
+				statement2 = "INSERT INTO " + tableName +  " " + columnsString + " VALUES " + valuesString + "; "
+				statement3 = "SET IDENTITY_INSERT " + tableName + " OFF; "
+				statement = statement1 + statement2 + statement3
 			
-#			print statement2
-#			print parameters
+			else:
+				statement = "INSERT INTO " + tableName +  " " + columnsString + " VALUES " + valuesString + "; "
 			
-			results = system.db.runPrepUpdate(statement1 + statement2 + statement3 , parameters, database)
+			
+			results = system.db.runPrepUpdate(statement, parameters, database)
 			
 			
 			

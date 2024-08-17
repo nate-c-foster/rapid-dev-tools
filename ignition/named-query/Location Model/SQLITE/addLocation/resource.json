@@ -1,0 +1,82 @@
+{
+  "scope": "DG",
+  "documentation": "Description: This query is to add a location to the model.  Used in model configuration script -\u003e addLocation\nAuthor: Derrick Chambers\nCompany: Flexware Innovation\nDate Created: 3/9/2021\nDate Updated: NA",
+  "version": 2,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "query.sql"
+  ],
+  "attributes": {
+    "useMaxReturnSize": false,
+    "autoBatchEnabled": false,
+    "fallbackValue": "",
+    "maxReturnSize": 100,
+    "cacheUnit": "SEC",
+    "description": "Description: This query is to add a location to the model.  Used in model configuration script -\u003e addLocation\nAuthor: Derrick Chambers\nCompany: Flexware Innovation\nDate Created: 3/9/2021\nDate Updated: NA",
+    "type": "UpdateQuery",
+    "enabled": true,
+    "cacheAmount": 1,
+    "cacheEnabled": false,
+    "database": "{}",
+    "fallbackEnabled": false,
+    "lastModificationSignature": "7280f38845b6751a0c51ac889fab4978e804f3c9bca903d6754938f3e27c6e73",
+    "permissions": [
+      {
+        "zone": "",
+        "role": ""
+      }
+    ],
+    "lastModification": {
+      "actor": "nate.foster",
+      "timestamp": "2024-08-17T15:35:16Z"
+    },
+    "parameters": [
+      {
+        "type": "Database",
+        "identifier": "database",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "ParentLocationID",
+        "sqlType": 3
+      },
+      {
+        "type": "Parameter",
+        "identifier": "LocationTypeID",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "Name",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "Description",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "LastModifiedBy",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "LocationTypeDefinitionID",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "orderNumber",
+        "sqlType": 3
+      },
+      {
+        "type": "Parameter",
+        "identifier": "ShortName",
+        "sqlType": 7
+      }
+    ]
+  }
+}

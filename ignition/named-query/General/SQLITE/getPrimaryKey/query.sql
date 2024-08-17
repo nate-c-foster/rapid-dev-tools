@@ -1,0 +1,1 @@
+SELECT l.name FROM pragma_table_info("{tableName}") as l WHERE l.pk = 1

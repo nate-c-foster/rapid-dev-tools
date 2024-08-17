@@ -1,0 +1,55 @@
+{
+  "scope": "DG",
+  "version": 2,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "query.sql"
+  ],
+  "attributes": {
+    "useMaxReturnSize": false,
+    "autoBatchEnabled": false,
+    "fallbackValue": "",
+    "maxReturnSize": 100,
+    "cacheUnit": "SEC",
+    "type": "UpdateQuery",
+    "enabled": true,
+    "cacheAmount": 1,
+    "cacheEnabled": false,
+    "database": "{}",
+    "fallbackEnabled": false,
+    "lastModificationSignature": "a35c51816ba5066b5254c9e2fed27231cf78d0fc819d8f6507f2a7d2bfe5719b",
+    "permissions": [
+      {
+        "zone": "",
+        "role": ""
+      }
+    ],
+    "lastModification": {
+      "actor": "nate.foster",
+      "timestamp": "2024-08-17T12:41:17Z"
+    },
+    "parameters": [
+      {
+        "type": "Database",
+        "identifier": "database",
+        "sqlType": 7
+      },
+      {
+        "type": "QueryString",
+        "identifier": "tableName",
+        "sqlType": 7
+      },
+      {
+        "type": "QueryString",
+        "identifier": "primaryKey",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "primaryKeyValue",
+        "sqlType": 2
+      }
+    ]
+  }
+}

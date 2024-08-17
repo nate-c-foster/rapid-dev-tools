@@ -1,0 +1,2 @@
+INSERT INTO {tableName} 
+DEFAULT VALUES

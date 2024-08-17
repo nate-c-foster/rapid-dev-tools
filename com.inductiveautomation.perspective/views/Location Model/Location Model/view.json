@@ -925,7 +925,7 @@
                           "component": {
                             "onActionPerformed": {
                               "config": {
-                                "script": "\t\n\tdbName \u003d settings.getValue(\"Location Model\", \"modelDBName\")\n\tdbType \u003d settings.getValue(\"Location Model\", \"modelDBType\")\n\tversion \u003d settings.getValue(\"Location Model\", \"schemaName\")\n\n\n\ttry:\n\t\tqueryPath \u003d \"Location Model/\" + dbType + \"/initilizeTables\"\n\t\tresult \u003d system.db.runNamedQuery(queryPath, {\u0027database\u0027: dbName, \"version\": version})\n\t\tprint \u0027result \u0027, result\n\texcept:\n\t\treturn\n\n\tself.view.getChild(\"root\").refreshBinding(\u0027custom.tablesExist\u0027)\n\tlocation.model.updateModelTag()\n\tself.parent.parent.getChild(\"Tree\").refreshBinding(\u0027custom.modelTagExists\u0027)"
+                                "script": "\t\n\tdbName \u003d settings.getValue(\"Location Model\", \"modelDBName\")\n\tdbType \u003d settings.getValue(\"Location Model\", \"modelDBType\")\n\tversion \u003d settings.getValue(\"Location Model\", \"schemaName\")\n\n\n#\ttry:\n#\t\tqueryPath \u003d \"Location Model/\" + dbType + \"/initilizeTables\"\n#\t\tresult \u003d system.db.runNamedQuery(queryPath, {\u0027database\u0027: dbName, \"version\": version})\n#\t\tprint \u0027result \u0027, result\n#\texcept:\n#\t\treturn\n\t\t\n\tlocation.model.initializeTables(dbType, dbName, version)\n\n\tself.view.getChild(\"root\").refreshBinding(\u0027custom.tablesExist\u0027)\n\tlocation.model.updateModelTag()\n\tself.parent.parent.getChild(\"Tree\").refreshBinding(\u0027custom.modelTagExists\u0027)"
                               },
                               "scope": "G",
                               "type": "script"
@@ -950,8 +950,7 @@
                       }
                     ],
                     "meta": {
-                      "name": "Tabels Do Not Exist",
-                      "visible": false
+                      "name": "Tabels Do Not Exist"
                     },
                     "position": {
                       "basis": "200px",
@@ -1480,7 +1479,7 @@
           },
           "transforms": [
             {
-              "code": "\n\tdbName \u003d value[\u0027modelDBName\u0027]\n\tdbType \u003d value[\u0027modelDBType\u0027]\n\n\n\ttry:\n\t\tqueryPath \u003d \"Location Model/\" + dbType + \"/tablesExist\"\n\t\ttabelsExist \u003d system.db.runNamedQuery(queryPath, {\u0027database\u0027: dbName})\n\texcept:\n\t\treturn False\n\t\t\n\tif tabelsExist.getRowCount() \u003e 0 and tabelsExist.getValueAt(0,0):\n\t\treturn True\n\telse:\n\t\treturn False\n",
+              "code": "\n\tdbName \u003d value[\u0027modelDBName\u0027]\n\tdbType \u003d value[\u0027modelDBType\u0027]\n\n\ttableNames \u003d [\u0027Location\u0027, \u0027LocationType\u0027, \u0027LocationTypeDefinition\u0027]\n\t\n\tfor tableName in tableNames:\n\t\n\t\ttry:\n\t\t\tqueryPath \u003d \"Location Model/\" + dbType + \"/tableExists\"\n\t\t\ttabelsExist \u003d system.db.runNamedQuery(queryPath, {\u0027database\u0027: dbName, \u0027tableName\u0027: tableName})\n\t\texcept:\n\t\t\treturn False\n\t\t\t\n\t\tif tabelsExist.getRowCount() \u003d\u003d 0:\n\t\t\treturn False\n\n\treturn True\n",
               "type": "script"
             }
           ],

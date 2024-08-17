@@ -1,0 +1,55 @@
+{
+  "scope": "DG",
+  "version": 2,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "query.sql"
+  ],
+  "attributes": {
+    "useMaxReturnSize": false,
+    "autoBatchEnabled": false,
+    "fallbackValue": "",
+    "maxReturnSize": 100,
+    "cacheUnit": "SEC",
+    "type": "Query",
+    "enabled": true,
+    "cacheAmount": 1,
+    "cacheEnabled": false,
+    "database": "{}",
+    "fallbackEnabled": false,
+    "lastModificationSignature": "ef86d36e50bd34dd6edb933d58d472c7d09700a514d5b755c3cb0bd8457e5ae4",
+    "permissions": [
+      {
+        "zone": "",
+        "role": ""
+      }
+    ],
+    "lastModification": {
+      "actor": "nate.foster",
+      "timestamp": "2024-08-17T12:41:17Z"
+    },
+    "parameters": [
+      {
+        "type": "Database",
+        "identifier": "database",
+        "sqlType": 7
+      },
+      {
+        "type": "QueryString",
+        "identifier": "tableName",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "lookupValue",
+        "sqlType": 2
+      },
+      {
+        "type": "QueryString",
+        "identifier": "lookupColumn",
+        "sqlType": 7
+      }
+    ]
+  }
+}

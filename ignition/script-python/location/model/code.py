@@ -453,5 +453,30 @@ def isComponent(locationDetails):
 	
 
 
+def initializeTables(dbType, dbName, version):
 
+	tableNames = ['LocationType', 'LocationTypeDefinition', 'Location']
+	
+	for tableName in tableNames:
+	
+		queryPath = "Location Model/" + dbType + "/tableExists"
+		tabelsExist = system.db.runNamedQuery(queryPath, {'database': dbName, 'tableName': tableName})
+		
+		# if table does not exist, create and initialize
+		if tabelsExist.getRowCount() == 0:
+		
+			print 'Creating table: ', tableName
+			queryPath = "Location Model/" + dbType + "/createTable" + tableName
+			result = system.db.runNamedQuery(queryPath, {'database': dbName})
 
+			tablePath = settings.ROOT_PATH + '/RapidDev/Location Model/Initializers/' + version + '/' + tableName
+			tableDS = system.tag.readBlocking(tablePath)[0].value
+			
+			primaryKey = tableName + 'ID'
+			
+			if dbType == 'MSSQL':
+				tableName = 'core.' + tableName
+			
+			
+			if tableDS:
+				dbeditor.util.importDSintoDBtable(tableDS, dbType, dbName, tableName, primaryKey, deleteExtra=True)

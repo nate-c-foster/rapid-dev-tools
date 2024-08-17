@@ -1,0 +1,1 @@
+UPDATE Location SET ParentLocationID = :newParentLocationID WHERE LocationID = :LocationID

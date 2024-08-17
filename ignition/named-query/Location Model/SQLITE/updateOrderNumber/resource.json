@@ -1,0 +1,52 @@
+{
+  "scope": "DG",
+  "documentation": "Description: This query is to update the order number of the original locationID\nAuthor: Derrick Chambers\nCompany: Flexware Innovation\nDate Created: 4/28/2021\nDate Updated: NA",
+  "version": 2,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "query.sql"
+  ],
+  "attributes": {
+    "useMaxReturnSize": false,
+    "autoBatchEnabled": false,
+    "fallbackValue": "",
+    "maxReturnSize": 100,
+    "cacheUnit": "SEC",
+    "description": "Description: This query is to update the order number of the original locationID\nAuthor: Derrick Chambers\nCompany: Flexware Innovation\nDate Created: 4/28/2021\nDate Updated: NA",
+    "type": "UpdateQuery",
+    "enabled": true,
+    "cacheAmount": 1,
+    "cacheEnabled": false,
+    "database": "{}",
+    "fallbackEnabled": false,
+    "lastModificationSignature": "a20e0cdcc4ffe9176dc296107a89ab799dc6173563f4fdecb741ca1fe48c1dae",
+    "permissions": [
+      {
+        "zone": "",
+        "role": ""
+      }
+    ],
+    "lastModification": {
+      "actor": "nate.foster",
+      "timestamp": "2024-08-17T15:35:16Z"
+    },
+    "parameters": [
+      {
+        "type": "Database",
+        "identifier": "database",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "locationID",
+        "sqlType": 3
+      },
+      {
+        "type": "Parameter",
+        "identifier": "orderNumber",
+        "sqlType": 3
+      }
+    ]
+  }
+}
