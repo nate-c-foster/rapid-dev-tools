@@ -338,7 +338,10 @@ def getLocationIDPath(locationID):
 	dbName = settings.getValue('Location Model', 'modelDBName')
 	
 	try:	
-		parentID = system.db.runPrepQuery("SELECT ParentLocationID FROM core.Location WHERE LocationID = ?", [locationID], dbName).getValueAt(0,0)
+		if dbType == 'MSSQL':
+			parentID = system.db.runPrepQuery("SELECT ParentLocationID FROM core.Location WHERE LocationID = ?", [locationID], dbName).getValueAt(0,0)
+		else:
+			parentID = system.db.runPrepQuery("SELECT ParentLocationID FROM Location WHERE LocationID = ?", [locationID], dbName).getValueAt(0,0)
 	except:
 		return str(locationID)
 		
@@ -374,7 +377,11 @@ def getLocationPath(locationID):
 	# convert locationID path to location path
 	for locationID in locationIDs:
 		try:	
-			name = system.db.runPrepQuery("SELECT Name FROM core.Location WHERE LocationID = ?", [locationID], settings.getValue('Location Model', 'modelDBName')).getValueAt(0,0)
+			dbType = settings.getValue('Location Model', 'modelDBType')
+			if dbType == 'MSSQL':
+				name = system.db.runPrepQuery("SELECT Name FROM core.Location WHERE LocationID = ?", [locationID], settings.getValue('Location Model', 'modelDBName')).getValueAt(0,0)
+			else:
+				name = system.db.runPrepQuery("SELECT Name FROM Location WHERE LocationID = ?", [locationID], settings.getValue('Location Model', 'modelDBName')).getValueAt(0,0)
 		except:
 			return ''
 			

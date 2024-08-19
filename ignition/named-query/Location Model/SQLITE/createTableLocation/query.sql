@@ -15,7 +15,7 @@ CREATE TABLE "Location" (
 	"MapCallID" INTEGER,
 	"HmiUrl" TEXT,
 	"orderNumber" INTEGER,
-	"SCADAView" INTEGER,
+	"SCADAView" INTEGER DEFAULT 1,
 	"shortName" TEXT,
 	PRIMARY KEY("LocationID" AUTOINCREMENT),
 	CONSTRAINT "FK_Location_LocationType" FOREIGN KEY("LocationTypeID") REFERENCES "LocationType"
