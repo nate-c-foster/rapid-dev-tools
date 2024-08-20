@@ -12,20 +12,20 @@ import java.text.DecimalFormat as DecimalFormat
 #existingTagDS = dataset.generate.fromStandardCSV(iconicsToKepwarePath)
 #
 ## tag coverage
-#tagCoverageReport = report.tags.tagConverageReport(existingTagDS, rootTagPath)
-#tagCoverageFormatDS = report.tags.tagCoverageAnalysis(tagCoverageReport)
+#tagCoverageReport = testing.tags.tagConverageReport(existingTagDS, rootTagPath)
+#tagCoverageFormatDS = testing.tags.tagCoverageAnalysis(tagCoverageReport)
 #
 ## atomic tag report
-#atomicTagReport = report.tags.atomicTagsReport(rootTagPath)
-#atomicTagFormatDS = report.tags.atomicTagsAnalysis(atomicTagReport)
+#atomicTagReport = testing.tags.atomicTagsReport(rootTagPath)
+#atomicTagFormatDS = testing.tags.atomicTagsAnalysis(atomicTagReport)
 #
 ## udt instances
-#udtInstancesReport = report.tags.udtInstancesReport(rootTagPath)
-#udtInstancesFormatDS = report.tags.udtInstancesAnalysis(udtInstancesReport)
+#udtInstancesReport = testing.tags.udtInstancesReport(rootTagPath)
+#udtInstancesFormatDS = testing.tags.udtInstancesAnalysis(udtInstancesReport)
 #
 ## analog input report
-#analogInputReport = report.tags.analogInputReport(rootTagPath)
-#analogInputFormatDS = report.tags.analogInputAnalysis(analogInputReport)
+#analogInputReport = testing.tags.analogInputReport(rootTagPath)
+#analogInputFormatDS = testing.tags.analogInputAnalysis(analogInputReport)
 #
 #
 #
@@ -431,7 +431,7 @@ def atomicTagsReport(rootTagPath):
 			
 			if not '/General/' in tagPath and not '/Alarming/' in tagPath:
 
-				valueSource, valueProperty, valueQuality, value = report.util.getTagProperties(tagPath)
+				valueSource, valueProperty, valueQuality, value = testing.util.getTagProperties(tagPath)
 		
 				data.append([	tagPath,
 								str(dataType),

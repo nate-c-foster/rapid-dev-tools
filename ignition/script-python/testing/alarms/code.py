@@ -217,12 +217,12 @@ import com.inductiveautomation.ignition.common.model.values.QualityCode as Quali
 #existingAlarmDS = dataset.generate.fromStandardCSV(iconicsToKepwarePath)
 #
 ## alarm coverage
-#alarmCoverageReport = report.alarms.alarmCoverageReport(existingAlarmDS, rootTagPath)
-#alarmCoverageFormatDS = report.alarms.alarmCoverageAnalysis(alarmCoverageReport)
+#alarmCoverageReport = alarms.alarmCoverageReport(existingAlarmDS, rootTagPath)
+#alarmCoverageFormatDS = alarms.alarmCoverageAnalysis(alarmCoverageReport)
 #
 ## alarm tag report
-#alarmTagReport = report.alarms.alarmTagReport(rootTagPath)
-#alarmTagFormatDS = report.alarms.alarmTagAnalysis(alarmTagReport)
+#alarmTagReport = alarms.alarmTagReport(rootTagPath)
+#alarmTagFormatDS = alarms.alarmTagAnalysis(alarmTagReport)
 #
 #
 #
@@ -394,24 +394,24 @@ def alarmTagReport(rootTagPath):
 			
 			description = system.tag.readBlocking(alarmPath + '/Description')[0].value
 			
-			alarmValueSource, alarmValueProperty, alarmValueQuality, alarmValue = report.util.getTagProperties(alarmPath+'/Alarm')
+			alarmValueSource, alarmValueProperty, alarmValueQuality, alarmValue = util.getTagProperties(alarmPath+'/Alarm')
 			alarmPriority = system.tag.readBlocking(alarmPath+'/Alarm/Alarms/Alarm.Priority')[0].value
 			alarmPipeline = system.tag.readBlocking(alarmPath+'/Alarm/Alarms/Alarm.ActivePipeline')[0].value
 			alarmLabel = system.tag.readBlocking(alarmPath+'/Alarm/Alarms/Alarm.Label')[0].value
 			alarmNotes = system.tag.readBlocking(alarmPath+'/Alarm/Alarms/Alarm.Notes')[0].value
-			enableValueSource, enabledValueProperty, enableValueQuality, enableValue = report.util.getTagProperties(alarmPath+'/Enable')
+			enableValueSource, enabledValueProperty, enableValueQuality, enableValue = util.getTagProperties(alarmPath+'/Enable')
 			if enableValueQuality == QualityCode.Bad_Disabled:
 				enableValueSource = ''
 				enabledValueProperty = ''
 				enableValue = ''
 			
-			setpointValueSource, setpointValueProperty, setpointValueQuality, setpointValue = report.util.getTagProperties(alarmPath+'/Setpoint')
+			setpointValueSource, setpointValueProperty, setpointValueQuality, setpointValue = util.getTagProperties(alarmPath+'/Setpoint')
 			if setpointValueQuality == QualityCode.Bad_Disabled:
 				setpointValueSource = ''
 				setpointValueProperty = ''
 				setpointValue = ''
 			
-			delayValueSource, delayValueProperty, delayValueQuality, delayValue = report.util.getTagProperties(alarmPath+'/Delay')
+			delayValueSource, delayValueProperty, delayValueQuality, delayValue = util.getTagProperties(alarmPath+'/Delay')
 			if delayValueQuality == QualityCode.Bad_Disabled:
 				delayValueSource = ''
 				delayValueProperty = ''

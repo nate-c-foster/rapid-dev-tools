@@ -11,8 +11,8 @@ import com.inductiveautomation.ignition.common.config.BoundValue as BoundValue
 #				]
 #
 #
-#udtTypesReport = report.udts.udtTypesReport(folderPaths)
-#udtConfigReport = report.udts.udtConfigReport(folderPaths)
+#udtTypesReport = testing.udts.udtTypesReport(folderPaths)
+#udtConfigReport = testing.udts.udtConfigReport(folderPaths)
 #
 #sheetsData = [	{'dataset':udtTypesReport, 'formatDataset': None, 'sheetName': 'UDT Types Report'},
 #				{'dataset':udtConfigReport, 'formatDataset': None, 'sheetName': 'UDT Configs Report'}
@@ -101,7 +101,7 @@ def udtConfigReport(folderPaths):
 			if system.tag.readBlocking(tagPath + '.enabled')[0].value:
 				tagSubPath = tagPath[len(rootPath)+1:]
 				
-				valueSource, dataType, valueProperty = report.udts.getTagProperties(tagPath)
+				valueSource, dataType, valueProperty = testing.udts.getTagProperties(tagPath)
 	
 				data.append([	str(typeId) if typeId else '',
 								udtSubPath,
