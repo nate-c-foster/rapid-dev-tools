@@ -17,6 +17,12 @@ import org.w3c.dom.Element as Element
 #
 #udts, tags = conversion.L5X.parse(l5xString)
 #
+#
+#paths = []
+#for i, tag in enumerate(tags):
+#	print tag
+#	paths = paths + conversion.L5X.getPaths(tag, udts, tag['data'])
+#
 #print "--------------  UDTs  --------------"
 #for udt in udts:
 #	print udt['name']
@@ -24,34 +30,137 @@ import org.w3c.dom.Element as Element
 #	
 #	
 #print "\n\n\n------------------ Tags ---------------------"
-#for tag in tags:
+#for i, tag in enumerate(tags):
 #	print tag
-
+#	if tag['name'] == 'UV2_DAILY_REPORT_DATA':
+#		print i
+#	
+#	
+#	
+#print tags[24] # simple atomic
+#print tags[26] # array atomic
+#print tags[84] # multi dim array
+#print tags[46] # simple udt
+#print tags[0] # alarm analog
+#print tags[3] # alarm digital
+#print tags[48] # message
+#print tags[28] # array of udts
+#print tags[63]
+#
+#print tags[71]
+#print tags[71]['name']
+#print tags[71]['data']
+#paths = conversion.L5X.getPaths(tags[71], udts, tags[71]['data'])
+#
+#for path in paths:
+#	print path
+	
+	
+	
 
 DATA_TYPE_MAPPING_PYTHON = {"BOOL":bool, "BIT":bool, "SINT":int, "INT":int, "DINT":int, "LINT": int, "REAL":float, "STRING":str}
-DATA_TYPE_MAPPING_IGNITION = {"BOOL":"Boolean", "BIT":"Boolean", "SINT":"Int1", "INT":"Int2", "DINT":"Int4", "REAL":"Float4", "STRING":"String"}
-DATA_TYPE_MAPPING_SIMULATION = {"BOOL":"Boolean", "BIT":"Boolean", "SINT":"Int16", "INT":"Int16", "DINT":"Int32", "REAL":"Float", "STRING":"String"}
+DATA_TYPE_MAPPING_IGNITION = {"BOOL":"Boolean", "BIT":"Boolean", "SINT":"Int1", "INT":"Int2", "DINT":"Int4", "LINT":"Int8", "REAL":"Float4", "STRING":"String"}
+DATA_TYPE_MAPPING_SIMULATION = {"BOOL":"Boolean", "BIT":"Boolean", "SINT":"Int16", "INT":"Int16", "DINT":"Int32", "LINT":"Int64", "REAL":"Float", "STRING":"String"}
 DEFAULT_SIMULATION = {"BOOL":"false", "BIT":"false", "SINT":"0", "INT":"0", "DINT":"0", "LINT": "0", "REAL":"0", "STRING":""}
 
 
 
 
 
+
+#l5xFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Alton PLC Programs/ControlLogix/UV/PLC-UV.L5X'
+#tagsFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Alton PLC Programs/ControlLogix/UV/UV_tags.xlsx'
+#l5xString = system.file.readFileAsString(filepath, 'UTF-8')
+#
+#
+#ds = conversion.L5X.getAllTags(l5xString)
+#
+#dataset.export.toExcel(ds, tagsFilePath)
+
+
 def getAllTags(l5xString):
+
+
+
 	udts, globalTags = parse(l5xString)
 	
+	paths = []
+	rows = []
 	
-	for globalTag in globalTags:
+	for tag in globalTags:
+		paths = paths + conversion.L5X.getPaths(tag, udts, tag['data'])
 		
-		name = globalTag['name']
-		description = globalTag['description']
-		dataType = globalTag['dataType']
-		dimension = globalTag['dimension']
-		data = globalTag['data']
+	for path in paths:
+		value = path['value']
+
+	
+		rows.append([path['path'], path['dataType'], path['value']])
+			
+			
+	headers = ['Path', 'DataType', 'Value']
+	
+	return system.dataset.toDataSet(headers, rows)
+	
+
+
+
+#l5xFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Alton PLC Programs/ControlLogix/Forest Homes Tank/Forest_Homes_Tank.L5X'
+#tagsFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Alton PLC Programs/ControlLogix/Forest Homes Tank/FORESTHOMES_TANKPLC_SIM.csv'
+#l5xString = system.file.readFileAsString(l5xFilePath, 'UTF-8')
+#
+#ds = conversion.L5X.generateSimulation(l5xString)
+#
+#dataset.export.toCSV(ds, tagsFilePath)
 
 
 	
-	# create dataset ['TagPath', 'DataType', 'Value']
+def generateSimulation(l5xString):
+
+	udts, globalTags = parse(l5xString)
+		
+	paths = []
+	rows = []
+	
+	for tag in globalTags:
+		paths = paths + conversion.L5X.getPaths(tag, udts, tag['data'])
+		
+	for path in paths:
+
+		dataType = DATA_TYPE_MAPPING_SIMULATION[path['dataType']]
+	
+		value = simulationValue(path['value'], dataType)
+
+		rows.append([0, path['path'], value, dataType])
+	
+	headers = ['Time Interval', 'Browse Path', 'Value Source', 'Data Type']
+	
+	return system.dataset.toDataSet(headers, rows)
+	
+
+
+
+def simulationValue(value, dataType):
+
+		if dataType == 'Boolean':
+			if value == 'false':
+				value = 'FALSE'
+			if value == 'true':
+				value = 'TRUE'
+
+		elif "Int" in dataType:
+			try:
+				value = str(int(value))
+			except:
+				value = '0'
+				
+		elif dataType == 'Float':
+			try:
+				value = str(float(value))
+			except:
+				value = '0.0'
+				
+		return value
+
 
 
 
@@ -110,13 +219,15 @@ def getPaths(tag, udts, data):
 			# 1-dimensional array of udts
 			else:
 				
-				paths = []
+
 				for udt in udts:
 					if udt['name'] == dataType:
 						udtTags = udt['tags']
-						for udtTag in udtTags:
 						
-							for i in range(int(dimension[0])):
+						for i in range(int(dimension[0])):
+						
+							paths = []
+							for udtTag in udtTags:
 							
 								if udtTag['name'] in data[i].keys():
 									dataRecursive = data[i][udtTag['name']]
@@ -127,9 +238,8 @@ def getPaths(tag, udts, data):
 										dataRecursive = []
 							
 								paths = paths + getPaths(udtTag, udts, dataRecursive)
-							
-							
-								fullPaths = fullPaths + map(lambda x : {'path':tag['name'] + '[' + str(i) + ']'+ '.' + x['path'], 'dataType':x['dataType'], 'value':x['value']}, paths)
+								
+							fullPaths = fullPaths + map(lambda x : {'path':tag['name'] + '[' + str(i) + ']'+ '.' + x['path'], 'dataType':x['dataType'], 'value':x['value']}, paths)
 							
 		if len(dimension) == 2:
 	
@@ -140,16 +250,16 @@ def getPaths(tag, udts, data):
 			# 2-dimensional array of udts
 			else:
 				
-				paths = []
 				for udt in udts:
 					if udt['name'] == dataType:
 						udtTags = udt['tags']
-						for udtTag in udtTags:
 						
-							
-							for i in range(dimension[0]):
-								for j in range(dimension[1]):
-								
+						for i in range(dimension[0]):
+							for j in range(dimension[1]):				
+
+								paths = []
+								for udtTag in udtTags:
+				
 									if udtTag['name'] in data[i][j].keys():
 										dataRecursive = data[i][j][udtTag['name']]
 									else:
@@ -160,7 +270,7 @@ def getPaths(tag, udts, data):
 								
 									paths = paths + getPaths(udtTag, udts, dataRecursive)
 							
-									fullPaths = fullPaths + map(lambda x : {'path':tag['name'] + '[' + str(i) + ',' + str(j) + ']' +  '.' + x['path'], 'dataType':x['dataType'], 'value':x['value']}, paths)
+								fullPaths = fullPaths + map(lambda x : {'path':tag['name'] + '[' + str(i) + ',' + str(j) + ']' +  '.' + x['path'], 'dataType':x['dataType'], 'value':x['value']}, paths)
 
 		if len(dimension) > 2:
 			# currently unsupported
@@ -333,7 +443,8 @@ def parseDataNode(dataNode):
 			# return a single value
 			if dataNodeType == 'DataValue':
 				dataType = childNode.getAttribute("DataType")
-				return childNode.getAttribute("Value")
+				value = childNode.getAttribute("Value")
+				return valueTransform(value)
 			
 			# return a list (recursive)
 			elif dataNodeType == 'Array':
@@ -380,7 +491,9 @@ def parseArrayNode(arrayNode):
 			indexes = map(int, elementNode.getAttribute("Index").strip('[]').split(','))
 			if elementNode.hasAttribute("Value"):
 				
-				value = elementNode.getAttribute("Value")
+				value = valueTransform(elementNode.getAttribute("Value"))
+				
+				
 				if len(indexes) == 1:
 					elements[indexes[0]] = value
 				elif len(indexes) == 2:
@@ -409,7 +522,7 @@ def parseStructureNode(structureNode):
 			name = memberNode.getAttribute("Name")
 			if memberNode.hasAttribute("Value"):
 				dataType = memberNode.getAttribute("DataType")
-				value = memberNode.getAttribute("Value")
+				value = valueTransform(memberNode.getAttribute("Value"))
 				members[name] = value
 			else:
 				members[name] = parseDataNode(memberNode)
@@ -439,7 +552,7 @@ def parseAttributesNode(attributesNode):
 	for a in range(attributeNodes.getLength()):
 		attributeNode = attributeNodes.item(a)
 		attributeName = attributeNode.getNodeName()
-		attributeValue = attributeNode.getNodeValue()
+		attributeValue = valueTransform(attributeNode.getNodeValue())
 		parameters[attributeName] = attributeValue
 		
 	return parameters
@@ -452,6 +565,10 @@ def initializeList(shape, value):
 	else:
 		return [initializeList(shape[1:],value)] * shape[0]
 
+def valueTransform(value):
+	if "DT#" in str(value):
+		value = '0'
+	return value
 
 
 	
