@@ -11,53 +11,6 @@ import org.w3c.dom.Node as Node
 import org.w3c.dom.Element as Element
 
 
-
-#filepath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Alton PLC Programs/ControlLogix/UV/PLC-UV.L5X'
-#l5xString = system.file.readFileAsString(filepath, 'UTF-8')
-#
-#udts, tags = conversion.L5X.parse(l5xString)
-#
-#
-#paths = []
-#for i, tag in enumerate(tags):
-#	print tag
-#	paths = paths + conversion.L5X.getPaths(tag, udts, tag['data'])
-#
-#print "--------------  UDTs  --------------"
-#for udt in udts:
-#	print udt['name']
-#	print udt['tags']
-#	
-#	
-#print "\n\n\n------------------ Tags ---------------------"
-#for i, tag in enumerate(tags):
-#	print tag
-#	if tag['name'] == 'UV2_DAILY_REPORT_DATA':
-#		print i
-#	
-#	
-#	
-#print tags[24] # simple atomic
-#print tags[26] # array atomic
-#print tags[84] # multi dim array
-#print tags[46] # simple udt
-#print tags[0] # alarm analog
-#print tags[3] # alarm digital
-#print tags[48] # message
-#print tags[28] # array of udts
-#print tags[63]
-#
-#print tags[71]
-#print tags[71]['name']
-#print tags[71]['data']
-#paths = conversion.L5X.getPaths(tags[71], udts, tags[71]['data'])
-#
-#for path in paths:
-#	print path
-	
-	
-	
-
 DATA_TYPE_MAPPING_PYTHON = {"BOOL":bool, "BIT":bool, "SINT":int, "INT":int, "DINT":int, "LINT": int, "REAL":float, "STRING":str}
 DATA_TYPE_MAPPING_IGNITION = {"BOOL":"Boolean", "BIT":"Boolean", "SINT":"Int1", "INT":"Int2", "DINT":"Int4", "LINT":"Int8", "REAL":"Float4", "STRING":"String"}
 DATA_TYPE_MAPPING_SIMULATION = {"BOOL":"Boolean", "BIT":"Boolean", "SINT":"Int16", "INT":"Int16", "DINT":"Int32", "LINT":"Int64", "REAL":"Float", "STRING":"String"}
@@ -69,16 +22,14 @@ DEFAULT_SIMULATION = {"BOOL":"false", "BIT":"false", "SINT":"0", "INT":"0", "DIN
 
 
 #l5xFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Alton PLC Programs/ControlLogix/UV/PLC-UV.L5X'
-#tagsFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Alton PLC Programs/ControlLogix/UV/UV_tags.xlsx'
-#l5xString = system.file.readFileAsString(filepath, 'UTF-8')
+#tagsFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Tags/UV.csv'
+#l5xString = system.file.readFileAsString(l5xFilePath, 'UTF-8')
 #
-#
-#ds = conversion.L5X.getAllTags(l5xString)
-#
-#dataset.export.toExcel(ds, tagsFilePath)
+#ds = conversion.L5X.getAllTags(l5xString,'UV')
+#dataset.export.toCSV(ds, tagsFilePath)
 
 
-def getAllTags(l5xString):
+def getAllTags(l5xString, deviceName):
 
 
 
@@ -94,10 +45,10 @@ def getAllTags(l5xString):
 		value = path['value']
 
 	
-		rows.append([path['path'], path['dataType'], path['value']])
+		rows.append([deviceName, path['path'], path['dataType'],  path['value'], path['description']])
 			
 			
-	headers = ['Path', 'DataType', 'Value']
+	headers = ['Device', 'Path', 'DataType', 'Value', 'Description']
 	
 	return system.dataset.toDataSet(headers, rows)
 	
@@ -176,7 +127,7 @@ def getPaths(tag, udts, data):
 		
 		# atomic primative
 		if isPrimative(dataType):
-			return [{'path': tag['name'], 'dataType': tag['dataType'], 'value': data}]
+			return [{'path': tag['name'], 'dataType': tag['dataType'], 'description':tag['description'], 'value': data}]
 			
 		# atomic udt
 		else:
@@ -197,7 +148,7 @@ def getPaths(tag, udts, data):
 
 						paths = paths + getPaths(udtTag, udts, dataRecursive)
 						
-					paths = map(lambda x : {'path':tag['name'] + '.' + x['path'], 'dataType':x['dataType'], 'value':x['value']}, paths)
+					paths = map(lambda x : {'path':tag['name'] + '.' + x['path'], 'dataType':x['dataType'], 'description':x['description'], 'value':x['value']}, paths)
 					break
 					
 			return paths
@@ -213,7 +164,7 @@ def getPaths(tag, udts, data):
 	
 			# 1-dimensional array of primatives
 			if isPrimative(dataType):
-				fullPaths = [{'path': tag['name'] + '[' + str(i) + ']', 'dataType': tag['dataType'], 'value': data[i]} for i in range(dimension[0])]
+				fullPaths = [{'path': tag['name'] + '[' + str(i) + ']', 'dataType': tag['dataType'], 'description':tag['description'], 'value': data[i]} for i in range(dimension[0])]
 	
 	
 			# 1-dimensional array of udts
@@ -239,13 +190,13 @@ def getPaths(tag, udts, data):
 							
 								paths = paths + getPaths(udtTag, udts, dataRecursive)
 								
-							fullPaths = fullPaths + map(lambda x : {'path':tag['name'] + '[' + str(i) + ']'+ '.' + x['path'], 'dataType':x['dataType'], 'value':x['value']}, paths)
+							fullPaths = fullPaths + map(lambda x : {'path':tag['name'] + '[' + str(i) + ']'+ '.' + x['path'], 'dataType':x['dataType'], 'description':x['description'], 'value':x['value']}, paths)
 							
 		if len(dimension) == 2:
 	
 			# 2-dimensional array of primatives
 			if isPrimative(dataType):
-				fullPaths = [{'path': tag['name'] + '[' + str(i) + ',' + str(j) + ']', 'dataType': tag['dataType'], 'value':data[i][j]} for i in range(dimension[0]) for j in range(dimension[1])]
+				fullPaths = [{'path': tag['name'] + '[' + str(i) + ',' + str(j) + ']', 'dataType': tag['dataType'], 'description':tag['description'], 'value':data[i][j]} for i in range(dimension[0]) for j in range(dimension[1])]
 	
 			# 2-dimensional array of udts
 			else:
@@ -270,7 +221,7 @@ def getPaths(tag, udts, data):
 								
 									paths = paths + getPaths(udtTag, udts, dataRecursive)
 							
-								fullPaths = fullPaths + map(lambda x : {'path':tag['name'] + '[' + str(i) + ',' + str(j) + ']' +  '.' + x['path'], 'dataType':x['dataType'], 'value':x['value']}, paths)
+								fullPaths = fullPaths + map(lambda x : {'path':tag['name'] + '[' + str(i) + ',' + str(j) + ']' +  '.' + x['path'], 'dataType':x['dataType'], 'description':x['description'], 'value':x['value']}, paths)
 
 		if len(dimension) > 2:
 			# currently unsupported
@@ -483,12 +434,15 @@ def parseArrayNode(arrayNode):
 	dataType = arrayNode.getAttribute("DataType")
 	dimensions = map(int,arrayNode.getAttribute("Dimensions").split(','))
 	elements = initializeList(dimensions, '0')
-	elementNodes = arrayNode.getElementsByTagName("Element")
-	for k in range(elementNodes.getLength()):
-		elementNode = elementNodes.item(k)
+	
+
+	elementNodes = getChildByTagName(arrayNode, 'Element')
+	for elementNode in elementNodes:
+
 		if elementNode.getNodeType() == Node.ELEMENT_NODE:
 		
 			indexes = map(int, elementNode.getAttribute("Index").strip('[]').split(','))
+
 			if elementNode.hasAttribute("Value"):
 				
 				value = valueTransform(elementNode.getAttribute("Value"))
@@ -511,13 +465,18 @@ def parseArrayNode(arrayNode):
 					
 	return elements
 	
+	
+	
+	
+
 
 
 def parseStructureNode(structureNode):
 	members = {}
-	memberNodes = structureNode.getElementsByTagName("DataValueMember")
-	for k in range(memberNodes.getLength()):
-		memberNode = memberNodes.item(k)
+	
+	
+	memberNodes = getChildByTagName(structureNode, "DataValueMember")
+	for memberNode in memberNodes:
 		if memberNode.getNodeType() == Node.ELEMENT_NODE:
 			name = memberNode.getAttribute("Name")
 			if memberNode.hasAttribute("Value"):
@@ -527,21 +486,24 @@ def parseStructureNode(structureNode):
 			else:
 				members[name] = parseDataNode(memberNode)
 				
-	arrayNodes = structureNode.getElementsByTagName("ArrayMember")
-	for k in range(arrayNodes.getLength()):
-		arrayNode = arrayNodes.item(k)
+				
+	arrayNodes = getChildByTagName(structureNode, "ArrayMember")
+	for arrayNode in arrayNodes:
 		if arrayNode.getNodeType() == Node.ELEMENT_NODE:
 			name = arrayNode.getAttribute("Name")
 			members[name] = parseArrayNode(arrayNode)
 			
-	structureMemberNodes = structureNode.getElementsByTagName("StructureMember")
-	for k in range(structureMemberNodes.getLength()):
+			
+	structureMemberNodes = getChildByTagName(structureNode, "StructureMember")
+	for structureMemeberNode in structureMemberNodes:
 		structureMemberNode = structureMemberNodes.item(k)
 		if structureMemberNode.getNodeType() == Node.ELEMENT_NODE:
 			name = structureMemberNode.getAttribute("Name")
 			members[name] = parseStructureNode(structureMemberNode)
 				
 	return members
+	
+	
 
 
 
@@ -558,12 +520,30 @@ def parseAttributesNode(attributesNode):
 	return parameters
 
 
+
+def getChildByTagName(node, tagName):
+	
+	nodes = []
+	childNodes = node.getChildNodes()
+	for i in range(childNodes.getLength()):
+		childNode = childNodes.item(i)
+		if childNode.getNodeName() == tagName:
+			nodes.append(childNode)
+			
+	return nodes
+
+
+
+
 def initializeList(shape, value):
 
 	if shape == []:
 		return value
 	else:
 		return [initializeList(shape[1:],value)] * shape[0]
+
+
+
 
 def valueTransform(value):
 	if "DT#" in str(value):
@@ -576,7 +556,7 @@ def getBuiltInUdts():
 
 	udts = []
 	
-	# Add TIMER, COUNTER, MESSAGE, CONTROL, ALARM_DIGITAL, ALARM_ANALOG
+	# Add TIMER, COUNTER, PID, MESSAGE, CONTROL, ALARM_DIGITAL, ALARM_ANALOG
 	
 	
 	#--------------------- TIMER --------------------------------------------
@@ -710,6 +690,487 @@ def getBuiltInUdts():
 	}
 	udts.append(udt)
 	
+
+
+
+
+
+	#--------------------- PID --------------------------------------------
+	udt = {
+	  "name": "PID",
+	  "description": "Built-in counter",
+	  "stringFamily": False,
+	  "tags": [
+		{
+		  "name": "CTL",
+		  "description": "",
+		  "dataType": "DINT",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "EN",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "CT",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "CL",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "PVT",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "DOE",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "SWM",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "CA",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "MO",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "PE",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "NDF",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "NOBC",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "NOZC",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "INI",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "SPOR",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "OLL",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "OLH",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "EWD",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "DVNA",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "DVPA",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "PVLA",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "PVHA",
+		  "description": "",
+		  "dataType": "BOOL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"false",
+		  "hidden": False
+		},
+		{
+		  "name": "SP",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "KP",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "KI",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "KD",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "BIAS",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "MAXS",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "MINS",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "DB",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "SO",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "MAXO",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "MINO",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "UPD",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "PV",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "ERR",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "OUT",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "PVH",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "PVL",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "DVP",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "DVN",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "PVDB",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "DVDB",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "MAXI",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "MINI",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "TIE",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "MAXCV",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "MINCV",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "MINTIE",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "MAXTIE",
+		  "description": "",
+		  "dataType": "REAL",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		},
+		{
+		  "name": "DATA",
+		  "description": "",
+		  "dataType": "REAL[17]",
+		  "dimension":None,
+		  "selected": True,
+		  "simulationFunction":"0",
+		  "hidden": False
+		}
+	  ]
+	}
+	udts.append(udt)
+
+
+
+
+
+
+
+
 
 
 	#--------------------- MESSAGE --------------------------------------------
@@ -2661,3 +3122,59 @@ def getBuiltInUdts():
 	
 	return udts
 
+
+
+
+
+
+
+
+
+
+
+# ------------------------- Testing -----------------------------------------------------------------------------------
+
+
+
+#filepath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Alton PLC Programs/ControlLogix/UV/PLC-UV.L5X'
+#l5xString = system.file.readFileAsString(filepath, 'UTF-8')
+#
+#udts, tags = conversion.L5X.parse(l5xString)
+#
+#
+#paths = []
+#for i, tag in enumerate(tags):
+#	print tag
+#	paths = paths + conversion.L5X.getPaths(tag, udts, tag['data'])
+#
+#print "--------------  UDTs  --------------"
+#for udt in udts:
+#	print udt['name']
+#	print udt['tags']
+#	
+#	
+#print "\n\n\n------------------ Tags ---------------------"
+#for i, tag in enumerate(tags):
+#	print tag
+#	if tag['name'] == 'UV2_DAILY_REPORT_DATA':
+#		print i
+#	
+#	
+#	
+#print tags[24] # simple atomic
+#print tags[26] # array atomic
+#print tags[84] # multi dim array
+#print tags[46] # simple udt
+#print tags[0] # alarm analog
+#print tags[3] # alarm digital
+#print tags[48] # message
+#print tags[28] # array of udts
+#print tags[63]
+#
+#print tags[71]
+#print tags[71]['name']
+#print tags[71]['data']
+#paths = conversion.L5X.getPaths(tags[71], udts, tags[71]['data'])
+#
+#for path in paths:
+#	print path

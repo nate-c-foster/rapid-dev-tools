@@ -76,7 +76,6 @@ import re
 #tagMappingFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_kepware_join.csv'
 #tagMappingFileWithDevice = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_kepware_join_device.csv'
 #devicesFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/devices.csv'
-#deviceFilePathSuffix = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/Kepware/Exports/'
 # 
 #newFieldNames = [	'IconicsPage',
 #					'KepwareChannel',
@@ -124,6 +123,78 @@ import re
 
 
 
+# ------------------  Update with PLC info and Ignition OPC path ----------------------------------
+
+#tagsFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Tags/'
+#plcTagsDS = dataset.generate.fromStandardCSVs(tagsFolderPath, addFileNameColumn=False)
+#
+#tagMappingFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_kepware_join_device.csv'
+#rosetaStonePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_kepware_plc.csv'
+#
+#newFieldNames = [	'IconicsPage',
+#					'KepwareChannel',
+#					'KepwareDevice', 
+#					'KepwareTagPath', 
+#					'KepwareAddress', 
+#					'KepwareDataType',
+#					'KepwareDescription',
+#					'PLCPath',
+#					'PLCDataType',
+#					'PLCValue',
+#					'PLCDescription',
+#					'IgnitionDevice',
+#					'IgnitionOpcPath'
+#					] 
+# 
+#import csv
+#
+#with open(tagMappingFilePath) as csvReaderFile, open(rosetaStonePath, 'wb') as csvWriterFile:
+#	reader = csv.DictReader(csvReaderFile)
+#	writer = csv.DictWriter(csvWriterFile, fieldnames=newFieldNames)
+#	writer.writeheader()
+#	
+#	for row in reader:
+#
+#		plcPath = ''
+#		plcDataType = ''
+#		plcDescription = ''
+#		plcValue = ''
+#		IgnitionOpcPath = ''
+#		for plcRow in range(plcTagsDS.getRowCount()):
+#			
+#			if row['IgnitionDevice'] == plcTagsDS.getValueAt(plcRow,'Device'):
+#			
+#				if row['KepwareAddress'].lower() == plcTagsDS.getValueAt(plcRow,'Path').lower():
+#					plcPath = plcTagsDS.getValueAt(plcRow,'Path')
+#					plcDataType = plcTagsDS.getValueAt(plcRow,'DataType')
+#					plcDescription = plcTagsDS.getValueAt(plcRow,'Description')
+#					plcValue = plcTagsDS.getValueAt(plcRow,'Value')
+#					break
+#			
+#				# if using bit numbers from an int
+#				if row['KepwareAddress'].split('.')[-1].isdigit() and '.'.join(row['KepwareAddress'].split('.')[:-1]).lower() == plcTagsDS.getValueAt(plcRow,'Path').lower():
+#					bitNumber = row['KepwareAddress'].split('.')[-1]
+#					plcPath = plcTagsDS.getValueAt(plcRow,'Path') + '.' + bitNumber
+#					plcDataType = plcTagsDS.getValueAt(plcRow,'DataType')
+#					plcDescription = plcTagsDS.getValueAt(plcRow,'Description')
+#					plcValue = plcTagsDS.getValueAt(plcRow,'Value')
+#					break
+#				
+#				
+#		writer.writerow({	'IconicsPage': row['IconicsPage'],
+#							'KepwareChannel': row['KepwareChannel'],
+#							'KepwareDevice':row['KepwareDevice'], 
+#							'KepwareTagPath':row['KepwareTagPath'], 
+#							'KepwareAddress':row['KepwareAddress'], 
+#							'KepwareDataType': row['KepwareDataType'],
+#							'KepwareDescription': row['KepwareDescription'],
+#							'PLCPath':plcPath,
+#							'PLCDataType':plcDataType,
+#							'PLCValue':plcValue,
+#							'PLCDescription':plcDescription,
+#							'IgnitionDevice':row['IgnitionDevice'],
+#							'IgnitionOpcPath': 'ns=1;s=[' + row['IgnitionDevice'] + ']' + plcPath
+#							})
 
 
 
