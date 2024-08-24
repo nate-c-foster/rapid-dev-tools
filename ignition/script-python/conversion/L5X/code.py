@@ -548,6 +548,8 @@ def initializeList(shape, value):
 def valueTransform(value):
 	if "DT#" in str(value):
 		value = '0'
+	elif str(value).startswith('$'):
+		value = '0'
 	return value
 
 
