@@ -14,6 +14,7 @@ import org.w3c.dom.Element as Element
 DATA_TYPE_MAPPING_PYTHON = {"BOOL":bool, "BIT":bool, "SINT":int, "INT":int, "DINT":int, "LINT": int, "REAL":float, "STRING":str}
 DATA_TYPE_MAPPING_IGNITION = {"BOOL":"Boolean", "BIT":"Boolean", "SINT":"Int1", "INT":"Int2", "DINT":"Int4", "LINT":"Int8", "REAL":"Float4", "STRING":"String"}
 DATA_TYPE_MAPPING_SIMULATION = {"BOOL":"Boolean", "BIT":"Boolean", "SINT":"Int16", "INT":"Int16", "DINT":"Int32", "LINT":"Int64", "REAL":"Float", "STRING":"String"}
+DATA_TYPE_MAPPING_KEPWARE_TO_AB = {"Boolean":"BIT", "Word": "DINT", "DWord":"DINT",  "Float":"REAL"}
 DEFAULT_SIMULATION = {"BOOL":"false", "BIT":"false", "SINT":"0", "INT":"0", "DINT":"0", "LINT": "0", "REAL":"0", "STRING":""}
 
 
@@ -550,6 +551,8 @@ def valueTransform(value):
 		value = '0'
 	elif str(value).startswith('$'):
 		value = '0'
+	elif str(value).startswith('16#'):
+		value = str(int(value.replace('16#', '0x'),0))
 	return value
 
 

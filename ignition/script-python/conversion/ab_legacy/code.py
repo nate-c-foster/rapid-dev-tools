@@ -4,6 +4,9 @@ import re
 
 
 
+
+# -------------  Generate SIM files ------------------------------------
+
 #deviceNames = ['CHEM', 'FLTR1', 'FLTR3', 'FLTR5', 'GRAFTON_ELEV_TANK', 'HRLD', 'RAW', 'SP1', 'SP3']
 #
 #for deviceName in deviceNames:
@@ -19,6 +22,37 @@ import re
 #	
 #	ds = conversion.ab_legacy.generateSimulation(l5xFilePath, asciiFilePath)
 #	dataset.export.toCSV(ds, simFilePath)
+
+
+
+
+
+
+# -------------  Add missing tags from tag mapper ------------------------------------
+
+#deviceNames = ['CHEM', 'FLTR1', 'FLTR3', 'FLTR5', 'GRAFTON_ELEV_TANK', 'HRLD', 'RAW', 'SP1', 'SP3']
+#
+#for deviceName in deviceNames:
+#
+#	simFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/SIM/' + deviceName + '.csv'
+#	rosetaStonePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_kepware_plc.csv'
+#	
+#	simDS = dataset.generate.fromStandardCSV(simFilePath)
+#	
+#	rosetaStoneDS = dataset.generate.fromStandardCSV(rosetaStonePath)
+#	rosetaStonePyDS = system.dataset.toPyDataSet(rosetaStoneDS)
+#	
+#	for tag in rosetaStonePyDS:
+#		if tag['IgnitionDevice'] == deviceName and tag['PLCDescription'] == '(PLC Tag Not Found)':
+#			print 'Device: ', deviceName
+#			print 'Not Found: ', tag['PLCPath']
+#			currentTagPaths = simDS.getColumnAsList(simDS.getColumnIndex("Browse Path"))
+#			if not tag['PLCPath'] in currentTagPaths:
+#				simDS = system.dataset.addRow(simDS, [0, tag['PLCPath'], tag['PLCValue'], conversion.L5X.DATA_TYPE_MAPPING_SIMULATION[tag['PLCDataType']]])
+#			
+#	
+#	dataset.export.toCSV(simDS, simFilePath)
+
 
 
 
@@ -49,7 +83,7 @@ def readASCIIExportFile(filePath):
 def getAllTags(l5xFilePath, asciiFilePath, deviceName):
 
 	l5xString = system.file.readFileAsString(l5xFilePath, 'UTF-8')
-	l5xTagsDS = conversion.L5X.getAllTags(l5xString,'FLTR1')  # headers ['Device', 'Path', 'DataType', 'Value', 'Description']
+	l5xTagsDS = conversion.L5X.getAllTags(l5xString,deviceName)  # headers ['Device', 'Path', 'DataType', 'Value', 'Description']
 	l5xTagPyDS = system.dataset.toPyDataSet(l5xTagsDS)
 	
 	asciiDS = readASCIIExportFile(asciiFilePath) # headers ['Register', 'Name', 'Description']

@@ -179,6 +179,16 @@ import re
 #					plcDescription = plcTagsDS.getValueAt(plcRow,'Description')
 #					plcValue = plcTagsDS.getValueAt(plcRow,'Value')
 #					break
+#			
+#		if not plcPath and row['KepwareAddress']:
+#			
+#			plcPath = row['KepwareAddress']
+#			plcDescription = '(PLC Tag Not Found)'
+#			plcDataType = conversion.L5X.DATA_TYPE_MAPPING_KEPWARE_TO_AB[row['KepwareDataType']]
+#			plcValue = 0 
+#			
+#			
+#			
 #				
 #				
 #		writer.writerow({	'IconicsPage': row['IconicsPage'],
