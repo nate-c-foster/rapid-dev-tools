@@ -3,162 +3,31 @@ import com.inductiveautomation.ignition.common.model.values.QualityCode as Quali
 
 
 
-# -----------  delays  ------------------------------------------------
+# ----------- run report  -----------------------------------------------------------
 
-
-#rootPath = '[SCADA]Ventura'
-#rootPath = '[SCADA]_types_/User Defined/GE Booth'
-#rootPath = '[SCADA]_types_/User Defined/Ventura MicoLogix'
-
-#results = system.tag.browse(rootPath, {'recursive':True, 'tagType':'UdtInstance', 'typeId':'Components/Alarm'})
-#
-#
-#for result in results:
-#	tagPath = str(result['fullPath'])
-#	
-#
-#	
-#	valueSource = system.tag.readBlocking(tagPath + '/Delay.valueSource')[0].value
-#	enabled = system.tag.readBlocking(tagPath + '.enabled')[0].value
-#	if enabled: # and valueSource == 'opc':
-#	
-#		delayValue = system.tag.readBlocking(tagPath + '/Alarm/Alarms/Alarm.TimeOnDelaySeconds')[0].value
-#		delayConfig = system.tag.getConfiguration(tagPath + '/Alarm', False)
-#		
-#		#if not delay:
-#		print tagPath
-#		print delayValue
-#		print delayConfig[0]['alarms'][0]['timeOnDelaySeconds']
-	
-	
-		#delayConfig[0]['alarms'][0]['timeOnDelaySeconds'] = {'bindType':'Tag', 'value':'[.]Delay'}
-	
-		#system.tag.configure(tagPath, delayConfig[0], "o")
-	
-#		config = system.tag.getConfiguration(tagPath + '/Alarm', recursive=False)
-#		if type(config[0]['alarms'][0]['timeOnDelaySeconds']) == float:
-#			print tagPath
-
-
-
-
-
-
-
-
-
-# ----------- join alarmworx with kepware tags  -----------------------------------------------------------
-
-
-#alarmworxPath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/AlarmReport/alarmworx_csv.csv'
-#kepwarePath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/AlarmReport/kepware_tags_csv.csv'
-#alarmworxToKepwareJoinPath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/AlarmReport/alarmworx_kepware_join2.csv'
+#iconicsToKepwarePath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/AlarmReport/alarmworx_to_kepware_filtered.csv'
+#commissioningReportPath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/AlarmReport/Alarm_Report.xlsx'
 #rootTagPath = '[SCADA]Ventura'
 #
-#alarmworxDS = dataset.generate.fromStandardCSV(alarmworxPath)
-#kepwareDS = dataset.generate.fromStandardCSV(kepwarePath)
+#existingAlarmDS = dataset.generate.fromStandardCSV(iconicsToKepwarePath)
+#
+## alarm coverage
+#alarmCoverageReport = alarms.alarmCoverageReport(existingAlarmDS, rootTagPath)
+#alarmCoverageFormatDS = alarms.alarmCoverageAnalysis(alarmCoverageReport)
+#
+## alarm tag report
+#alarmTagReport = alarms.alarmTagReport(rootTagPath)
+#alarmTagFormatDS = alarms.alarmTagAnalysis(alarmTagReport)
 #
 #
 #
-#def joinPredicate(row1,row2):
+#sheetsData = [	{'dataset':alarmCoverageReport, 'formatDataset': alarmCoverageFormatDS, 'sheetName': 'Alarm Coverage Report'},
+#				{'dataset':alarmTagReport, 'formatDataset': alarmTagFormatDS, 'sheetName': 'Alarm Tag Report'}
 #
-#	kepwarePath = row1['Input1']
-#	deviceName = kepwarePath.split('Kepware.KEPServerEX.V6\\')[-1].split('.')[1]
-#	devicePath = '.'.join(kepwarePath.split('Kepware.KEPServerEX.V6\\')[-1].split('.')[2:])
-#	
+#]
 #
-#	if row2['FileName'] == deviceName and row2['Tag Name'] == devicePath:
-#		return True
-#	else:
-#		return False
-#
-#columns1 = ['Input1', 'DefaultDisplay', 'LastModified', 'Enabled', 'Delay']
-#columns2 = ['FileName', 'Tag Name', 'Address']
-#
-#alarmworxKepwareJoin = dataset.operation.leftOuterJoint(alarmworxDS, kepwareDS, joinPredicate, columns1, columns2)
-#dataset.export.toCSV(alarmworxKepwareJoin, alarmworxToKepwareJoinPath)
+#dataset.export.toExcelWithFormating(sheetsData, commissioningReportPath)
 
-
-
-
-# ----------- Change column names on the join  -----------------------------------------------------------
-
-
-
-#alarmworxJoinPath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/AlarmReport/alarmworx_kepware_join2.csv'
-#alarmworxToKepwarePath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/AlarmReport/alarmworx_to_kepware_csv2.csv'
-#
-#joinDS = dataset.generate.fromStandardCSV(alarmworxJoinPath)
-#
-#
-#def transform(row):
-#	return { 	'IconicsTagPath':row['left_Input1'],
-#				'DeviceName':row['right_FileName'],
-#				'DevicePath':row['right_Tag Name'],
-#				'Address':row['right_Address'],
-#				'Description':row['left_DefaultDisplay'],
-#				'Enabled':row['left_Enabled'],
-#				'Delay':row['left_Delay']
-#				}
-#
-#
-#alarmworxToKepDS = dataset.operation.datsetMap(joinDS, transform, outputHeaders=[	'IconicsTagPath',
-#																		'DeviceName',
-#																		'DevicePath',
-#																		'Address',
-#																		'Description',
-#																		'Enabled',
-#																		'Delay'])
-#
-#
-#dataset.export.toCSV(alarmworxToKepDS , alarmworxToKepwarePath)
-
-
-
-
-# ----------- Filter for most recent change -----------------------------------------------------------
-
-
-#alarmworxToKepwarePath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/AlarmReport/alarmworx_to_kepware_csv2.csv'
-#alarmworxToKepwareFilteredPath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/AlarmReport/alarmworx_to_kepware_filtered.csv'
-#
-#
-#alarmworxToKepware = dataset.generate.fromStandardCSV(alarmworxToKepwarePath)
-#pyds = system.dataset.toPyDataSet(alarmworxToKepware)
-#
-#data = []
-#for row in pyds:
-#	lastModified = system.date.toMillis(system.date.parse(row['LastModified'], 'MM/dd/yyyy hh:mm'))
-#	
-#	matches = []
-#	for row2 in pyds:
-#		if row['IconicsTagPath'] == row2['IconicsTagPath']:
-#			matches.append(row2)
-#			
-#	latest = True
-#
-#	for match in matches:
-#		if lastModified < system.date.toMillis(system.date.parse(match['LastModified'], 'MM/dd/yyyy hh:mm')):
-#			latest = False
-#			
-#	if latest:
-#		data.append(row)
-#		
-#
-#	headers=[	'IconicsTagPath',
-#				'DeviceName',
-#				'DevicePath',
-#				'Address',
-#				'LastModified',
-#				'Description',
-#				'Enabled',
-#				'Delay']
-#				
-#				
-#filteredDS = system.dataset.toDataSet(headers, data)
-#
-#
-#dataset.export.toCSV(filteredDS , alarmworxToKepwareFilteredPath)
 
 
 
@@ -205,35 +74,41 @@ import com.inductiveautomation.ignition.common.model.values.QualityCode as Quali
 
 
 
+# -----------  delays  ------------------------------------------------
 
 
+#rootPath = '[SCADA]Ventura'
+#rootPath = '[SCADA]_types_/User Defined/GE Booth'
+#rootPath = '[SCADA]_types_/User Defined/Ventura MicoLogix'
 
-# ----------- run report  -----------------------------------------------------------
-
-#iconicsToKepwarePath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/AlarmReport/alarmworx_to_kepware_filtered.csv'
-#commissioningReportPath = 'C:/VM Shared Drive/Ventura/Ventura/TestReports/AlarmReport/Alarm_Report.xlsx'
-#rootTagPath = '[SCADA]Ventura'
-#
-#existingAlarmDS = dataset.generate.fromStandardCSV(iconicsToKepwarePath)
-#
-## alarm coverage
-#alarmCoverageReport = alarms.alarmCoverageReport(existingAlarmDS, rootTagPath)
-#alarmCoverageFormatDS = alarms.alarmCoverageAnalysis(alarmCoverageReport)
-#
-## alarm tag report
-#alarmTagReport = alarms.alarmTagReport(rootTagPath)
-#alarmTagFormatDS = alarms.alarmTagAnalysis(alarmTagReport)
+#results = system.tag.browse(rootPath, {'recursive':True, 'tagType':'UdtInstance', 'typeId':'Components/Alarm'})
 #
 #
+#for result in results:
+#	tagPath = str(result['fullPath'])
+#	
 #
-#sheetsData = [	{'dataset':alarmCoverageReport, 'formatDataset': alarmCoverageFormatDS, 'sheetName': 'Alarm Coverage Report'},
-#				{'dataset':alarmTagReport, 'formatDataset': alarmTagFormatDS, 'sheetName': 'Alarm Tag Report'}
-#
-#]
-#
-#dataset.export.toExcelWithFormating(sheetsData, commissioningReportPath)
-
-
+#	
+#	valueSource = system.tag.readBlocking(tagPath + '/Delay.valueSource')[0].value
+#	enabled = system.tag.readBlocking(tagPath + '.enabled')[0].value
+#	if enabled: # and valueSource == 'opc':
+#	
+#		delayValue = system.tag.readBlocking(tagPath + '/Alarm/Alarms/Alarm.TimeOnDelaySeconds')[0].value
+#		delayConfig = system.tag.getConfiguration(tagPath + '/Alarm', False)
+#		
+#		#if not delay:
+#		print tagPath
+#		print delayValue
+#		print delayConfig[0]['alarms'][0]['timeOnDelaySeconds']
+	
+	
+		#delayConfig[0]['alarms'][0]['timeOnDelaySeconds'] = {'bindType':'Tag', 'value':'[.]Delay'}
+	
+		#system.tag.configure(tagPath, delayConfig[0], "o")
+	
+#		config = system.tag.getConfiguration(tagPath + '/Alarm', recursive=False)
+#		if type(config[0]['alarms'][0]['timeOnDelaySeconds']) == float:
+#			print tagPath
 
 
 
