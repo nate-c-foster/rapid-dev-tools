@@ -7,341 +7,6 @@ from StringIO import StringIO
 
 
 
-
-
-
-
-
-
-
-
-
-# -----------------------------------------------------------------------------------------------------------------
-#                                       Iconics ALARMS
-# -----------------------------------------------------------------------------------------------------------------
-
-
-
-## ------------- create mapping file from alarmworx to kepware ------------------------
-#	
-#alarmsFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/AL Alarms.csv'
-#deviceFilePathSuffix = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/Kepware/Exports/'
-#
-#alarmMappingFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/alarms_kepware.csv'
-# 
-#newFieldNames = [	'KepwareChannel',
-#					'KepwareDevice', 
-#					'KepwareTagPath', 
-#					'KepwareAddress', 
-#					'KepwareDataType',
-#					'KepwareDescription',
-#					'AlarmName',
-#					'AlarmDescription',
-#					'HiHiSetpoint',
-#					'HiHiDescription',
-#					'HiSetpoint',
-#					'HiDescription',
-#					'LoSetpoint',
-#					'LoDescription',
-#					'LoLoSetpoint',
-#					'LoLoDescription',
-#					'LastModified',
-#					'Enabled',
-#					'Delay'
-#					] 
-# 
-#import csv
-#
-#with open(alarmsFilePath) as csvReaderFile, open(alarmMappingFilePath, 'wb') as csvWriterFile:
-#	reader = csv.DictReader(csvReaderFile)
-#	writer = csv.DictWriter(csvWriterFile, fieldnames=newFieldNames)
-#	writer.writeheader()
-#	
-#	for row in reader:
-#	
-#		kepwarePath = row['Input1']
-#		kepwareChannel = kepwarePath.split('KEPServerEX.V6\\')[-1].split('.')[0]
-#		kepwareDevice = kepwarePath.split('KEPServerEX.V6\\')[-1].split('.')[1]
-#		kepwareTagPath = '.'.join(kepwarePath.split('KEPServerEX.V6\\')[-1].split('.')[2:])
-#		
-#		if 'Simulator' not in kepwareChannel:
-#			deviceFilePath = deviceFilePathSuffix + kepwareChannel + '__' + kepwareDevice + '.csv'
-#			with open(deviceFilePath) as deviceReaderFile:
-#				deviceReader = csv.DictReader(deviceReaderFile)
-#				
-#				address = ''
-#				dataType = ''
-#				for deviceRow in deviceReader:
-#					#print deviceRow
-#					if deviceRow['\xef\xbb\xbfTag Name'].lower() == kepwareTagPath.lower():	
-#						address = deviceRow['Address']
-#						dataType = deviceRow['Data Type']
-#						description = deviceRow['Description']
-#						break
-#				
-#				writer.writerow({
-#									'KepwareChannel': kepwareChannel,
-#									'KepwareDevice':kepwareDevice, 
-#									'KepwareTagPath':kepwareTagPath, 
-#									'KepwareAddress':address, 
-#									'KepwareDataType': dataType,
-#									'KepwareDescription': description,
-#									'AlarmName': row['Name'],
-#									'AlarmDescription': row['Description'],
-#									'HiHiSetpoint': row['LIM_HIHI_Limit'],
-#									'HiHiDescription': row['LIM_HIHI_MsgText'],
-#									'HiSetpoint': row['LIM_HI_Limit'],
-#									'HiDescription': row['LIM_HI_MsgText'],
-#									'LoSetpoint': row['LIM_LO_Limit'],
-#									'LoDescription': row['LIM_LO_MsgText'],
-#									'LoLoSetpoint': row['LIM_LOLO_Limit'],
-#									'LoLoDescription': row['LIM_LOLO_MsgText'],
-#									'LastModified': row['LastModified'],
-#									'Enabled':row['Enabled'],
-#									'Delay':row['Delay']
-#									})
-#
-#
-#
-#
-## ------------ Filter for most recent only ------------------------------------
-#alarmMappingDS = dataset.generate.fromStandardCSV(alarmMappingFilePath)
-#pyds = system.dataset.toPyDataSet(alarmMappingDS)
-#
-#data = []
-#for row in pyds:
-#
-#	lastModified = system.date.toMillis(system.date.parse(row['LastModified'], 'MM/dd/yyyy hh:mm')) if row['LastModified'] != '12:00:00 AM' else 0
-#
-#	matches = []
-#	for row2 in pyds:
-#		if row['KepwareChannel'] == row2['KepwareChannel'] and row['KepwareDevice'] == row2['KepwareDevice'] and row['KepwareAddress'] == row2['KepwareAddress']:
-#			matches.append(row2)
-#			
-#	latest = True
-#
-#	for match in matches:
-#		
-#		if lastModified < system.date.toMillis(system.date.parse(match['LastModified'], 'MM/dd/yyyy hh:mm')) if match['LastModified'] != '12:00:00 AM' else 0:
-#			latest = False
-#			
-#	if latest:
-#		data.append(row)
-#		
-#
-#headers = alarmMappingDS.getColumnNames()
-#filteredDS = system.dataset.toDataSet(list(headers), data)
-#dataset.export.toCSV(filteredDS, alarmMappingFilePath)
-#
-#
-#
-## ------------- add Ignition device name ------------------------
-#
-#devicesFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/devices.csv'
-#alarmMappingDeviceFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/alarms_kepware_device.csv'
-# 
-#newFieldNames = [	'KepwareChannel',
-#					'KepwareDevice', 
-#					'KepwareTagPath', 
-#					'KepwareAddress', 
-#					'KepwareDataType',
-#					'KepwareDescription',
-#					'IgnitionDevice',
-#					'AlarmName',
-#					'AlarmDescription',
-#					'HiHiSetpoint',
-#					'HiHiDescription',
-#					'HiSetpoint',
-#					'HiDescription',
-#					'LoSetpoint',
-#					'LoDescription',
-#					'LoLoSetpoint',
-#					'LoLoDescription',
-#					'LastModified',
-#					'Enabled',
-#					'Delay'
-#					] 
-# 
-#
-#with open(alarmMappingFilePath) as csvReaderFile, open(alarmMappingDeviceFilePath, 'wb') as csvWriterFile:
-#	reader = csv.DictReader(csvReaderFile)
-#
-#	writer = csv.DictWriter(csvWriterFile, fieldnames=newFieldNames)
-#	writer.writeheader()
-#	
-#	for row in reader:
-#		
-#		
-#		with  open(devicesFilePath) as deviceReaderFile:
-#			deviceReader = csv.DictReader(deviceReaderFile)
-#			ignitionDevice = ''
-#			for deviceRow in deviceReader:
-#	
-#				if deviceRow['KepwareChannel'] == row['KepwareChannel'] and deviceRow['KepwareDevice'] == row['KepwareDevice']:	
-#					ignitionDevice = deviceRow['\xef\xbb\xbfName']
-#					break
-#		
-#			writer.writerow({	
-#								'KepwareChannel': row['KepwareChannel'],
-#								'KepwareDevice': row['KepwareDevice'], 
-#								'KepwareTagPath': row['KepwareTagPath'], 
-#								'KepwareAddress': row['KepwareAddress'], 
-#								'KepwareDataType': row['KepwareDataType'],
-#								'KepwareDescription': row['KepwareDescription'],
-#								'IgnitionDevice': ignitionDevice,
-#								'AlarmName': row['AlarmName'],
-#								'AlarmDescription': row['AlarmDescription'],
-#								'HiHiSetpoint': row['HiHiSetpoint'],
-#								'HiHiDescription': row['HiHiDescription'],
-#								'HiSetpoint': row['HiSetpoint'],
-#								'HiDescription': row['HiDescription'],
-#								'LoSetpoint': row['LoSetpoint'],
-#								'LoDescription': row['LoDescription'],
-#								'LoLoSetpoint': row['LoLoSetpoint'],
-#								'LoLoDescription': row['LoLoDescription'],
-#								'LastModified': row['LastModified'],
-#								'Enabled': row['Enabled'],
-#								'Delay': row['Delay']
-#								})
-#
-#
-#
-#
-#
-## ------------------  Update with PLC info and Ignition OPC path ----------------------------------
-#
-#tagsFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Tags/'
-#plcTagsDS = dataset.generate.fromStandardCSVs(tagsFolderPath, addFileNameColumn=False)
-#
-#tagMappingFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/alarms_kepware_device.csv'
-#rosetaStonePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/alarms_kepware_plc.csv'
-#
-#newFieldNames =[	'KepwareChannel',
-#					'KepwareDevice', 
-#					'KepwareTagPath', 
-#					'KepwareAddress', 
-#					'KepwareDataType',
-#					'KepwareDescription',
-#					'PLCPath',
-#					'PLCDataType',
-#					'PLCValue',
-#					'PLCDescription',
-#					'IgnitionDevice',
-#					'IgnitionOpcPath',
-#					'AlarmName',
-#					'AlarmDescription',
-#					'HiHiSetpoint',
-#					'HiHiDescription',
-#					'HiSetpoint',
-#					'HiDescription',
-#					'LoSetpoint',
-#					'LoDescription',
-#					'LoLoSetpoint',
-#					'LoLoDescription',
-#					'LastModified',
-#					'Enabled',
-#					'Delay'
-#					] 
-#
-#
-#
-#with open(tagMappingFilePath) as csvReaderFile, open(rosetaStonePath, 'wb') as csvWriterFile:
-#	reader = csv.DictReader(csvReaderFile)
-#	writer = csv.DictWriter(csvWriterFile, fieldnames=newFieldNames)
-#	writer.writeheader()
-#	
-#	for row in reader:
-#
-#		plcPath = ''
-#		plcDataType = ''
-#		plcDescription = ''
-#		plcValue = ''
-#		IgnitionOpcPath = ''
-#		for plcRow in range(plcTagsDS.getRowCount()):
-#			
-#			if row['IgnitionDevice'] == plcTagsDS.getValueAt(plcRow,'Device'):
-#			
-#				if row['KepwareAddress'].lower() == plcTagsDS.getValueAt(plcRow,'Path').lower():
-#					plcPath = plcTagsDS.getValueAt(plcRow,'Path')
-#					plcDataType = plcTagsDS.getValueAt(plcRow,'DataType')
-#					plcDescription = plcTagsDS.getValueAt(plcRow,'Description')
-#					plcValue = plcTagsDS.getValueAt(plcRow,'Value')
-#					break
-#			
-#				# if using bit numbers from an int
-#				if row['KepwareAddress'].split('.')[-1].isdigit() and '.'.join(row['KepwareAddress'].split('.')[:-1]).lower() == plcTagsDS.getValueAt(plcRow,'Path').lower():
-#					bitNumber = row['KepwareAddress'].split('.')[-1]
-#					plcPath = plcTagsDS.getValueAt(plcRow,'Path') + '.' + bitNumber
-#					plcDataType = plcTagsDS.getValueAt(plcRow,'DataType')
-#					plcDescription = plcTagsDS.getValueAt(plcRow,'Description')
-#					plcValue = plcTagsDS.getValueAt(plcRow,'Value')
-#					break
-#			
-#		if not plcPath and row['KepwareAddress']:
-#			
-#			plcPath = row['KepwareAddress']
-#			plcDescription = '(PLC Tag Not Found)'
-#			plcDataType = conversion.L5X.DATA_TYPE_MAPPING_KEPWARE_TO_AB[row['KepwareDataType']]
-#			plcValue = 0 
-#			
-#			
-#			
-#				
-#				
-#		writer.writerow({	
-#						'KepwareChannel': row['KepwareChannel'],
-#						'KepwareDevice': row['KepwareDevice'], 
-#						'KepwareTagPath': row['KepwareTagPath'], 
-#						'KepwareAddress': row['KepwareAddress'], 
-#						'KepwareDataType': row['KepwareDataType'],
-#						'KepwareDescription': row['KepwareDescription'],
-#						'PLCPath':plcPath,
-#						'PLCDataType':plcDataType,
-#						'PLCValue':plcValue,
-#						'PLCDescription':plcDescription,
-#						'IgnitionDevice':row['IgnitionDevice'],
-#						'IgnitionOpcPath':'ns=1;s=[' + row['IgnitionDevice'] + ']' + plcPath,
-#						'AlarmName': row['AlarmName'],
-#						'AlarmDescription': row['AlarmDescription'],
-#						'HiHiSetpoint': row['HiHiSetpoint'],
-#						'HiHiDescription': row['HiHiDescription'],
-#						'HiSetpoint': row['HiSetpoint'],
-#						'HiDescription': row['HiDescription'],
-#						'LoSetpoint': row['LoSetpoint'],
-#						'LoDescription': row['LoDescription'],
-#						'LoLoSetpoint': row['LoLoSetpoint'],
-#						'LoLoDescription': row['LoLoDescription'],
-#						'LastModified': row['LastModified'],
-#						'Enabled': row['Enabled'],
-#						'Delay': row['Delay']
-#						})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def parseReportForTags(reportString):
 
 	# --- any tag ---
@@ -350,6 +15,9 @@ def parseReportForTags(reportString):
 	tags = tagRegex.findall(reportString)
 	
 	return tags
+	
+	
+	
 	
 	
 def parseReportForKepwareTags(reportString):
@@ -442,6 +110,9 @@ def parseAliasesForKepwareTags(aliasesString, filename):
 
 
 
+
+
+
 def generateCSV(tags):
 	data = []
 	header = ["IconicsPage", "IP", "Server", "Channel", "Device", "Tag Path"]
@@ -463,10 +134,10 @@ def generateCSV(tags):
 
 #iconicsReportPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_report.txt' # iconic report of all dynamic tags for all displays
 #aliasesFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/Popups' # contains aliases text files
-#outputFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_kepware_plc_test.csv' # output file with all tag mappings
 #kepwareExportsFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/Kepware/Exports/' # contains kepware device csv exports
 #devicesFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/devices.csv' # manually created with headers ['Name', KepwareChannel', 'KepwareDevice', 'Driver', 'Model', 'PLCType', 'IgnitionDriver', 'ID', 'IP', 'TagCount']
 #plcTagsFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Tags/' # contains parsed L5X tags
+#outputFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_kepware_plc.csv' # output file with all tag mappings
 #
 #conversion.iconics.generateTagMapping(iconicsReportPath, aliasesFolderPath, kepwareExportsFolderPath,devicesFilePath, plcTagsFolderPath, outputFilePath)
 
@@ -654,4 +325,307 @@ def generateTagMapping(iconicsReportPath, aliasesFolderPath, kepwareExportsFolde
 								'IgnitionDevice':row['IgnitionDevice'],
 								'IgnitionOpcPath': 'ns=1;s=[' + row['IgnitionDevice'] + ']' + plcPath
 								})
+								
+								
+								
+								
+
+
+
+
+
+
+#alarmsFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/AL Alarms.csv' # alarmwork csv export (format so it's a proper csv)
+#kepwareExportsFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/Kepware/Exports/' # contains kepware device csv exports
+#devicesFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/devices.csv' # manually created with headers ['Name', KepwareChannel', 'KepwareDevice', 'Driver', 'Model', 'PLCType', 'IgnitionDriver', 'ID', 'IP', 'TagCount']
+#plcTagsFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Tags/' # contains parsed L5X tags
+#outputFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/alarms_kepware_plc.csv'
+#
+#conversion.iconics.generateAlarmMapping(alarmsFilePath, kepwareExportsFolderPath, devicesFilePath, plcTagsFolderPath, outputFilePath)
+
+
+def generateAlarmMapping(alarmsFilePath, kepwareExportsFolderPath, devicesFilePath, plcTagsFolderPath, outputFilePath):
+
+## ------------- create mapping file from alarmworx to kepware ------------------------
+		
+	newFieldNames = [	'KepwareChannel',
+						'KepwareDevice', 
+						'KepwareTagPath', 
+						'KepwareAddress', 
+						'KepwareDataType',
+						'KepwareDescription',
+						'AlarmName',
+						'AlarmDescription',
+						'HiHiSetpoint',
+						'HiHiDescription',
+						'HiSetpoint',
+						'HiDescription',
+						'LoSetpoint',
+						'LoDescription',
+						'LoLoSetpoint',
+						'LoLoDescription',
+						'LastModified',
+						'Enabled',
+						'Delay'
+						] 
+	 
+	
+	with open(alarmsFilePath) as csvReaderFile:
+		reader = csv.DictReader(csvReaderFile)
+		alarmMappingCsvFile = StringIO()
+		writer = csv.DictWriter(alarmMappingCsvFile, fieldnames=newFieldNames)
+		writer.writeheader()
+		
+		for row in reader:
+		
+			kepwarePath = row['Input1']
+			kepwareChannel = kepwarePath.split('KEPServerEX.V6\\')[-1].split('.')[0]
+			kepwareDevice = kepwarePath.split('KEPServerEX.V6\\')[-1].split('.')[1]
+			kepwareTagPath = '.'.join(kepwarePath.split('KEPServerEX.V6\\')[-1].split('.')[2:])
+			
+			if 'Simulator' not in kepwareChannel:
+				deviceFilePath = kepwareExportsFolderPath + kepwareChannel + '__' + kepwareDevice + '.csv'
+				with open(deviceFilePath) as deviceReaderFile:
+					deviceReader = csv.DictReader(deviceReaderFile)
+					
+					address = ''
+					dataType = ''
+					for deviceRow in deviceReader:
+						#print deviceRow
+						if deviceRow['\xef\xbb\xbfTag Name'].lower() == kepwareTagPath.lower():	
+							address = deviceRow['Address']
+							dataType = deviceRow['Data Type']
+							description = deviceRow['Description']
+							break
+					
+					writer.writerow({
+										'KepwareChannel': kepwareChannel,
+										'KepwareDevice':kepwareDevice, 
+										'KepwareTagPath':kepwareTagPath, 
+										'KepwareAddress':address, 
+										'KepwareDataType': dataType,
+										'KepwareDescription': description,
+										'AlarmName': row['Name'],
+										'AlarmDescription': row['Description'],
+										'HiHiSetpoint': row['LIM_HIHI_Limit'],
+										'HiHiDescription': row['LIM_HIHI_MsgText'],
+										'HiSetpoint': row['LIM_HI_Limit'],
+										'HiDescription': row['LIM_HI_MsgText'],
+										'LoSetpoint': row['LIM_LO_Limit'],
+										'LoDescription': row['LIM_LO_MsgText'],
+										'LoLoSetpoint': row['LIM_LOLO_Limit'],
+										'LoLoDescription': row['LIM_LOLO_MsgText'],
+										'LastModified': row['LastModified'],
+										'Enabled':row['Enabled'],
+										'Delay':row['Delay']
+										})
+	
+	
+	
+	
+	# ------------ Filter for most recent only ------------------------------------
+	
+	alarmMappingDS = dataset.generate.fromStandardCSVString(alarmMappingCsvFile.getvalue())
+	pyds = system.dataset.toPyDataSet(alarmMappingDS)
+	
+	data = []
+	for row in pyds:
+	
+		lastModified = system.date.toMillis(system.date.parse(row['LastModified'], 'MM/dd/yyyy hh:mm')) if row['LastModified'] != '12:00:00 AM' else 0
+	
+		matches = []
+		for row2 in pyds:
+			if row['KepwareChannel'] == row2['KepwareChannel'] and row['KepwareDevice'] == row2['KepwareDevice'] and row['KepwareAddress'] == row2['KepwareAddress']:
+				matches.append(row2)
+				
+		latest = True
+	
+		for match in matches:
+			
+			if lastModified < system.date.toMillis(system.date.parse(match['LastModified'], 'MM/dd/yyyy hh:mm')) if match['LastModified'] != '12:00:00 AM' else 0:
+				latest = False
+				
+		if latest:
+			data.append(row)
+			
+	
+	headers = alarmMappingDS.getColumnNames()
+	filteredDS = system.dataset.toDataSet(list(headers), data)
+	filteredPyDS = system.dataset.toPyDataSet(filteredDS)
+	
+
+
+	# ------------- add Ignition device name ------------------------
+	
+	devicesFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/devices.csv'
+	alarmMappingDeviceFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/alarms_kepware_device.csv'
+	 
+	newFieldNames = [	'KepwareChannel',
+						'KepwareDevice', 
+						'KepwareTagPath', 
+						'KepwareAddress', 
+						'KepwareDataType',
+						'KepwareDescription',
+						'IgnitionDevice',
+						'AlarmName',
+						'AlarmDescription',
+						'HiHiSetpoint',
+						'HiHiDescription',
+						'HiSetpoint',
+						'HiDescription',
+						'LoSetpoint',
+						'LoDescription',
+						'LoLoSetpoint',
+						'LoLoDescription',
+						'LastModified',
+						'Enabled',
+						'Delay'
+						] 
+	 
+	
+	alarmMappingWithDeviceFile = StringIO()
+	writer = csv.DictWriter(alarmMappingWithDeviceFile, fieldnames=newFieldNames)
+	writer.writeheader()
+	
+	for row in filteredPyDS:
+		
+		
+		with  open(devicesFilePath) as deviceReaderFile:
+			deviceReader = csv.DictReader(deviceReaderFile)
+			ignitionDevice = ''
+			for deviceRow in deviceReader:
+	
+				if deviceRow['KepwareChannel'] == row['KepwareChannel'] and deviceRow['KepwareDevice'] == row['KepwareDevice']:	
+					ignitionDevice = deviceRow['\xef\xbb\xbfName']
+					break
+		
+			writer.writerow({	
+								'KepwareChannel': row['KepwareChannel'],
+								'KepwareDevice': row['KepwareDevice'], 
+								'KepwareTagPath': row['KepwareTagPath'], 
+								'KepwareAddress': row['KepwareAddress'], 
+								'KepwareDataType': row['KepwareDataType'],
+								'KepwareDescription': row['KepwareDescription'],
+								'IgnitionDevice': ignitionDevice,
+								'AlarmName': row['AlarmName'],
+								'AlarmDescription': row['AlarmDescription'],
+								'HiHiSetpoint': row['HiHiSetpoint'],
+								'HiHiDescription': row['HiHiDescription'],
+								'HiSetpoint': row['HiSetpoint'],
+								'HiDescription': row['HiDescription'],
+								'LoSetpoint': row['LoSetpoint'],
+								'LoDescription': row['LoDescription'],
+								'LoLoSetpoint': row['LoLoSetpoint'],
+								'LoLoDescription': row['LoLoDescription'],
+								'LastModified': row['LastModified'],
+								'Enabled': row['Enabled'],
+								'Delay': row['Delay']
+								})
+
+
+	
+	# ------------------  Update with PLC info and Ignition OPC path ----------------------------------
+	
+	plcTagsDS = dataset.generate.fromStandardCSVs(plcTagsFolderPath, addFileNameColumn=False)
+	
+	newFieldNames =[	'KepwareChannel',
+						'KepwareDevice', 
+						'KepwareTagPath', 
+						'KepwareAddress', 
+						'KepwareDataType',
+						'KepwareDescription',
+						'PLCPath',
+						'PLCDataType',
+						'PLCValue',
+						'PLCDescription',
+						'IgnitionDevice',
+						'IgnitionOpcPath',
+						'AlarmName',
+						'AlarmDescription',
+						'HiHiSetpoint',
+						'HiHiDescription',
+						'HiSetpoint',
+						'HiDescription',
+						'LoSetpoint',
+						'LoDescription',
+						'LoLoSetpoint',
+						'LoLoDescription',
+						'LastModified',
+						'Enabled',
+						'Delay'
+						] 
+	
+	
+	
+	with open(outputFilePath, 'wb') as csvWriterFile:
+		csvReaderFile = StringIO(alarmMappingWithDeviceFile.getvalue())
+		reader = csv.DictReader(csvReaderFile)
+		writer = csv.DictWriter(csvWriterFile, fieldnames=newFieldNames)
+		writer.writeheader()
+		
+		for row in reader:
+	
+			plcPath = ''
+			plcDataType = ''
+			plcDescription = ''
+			plcValue = ''
+			IgnitionOpcPath = ''
+			for plcRow in range(plcTagsDS.getRowCount()):
+				
+				if row['IgnitionDevice'] == plcTagsDS.getValueAt(plcRow,'Device'):
+				
+					if row['KepwareAddress'].lower() == plcTagsDS.getValueAt(plcRow,'Path').lower():
+						plcPath = plcTagsDS.getValueAt(plcRow,'Path')
+						plcDataType = plcTagsDS.getValueAt(plcRow,'DataType')
+						plcDescription = plcTagsDS.getValueAt(plcRow,'Description')
+						plcValue = plcTagsDS.getValueAt(plcRow,'Value')
+						break
+				
+					# if using bit numbers from an int
+					if row['KepwareAddress'].split('.')[-1].isdigit() and '.'.join(row['KepwareAddress'].split('.')[:-1]).lower() == plcTagsDS.getValueAt(plcRow,'Path').lower():
+						bitNumber = row['KepwareAddress'].split('.')[-1]
+						plcPath = plcTagsDS.getValueAt(plcRow,'Path') + '.' + bitNumber
+						plcDataType = plcTagsDS.getValueAt(plcRow,'DataType')
+						plcDescription = plcTagsDS.getValueAt(plcRow,'Description')
+						plcValue = plcTagsDS.getValueAt(plcRow,'Value')
+						break
+				
+			if not plcPath and row['KepwareAddress']:
+				
+				plcPath = row['KepwareAddress']
+				plcDescription = '(PLC Tag Not Found)'
+				plcDataType = conversion.L5X.DATA_TYPE_MAPPING_KEPWARE_TO_AB[row['KepwareDataType']]
+				plcValue = 0 
+				
+				
+				
+					
+					
+			writer.writerow({	
+							'KepwareChannel': row['KepwareChannel'],
+							'KepwareDevice': row['KepwareDevice'], 
+							'KepwareTagPath': row['KepwareTagPath'], 
+							'KepwareAddress': row['KepwareAddress'], 
+							'KepwareDataType': row['KepwareDataType'],
+							'KepwareDescription': row['KepwareDescription'],
+							'PLCPath':plcPath,
+							'PLCDataType':plcDataType,
+							'PLCValue':plcValue,
+							'PLCDescription':plcDescription,
+							'IgnitionDevice':row['IgnitionDevice'],
+							'IgnitionOpcPath':'ns=1;s=[' + row['IgnitionDevice'] + ']' + plcPath,
+							'AlarmName': row['AlarmName'],
+							'AlarmDescription': row['AlarmDescription'],
+							'HiHiSetpoint': row['HiHiSetpoint'],
+							'HiHiDescription': row['HiHiDescription'],
+							'HiSetpoint': row['HiSetpoint'],
+							'HiDescription': row['HiDescription'],
+							'LoSetpoint': row['LoSetpoint'],
+							'LoDescription': row['LoDescription'],
+							'LoLoSetpoint': row['LoLoSetpoint'],
+							'LoLoDescription': row['LoLoDescription'],
+							'LastModified': row['LastModified'],
+							'Enabled': row['Enabled'],
+							'Delay': row['Delay']
+							})
 	

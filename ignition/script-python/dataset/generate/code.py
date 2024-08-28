@@ -2,7 +2,7 @@
 
 import csv
 import os
-
+from StringIO import StringIO
 
 
 
@@ -26,6 +26,17 @@ def fromStandardCSV(filePath):
 			
 	return system.dataset.toDataSet(headers, data)
 	
+	
+def fromStandardCSVString(csvString):
+
+	csvfile = StringIO(csvString)
+	reader = csv.DictReader(csvfile)
+	headers = reader.fieldnames
+	data = []
+	for row in reader:
+		data.append([row[key] for key in headers])
+		
+	return system.dataset.toDataSet(headers, data)
 	
 
 
