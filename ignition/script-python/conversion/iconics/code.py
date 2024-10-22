@@ -5,6 +5,27 @@ from StringIO import StringIO
 
 
 
+#iconicsReportPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_report.txt' # iconic report of all dynamic tags for all displays
+#aliasesFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/Popups' # contains aliases text files
+#kepwareExportsFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/Kepware/Exports/' # contains kepware device csv exports
+#devicesFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/devices.csv' # manually created with headers ['Name', KepwareChannel', 'KepwareDevice', 'Driver', 'Model', 'PLCType', 'IgnitionDriver', 'ID', 'IP', 'TagCount']
+#plcTagsFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Tags/' # contains parsed L5X tags
+#outputFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_kepware_plc.csv' # output file with all tag mappings
+#
+#conversion.iconics.generateTagMapping(iconicsReportPath, aliasesFolderPath, kepwareExportsFolderPath,devicesFilePath, plcTagsFolderPath, outputFilePath)
+
+
+
+#alarmsFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/AL Alarms.csv' # alarmwork csv export (format so it's a proper csv)
+#kepwareExportsFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/Kepware/Exports/' # contains kepware device csv exports
+#devicesFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/devices.csv' # manually created with headers ['Name', KepwareChannel', 'KepwareDevice', 'Driver', 'Model', 'PLCType', 'IgnitionDriver', 'ID', 'IP', 'TagCount']
+#plcTagsFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Tags/' # contains parsed L5X tags
+#outputFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/alarms_kepware_plc.csv'
+#
+#conversion.iconics.generateAlarmMapping(alarmsFilePath, kepwareExportsFolderPath, devicesFilePath, plcTagsFolderPath, outputFilePath)
+
+
+
 
 
 def parseReportForTags(reportString):
@@ -27,6 +48,8 @@ def parseReportForKepwareTags(reportString):
 	# tag:"\\10.5.206.26\Kepware.KEPServerEX.V6\C-JanssBooster.JanssBooster.Global.Pump_1.HOA_In_Auto"
 	# tag:"\\10.5.206.26\Kepware.KEPServerEX.V6\C-JanssBooster.JanssBooster._System._FailedConnection"
 	# tag:"\\10.5.206.26\Kepware.KEPServerEX.V6\C-Moorpark.Moorpark.UPS_BATT_LOW_ALM"
+	#      \\ILALTSCD02\Kepware.KEPServerEX.V6\GRAFTON_ELEV.TANK.TANK_LEVEL
+
 	kepwareRegex = re.compile(r'\\([.\w]+)\\([.\w]+)\\([-_ #\w]+).([-_ #\w]+).([.-_ #\w]+)')
 	
 	
@@ -43,6 +66,7 @@ def parseReportForKepwareTags(reportString):
 		result = gdfNameRegex.search(line)
 		if result:
 			gdfName = result.groups()[0]
+			#print 'Found page: ', gdfName
 	
 
 		# find all kepware tags
@@ -132,14 +156,7 @@ def generateCSV(tags):
 
 
 
-#iconicsReportPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_report.txt' # iconic report of all dynamic tags for all displays
-#aliasesFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/Popups' # contains aliases text files
-#kepwareExportsFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/Kepware/Exports/' # contains kepware device csv exports
-#devicesFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/devices.csv' # manually created with headers ['Name', KepwareChannel', 'KepwareDevice', 'Driver', 'Model', 'PLCType', 'IgnitionDriver', 'ID', 'IP', 'TagCount']
-#plcTagsFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Tags/' # contains parsed L5X tags
-#outputFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_kepware_plc.csv' # output file with all tag mappings
-#
-#conversion.iconics.generateTagMapping(iconicsReportPath, aliasesFolderPath, kepwareExportsFolderPath,devicesFilePath, plcTagsFolderPath, outputFilePath)
+
 
 
 
@@ -160,7 +177,7 @@ def generateTagMapping(iconicsReportPath, aliasesFolderPath, kepwareExportsFolde
 	
 	
 	
-	tags = filter(lambda x : x['ip'].lower() == 'Ilaltscd01'.lower() and x['channel'] != 'Simulator' and not x['tagPath'].endswith('_ALARM_ACK') and not x['iconicsPage'].lower().endswith('_old'), tags)
+	tags = filter(lambda x : (x['ip'].lower() == 'Ilaltscd01'.lower() or x['ip'].lower() == 'Ilaltscd02'.lower()) and x['channel'] != 'Simulator' and not x['tagPath'].endswith('_ALARM_ACK') and not x['iconicsPage'].lower().endswith('_old'), tags)
 
 	iconicTagsCSV = StringIO(conversion.iconics.generateCSV(tags))
 
@@ -378,10 +395,19 @@ def generateAlarmMapping(alarmsFilePath, kepwareExportsFolderPath, devicesFilePa
 		
 		for row in reader:
 		
+			# fix me with regex you lazy ass
 			kepwarePath = row['Input1']
-			kepwareChannel = kepwarePath.split('KEPServerEX.V6\\')[-1].split('.')[0]
-			kepwareDevice = kepwarePath.split('KEPServerEX.V6\\')[-1].split('.')[1]
-			kepwareTagPath = '.'.join(kepwarePath.split('KEPServerEX.V6\\')[-1].split('.')[2:])
+			if 'KEPServerEX.V6\\' in kepwarePath:
+				kepwareChannel = kepwarePath.split('KEPServerEX.V6\\')[-1].split('.')[0]
+				kepwareDevice = kepwarePath.split('KEPServerEX.V6\\')[-1].split('.')[1]
+				kepwareTagPath = '.'.join(kepwarePath.split('KEPServerEX.V6\\')[-1].split('.')[2:])
+			elif 'KEPServerEx.V6\\' in kepwarePath:
+				kepwareChannel = kepwarePath.split('KEPServerEx.V6\\')[-1].split('.')[0]
+				kepwareDevice = kepwarePath.split('KEPServerEx.V6\\')[-1].split('.')[1]
+				kepwareTagPath = '.'.join(kepwarePath.split('KEPServerEx.V6\\')[-1].split('.')[2:])
+			else:
+				print 'Fault kepware regex for: ', kepwarePath
+				break
 			
 			if 'Simulator' not in kepwareChannel:
 				deviceFilePath = kepwareExportsFolderPath + kepwareChannel + '__' + kepwareDevice + '.csv'

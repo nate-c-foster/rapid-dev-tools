@@ -146,6 +146,50 @@ def _stripPrefix(typeId):
 
 
 
+#rootTagPath = '[SCADA]SIM City/'
+#typeId = 'User Defined/SIM/AI_AOI'
+#removeList = [	'copyConfig',
+#				'faceplatePath',
+#				'faceplateTabs',
+#				'mobileViewOrder',
+#				'mobileViewPath',
+#				'overview1ViewOrder',
+#				'overview1ViewPath',
+#				'overview2ViewOrder', 
+#				'overview2ViewPath',
+#				'symbolPath',
+#				'trendIconColor',
+#				'trendIconPath',
+#				'trendLocationDisplay',
+#				'trendPlotNumber',
+#				'trendValuePathPrimary',
+#				'trendValuePathSecondary'
+#				]
+
+
+def removeCustomProperites(rootTagPath, typeId, removeList):
+
+	results = system.tag.browse(rootTagPath, {'recursive':True, 'tagType': 'UdtInstance', 'typeId': typeId})
+	
+	for result in results:
+		tagPath = str(result['fullPath'])
+		parentPath = '/'.join(tagPath.split('/')[:-1])
+	
+	#	print tagPath
+	#	print parentPath	
+	
+		tagConfig = tageditor.util.getTagConfigObj(tagPath)
+	
+		updatedConfig = {key:value for key, value in tagConfig.items() if key not in removeList}
+		
+		tagConfigStr = system.util.jsonEncode(updatedConfig)
+		
+		system.tag.configure(parentPath, tagConfigStr)
+
+
+
+
+
 
 
 

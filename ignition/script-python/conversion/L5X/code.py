@@ -19,6 +19,32 @@ DEFAULT_SIMULATION = {"BOOL":"false", "BIT":"false", "SINT":"0", "INT":"0", "DIN
 
 
 
+# --- generate both SIM file and tags file
+
+#deviceName = 'GRAFTON_ELEV_TANK'
+#l5xFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Alton PLC Programs/PLC_Grafton_ET.L5X'
+#simFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/SIM/' + deviceName + '.csv'
+#tagsFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Alton PLC Programs/Tags/' + deviceName + '.csv'
+#l5xString = system.file.readFileAsString(l5xFilePath, 'UTF-8')
+#
+#
+#dsSIM = conversion.L5X.generateSimulation(l5xString)
+#dataset.export.toCSV(dsSIM, simFilePath)
+#
+#dsTags = conversion.L5X.getAllTags(l5xString,deviceName)
+#dataset.export.toCSV(dsTags, tagsFilePath)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -334,6 +360,7 @@ def parse(l5xString):
 	for i in range(tagNodes.getLength()):
 		tagNode = tagNodes.item(i)
 		tagName = tagNode.getAttribute("Name")
+		#print tagName
 		tagDescriptionNode = tagNode.getElementsByTagName("Description").item(0)
 		tagDescription = tagDescriptionNode.getTextContent().strip() if tagDescriptionNode else ''
 		tagDataType = tagNode.getAttribute("DataType")
@@ -496,8 +523,8 @@ def parseStructureNode(structureNode):
 			
 			
 	structureMemberNodes = getChildByTagName(structureNode, "StructureMember")
-	for structureMemeberNode in structureMemberNodes:
-		structureMemberNode = structureMemberNodes.item(k)
+	for structureMemberNode in structureMemberNodes:
+		#structureMemberNode = structureMemberNodes.item(k)
 		if structureMemberNode.getNodeType() == Node.ELEMENT_NODE:
 			name = structureMemberNode.getAttribute("Name")
 			members[name] = parseStructureNode(structureMemberNode)

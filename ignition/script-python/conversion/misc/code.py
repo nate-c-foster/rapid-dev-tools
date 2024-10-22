@@ -3,7 +3,8 @@
 def updateDesiredValues(rootTagPath):
 	import math
 	
-	results = system.tag.browse(rootTagPath, {'recursive':True, 'tagType':'UdtInstance', 'typeId':'Components/AnalogInput'})
+	
+	results = system.tag.browse(rootTagPath, {'recursive':True, 'tagType':'UdtInstance', 'typeId':'Components/Analog Input'})
 	
 	endToday = system.date.now()
 	startToday = system.date.addDays(endToday, -3)
@@ -12,9 +13,8 @@ def updateDesiredValues(rootTagPath):
 	for result in results:
 		tagPath = str(result['fullPath'])
 	
-		print tagPath
-		
-		
+	
+	
 		histPaths = Trending.util.toHistPaths([tagPath + '/Control/DeviceStatus/Output'])
 		calcToday = system.tag.queryTagCalculations(paths=histPaths, 
 													calculations=['Minimum','Maximum'], 
@@ -71,12 +71,15 @@ def updateDesiredValues(rootTagPath):
 		else:
 			desiredLow = euMin
 			
-		print euMax
-		print highSP
-		print desiredHigh
-		print desiredLow
-		print lowSP
-		print euMin
-		
-#		system.tag.writeBlocking(tagPath + '/Engineering/DesiredHigh', desiredHigh)
-#		system.tag.writeBlocking(tagPath + '/Engineering/DesiredLow', desiredLow)
+			
+		if desiredHigh != None and desiredLow != None and desiredHigh < euMax and desiredLow > euMin and desiredHigh > desiredLow:
+			print tagPath
+			print euMax
+			print highSP
+			print 'H: ', desiredHigh
+			print 'L: ', desiredLow
+			print lowSP
+			print euMin
+			
+	#		system.tag.writeBlocking(tagPath + '/Engineering/DesiredHigh', desiredHigh)
+	#		system.tag.writeBlocking(tagPath + '/Engineering/DesiredLow', desiredLow)

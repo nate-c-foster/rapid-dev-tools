@@ -22,7 +22,6 @@ def innerJoin(dataset1, dataset2, joinPredicate, columns1, columns2):
 	
 	
 	
-	
 def leftOuterJoin(dataset1, dataset2, joinPredicate, columns1, columns2):
 	selectHeaders = ['left_' + columnName for columnName in columns1] + ['right_' + columnName for columnName in columns2]
 	data = []
