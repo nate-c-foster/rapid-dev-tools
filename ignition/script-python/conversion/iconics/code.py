@@ -4,6 +4,12 @@ import os
 from StringIO import StringIO
 
 
+# TODO
+# - add column in tag mapping for globalAliasThemeId
+# - add user frendly UI (would need hours for this)
+
+
+
 
 #iconicsReportPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_report.txt' # iconic report of all dynamic tags for all displays
 #aliasesFolderPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/Popups' # contains aliases text files
@@ -86,9 +92,58 @@ def parseReportForKepwareTags(reportString):
 	return kepwareTags
 
 
+# returns a list of unique aliases in a report string
+def parseReportForGlobalAliases(reportString):
+
+	globalAliaseRegex = re.compile(r'<#([-_ #\w]+)#>')
+	
+	aliases = globalAliaseRegex.findall(reportString)
+	
+	return list(set(aliases))
+	
+# returns a dictionary mapping with alias names as the key
+def parseGlobalAliasesCSV(filePath, themeItemId):
+
+	ds = dataset.generate.fromStandardCSV(filePath)
+	pyds = system.dataset.toPyDataSet(ds)
+	
+	mapping = {}
+	for row in pyds:
+
+		if row['ThemeItemID'] == themeItemId:
+			key = row['LocationPath'].split('Aliases\\')[-1]
+			mapping[key] = row['AliasValue']
+			
+	return mapping
+	
+	
+	
+#filterNum = '6'
+#iconicsReportPath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_report_filter.txt'
+#outputFilePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Development/iconics_report_filter' + filterNum + '.txt'
+#reportString = system.file.readFileAsString(iconicsReportPath)
+#filePath = 'C:/VM Shared Drive/ILAW Alton WA/ILAW Alton WA/Iconics Backup - 4-24-2024/AL Global Aliasing Filters.csv'
+#themeItemId = 'FILTERID=ALFILTER ' + filterNum
+#aliasesMapping = conversion.iconics.parseGlobalAliasesCSV(filePath, themeItemId)
+#reportString = conversion.iconics.updateReportWithGlobalAliasesSubstitutions(reportString, aliasesMapping)
+#system.file.writeFile(outputFilePath, reportString)	
+
+def updateReportWithGlobalAliasesSubstitutions(reportString, aliasesMapping):
+
+	for key in aliasesMapping:
+		reportString = reportString.replace('<#' + key + '#>', aliasesMapping[key])
+		
+	# run a secontime because aliases contain other aliases
+	for key in aliasesMapping:
+		reportString = reportString.replace('<#' + key + '#>', aliasesMapping[key])
+		
+	return reportString	
+
+	
+	
 
 
-
+# local aliases
 def parseAliasesForKepwareTags(aliasesString, filename):
 
 	kepwareRegex = re.compile(r'\\\\([.\w]+)\\([.\w]+)\\([-_ #\w]+).([-_ #\w]+).([.-_ #\w]+)')
